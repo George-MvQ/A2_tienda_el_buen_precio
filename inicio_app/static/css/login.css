@@ -10,7 +10,7 @@
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 0.4em;
-    background-color: rgba(252, 252, 252, 0.473);
+    background-color: rgba(98, 136, 219, 0.37);
     border-radius: 25px;
     transition: .4s ease-in-out;
 }
@@ -39,6 +39,7 @@
     outline: none;
     width: 100%;
     color: #d3d3d3;
+    
   }
 
   #heading {
@@ -51,6 +52,7 @@
   
   .inicio{
     font-size: 20px;
+
   }
 
   .button {
@@ -62,9 +64,10 @@
     background-color: transparent;
     color: white;
     transition: 1s;
-    border-radius: 0.3em;
+    border-radius: 25px;
     font-size: 16px;
     font-weight: bold;
+    left: 25%;
   }
   
   .button::after {
