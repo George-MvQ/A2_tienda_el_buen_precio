@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+
+      {% endblock %}
+    </title>
+    <!--css generales-->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+   
+    <!-- bloque espesifico de css -->
+    {% block link %}
+    {% endblock %}
+
+  </head>
+
+  <body>
+    <nav></nav>
+
+    {% block body %}
+
+    {% endblock %}
+
+    <footer></footer>
+    <script src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
+  </body>
+</html>

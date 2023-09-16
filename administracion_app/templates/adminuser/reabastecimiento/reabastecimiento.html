@@ -1,0 +1,40 @@
+{% extends 'shared/baseadmin.html' %}
+{% block title %}
+  Inicio
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/abastecimiento.css' %}" />
+  <!-- css -->
+{% endblock %}
+
+{% block body %}
+<h1 id="titulo">OPCIONES DE REABASTECIMIENTO</h1>
+  <form class="formulario">
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen5.png' %}" alt="">
+      <h2 onclick="" type ="">INGRESO DE PRODUCTOS</h2>
+      <button onclick="" type="button">INGRESO DE PRODUCTOS</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen6.png' %}" alt="">
+      <h2>REPORTES</h2>
+      <button onclick="" type="button">REPORTES</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen7.png' %}" alt="">
+      <h2>PROVEEDORES</h2>
+      <button onclick="" type="button">PROVEEDORES</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen8.png' %}" alt="">
+      <h2>GESTION DE PEDIDOS</h2>  
+      <button onclick="" type="button">GESTION DE PEDIDOS</button>
+    </div>
+  </form>
+{% endblock %}

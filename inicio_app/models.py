@@ -78,6 +78,7 @@ class DetalleVentas(models.Model):
         db_table = 'Detalle_ventas'
 
 
+
 class Empleados(models.Model):
     id_empleado = models.AutoField(db_column='ID_empleado', primary_key=True)  # Field name made lowercase.
     primer_nombre = models.CharField(db_column='Primer_nombre', max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
@@ -87,7 +88,6 @@ class Empleados(models.Model):
     segundo_apellido = models.CharField(db_column='Segundo_apellido', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     apellido_casada = models.CharField(db_column='Apellido_casada', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     fk_id_puesto = models.ForeignKey('Puestos', models.DO_NOTHING, db_column='fk_id_puesto', blank=True, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -348,14 +348,3 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Sysdiagrams(models.Model):
-    name = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
-    principal_id = models.IntegerField()
-    diagram_id = models.AutoField(primary_key=True)
-    version = models.IntegerField(blank=True, null=True)
-    definition = models.BinaryField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'sysdiagrams'
-        unique_together = (('principal_id', 'name'),)

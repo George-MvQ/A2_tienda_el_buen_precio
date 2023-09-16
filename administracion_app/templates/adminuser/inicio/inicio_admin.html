@@ -1,0 +1,40 @@
+{% extends 'shared/baseadmin.html' %}
+{% block title %}
+  Inicio
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/inicio_admin.css' %}" />
+  <!-- css -->
+{% endblock %}
+
+{% block body %}
+<h1 id="titulo">MODULO DEL ADMINISTRADOR</h1>
+  <form class="formulario">
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="">
+      <h2 onclick="" type ="">MODULO REABASTECIMIENTO</h2>
+      <button onclick="" type="button">MÓDULO REABASTECIMIENTO</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen2.png' %}" alt="">
+      <h2>MODULO CONTROL DE INVENTARIO</h2>
+      <button onclick="" type="button">MÓDULO CONTROL DE INVENTARIO</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="">
+      <h2>MODULO DE REPORTES</h2>
+      <button onclick="" type="button">MÓDULO DE REPORTES</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen4.png' %}" alt="">
+      <h2>MODULO ADMINISTRATIVO</h2>
+      <button onclick="" type="button">MÓDULO ADMINISTRATIVO</button>
+    </div>
+  </form>
+{% endblock %}

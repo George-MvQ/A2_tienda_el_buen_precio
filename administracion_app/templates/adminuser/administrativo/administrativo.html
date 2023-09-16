@@ -1,0 +1,98 @@
+{% extends 'shared/baseadmin.html' %}
+{% block title %}
+  Modulo Administrativo
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
+{% endblock %}
+
+{% block body %}
+
+   <nav>
+        <!-- Imagen en la esquina superior izquierda -->
+        <img id="iconotienda" src="{% static 'images/logo.png' %}" alt="" />
+
+        <!-- Botones a la izquierda -->
+        <div class="botones">
+            <button>Inicio</button>
+            <button>Modulos</button>
+        </div>
+
+        <!-- Campo de búsqueda a la derecha -->
+        <div class="buscador">
+            <input type="text" placeholder="Buscar">
+            <button>Buscar</button>
+        </div>
+    </nav>
+
+
+  <!-- Menú lateral desplegable -->
+  <div id="menu-lateral">
+    <h2>Administrar Usuarios</h2>
+    <ul>
+        <li>
+            <a onclick="mostrarContenido('agregarUsuario')">Agregar Usuario</a>
+        </li>
+        <li>
+            <a  onclick="mostrarContenido('editarUsuario')">Editar Usuario</a>
+        </li>
+        <li>
+            <a onclick="mostrarContenido('eliminarUsuario')">Eliminar Usuario</a>
+        </li>
+    </ul>
+</div>
+
+<div id="contenedor-agregarUsuario" class="contenedor">
+  <div class="contus">
+    <div id="agregaruser">
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="email" id="email" placeholder="Correo electrónico">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="contrasena" placeholder="Contraseña">
+    <select id="estado">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+    </select>
+    <button onclick="agregarFila()">Agregar</button>
+</div>
+
+    <!-- Contenido para Agregar Usuario -->
+
+  </div>
+
+</div>
+
+<div id="contenedor-editarUsuario" class="contenedor">
+    <div class="contedit">
+      <!-- Contenido para Editar Usuario -->
+    </div>
+</div>
+
+<div id="contenedor-eliminarUsuario" class="contenedor">
+    <div class="contelim">
+      <!-- Contenido para Eliminar Usuario -->
+
+    </div>
+</div>
+
+  <div id="miDiv">
+        <table>
+            <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Nombre</th>
+                  <th>Acceso</th>
+                  <th>E-mail</th>
+                  <th>Username</th>
+                  <th>Contraseña</th>
+                  <th>Estado</th>
+                </tr>
+            </thead >
+            <tbody id="tablaBody">
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
