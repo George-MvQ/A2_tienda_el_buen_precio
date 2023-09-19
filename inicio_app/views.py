@@ -37,7 +37,7 @@ def logeo(request):
                 login(request, user)
                 if user.is_superuser:
                     print('1')
-                    return HttpResponse('<h1>Este es un superusuario :)</h1>')
+                    return redirect('/admin/')
                 else:
                    print('2')
                    return HttpResponse('<h1>Este es un usuario Normal :)</h1>')
