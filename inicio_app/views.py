@@ -17,7 +17,7 @@ def administrador(request):
     return render(request, 'infoTienda.html')
 
 
-
+#simpore deveulve un get
 def logeo(request):
     if request.method =='GET':
         print('111')
@@ -35,9 +35,11 @@ def logeo(request):
             print(user is not None)
             if user is not None and user.check_password(password):
                 login(request, user)
+                #si es superusiario se va al panel de adiministrador 
                 if user.is_superuser:
                     print('1')
                     return redirect('/admin/')
+                #panel de vendedro 
                 else:
                    print('2')
                    return HttpResponse('<h1>Este es un usuario Normal :)</h1>')
@@ -45,8 +47,15 @@ def logeo(request):
                 return HttpResponse('j')
         else:
             return redirect('/')
-            
-        
+    
+    
+    
+"""
+    if request.method =='POST':
+        return redirect ('inicio')
+    else: 
+        return render(request, 'login.html')            
+"""   
 
 
 def prueba(request):

@@ -6,3 +6,4 @@ urlpatterns = [
      path('panel/',views.adminpanel,name='panel'),
      path('raton/',views.raton, name='abastecimiento'),
 ]
+
