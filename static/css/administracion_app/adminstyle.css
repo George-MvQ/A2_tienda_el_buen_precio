@@ -1,20 +1,33 @@
-#iconotienda {
-    width: auto;
-    height: 50px;
-    margin-top: 30px;
-    margin-left: 30px;
-}
 
 body{
         background-color: #0F171A;
 }
 
+/* menu de navegacion */
+
+#id-nav-admin{
+    position: static;
+    font-weight: bolder;
+}
+#id-header-admin{
+    padding: 3%;
+}
+
+#id-buscar{
+    position: absolute;
+    left: 70%;
+}
+
+#spaces{
+    margin-left: 10%;
+}
+
 /* Estilos para el menú lateral en pantallas grandes */
 #menu-lateral {
     width: 250px;
-    height: 60%;
+    height: 90%;
     position: fixed;
-    top: 30%;
+    top: 20%;
     background-color: #1D2B34;
     color: #fff;
     border-radius: 2%;
@@ -23,7 +36,9 @@ body{
 #menu-lateral h2 {
     font-size: 15px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
+    text-align: left;
+    padding: 7%;
+    border: solid 1px white;
 }
 
 #menu-lateral ul {
@@ -33,14 +48,16 @@ body{
 
 #menu-lateral ul li {
     padding: 10px;
-    text-align: center;
+    text-align: left;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
 }
 
 #menu-lateral ul li:hover {
-    background-color: rgb(205, 194, 194);
+    background-color: rgba(255, 255, 255, 0.349);
     color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
 }
 
 /* Estilos para el menú lateral en pantallas pequeñas (menos de 768px de ancho) */
@@ -66,13 +83,15 @@ body{
 #miDiv {
     width: 70%;
     margin-left: 27%;
-    margin-top: 11%;
+    margin-top: 2%;
     overflow-x: auto;
     background-color: rgba(255, 255, 255, 0.44);
+    border-radius: 2px;
     /* Permite el desplazamiento horizontal */
 }
 
 table {
+    border-radius: 2px;
     width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
@@ -88,51 +107,7 @@ td {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
-nav {
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-}
-
-
-/* Estilos para los botones a la izquierda */
-.botones {
-    margin-left: 10px;
-
-}
-
-.botones button {
-    background-color: transparent;
-    font-size: 17px;
-    color: rgb(255, 255, 255);
-    border: none;
-    padding: 10px 15px;
-    margin-left: 2px;
-    cursor: pointer;
-}
-
-/* Estilos para el campo de búsqueda a la derecha */
-.buscador {
-    display: flex;
-}
-
-.buscador input[type="text"] {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-}
-
-.buscador button {
-    background-color: #555;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
+/* Estilos para el contenedor divs emergentes */
 
 .contenedor {
     display: none;

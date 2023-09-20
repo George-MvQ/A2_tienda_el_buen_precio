@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block link %}
+  <!-- carga de archivo css general -->
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
 {% endblock %}
@@ -12,26 +16,26 @@
 {% block body %}
   <!-- cargando imagenes -->
   {% load static %}
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="60" />
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 m-2">
-          <li class="nav-item">
-            <button class="btn btn-outline-success" type="button">Inicio</button>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-success" type="button">Modulos</button>
-          </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Escribe algo aqui" aria-label="Search" />
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-      </div>
-    </div>
-  </nav>
 
+  <header id="id-header-admin">
+    {% load static %}
+    <ul class="nav nav-underline" id="id-nav-admin">
+      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
+      <li class="nav-item" id="spaces">
+        <a class="nav-link active text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'adm' %}">Modulo</a>
+      </li>
+      <li>
+        <form class="d-flex" role="search" id="id-buscar">
+          <input class="form-control me-2" type="search" placeholder="Escribe algo aqui" aria-label="Search" />
+          <button button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+      </li>
+    </ul>
+  </header>
+  <hr>
   <!-- Menú lateral desplegable -->
   <div id="menu-lateral">
     <h2>Administrar Usuarios</h2>
@@ -61,11 +65,8 @@
         </select>
         <button onclick="agregarFila()">Agregar</button>
       </div>
-
-      <!-- Contenido para Agregar Usuario -->
     </div>
   </div>
-
   <div id="contenedor-editarUsuario" class="contenedor">
     <div class="contedit">
       <!-- Contenido para Editar Usuario -->
@@ -94,4 +95,6 @@
       <tbody id="tablaBody"></tbody>
     </table>
   </div>
+
+  <script src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
 {% endblock %}

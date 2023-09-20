@@ -10,31 +10,47 @@
 {% endblock %}
 
 {% block body %}
-<h1 id="titulo">MODULO DEL ADMINISTRADOR</h1>
+  <header id="id-header2">
+    {% load static %}
+    <ul class="nav nav-underline" id="idnav2">
+      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
+      <li class="nav-item">
+        <a class="nav-link text-white text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'adm' %}">Modulos</a>
+      </li>
+    </ul>
+  </header>
+
+  <h1 id="titulo">MODULO DEL ADMINISTRADOR</h1>
   <form class="formulario">
-
-    <div>
-      <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="">
-      <h2 onclick="" type ="">MODULO REABASTECIMIENTO</h2>
-      <button onclick="" type="button">MÓDULO REABASTECIMIENTO</button>
+    <div class="fondo">
+      <div>
+        <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="" />
+        <button onclick="" type="button">MÓDULO REABASTECIMIENTO</button>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen2.png' %}" alt="">
-      <h2>MODULO CONTROL DE INVENTARIO</h2>
-      <button onclick="" type="button">MÓDULO CONTROL DE INVENTARIO</button>
+    <div class="fondo">
+      <div>
+        <img src="{% static 'images/administracion_app/imagen2.png' %}" alt="" />
+        <button onclick="" type="button">MÓDULO CONTROL DE INVENTARIO</button>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="">
-      <h2>MODULO DE REPORTES</h2>
-      <button onclick="" type="button">MÓDULO DE REPORTES</button>
+    <div class="fondo">
+      <div>
+        <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="" />
+        <button onclick="" type="button">MÓDULO DE REPORTES</button>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen4.png' %}" alt="">
-      <h2>MODULO ADMINISTRATIVO</h2>
-      <button onclick="" type="button">MÓDULO ADMINISTRATIVO</button>
+    <div class="fondo">
+      <div>
+        <img src="{% static 'images/administracion_app/imagen4.png' %}" alt="" />
+        <button onclick="" type="button">MÓDULO ADMINISTRATIVO</button>
+      </div>
     </div>
   </form>
 {% endblock %}

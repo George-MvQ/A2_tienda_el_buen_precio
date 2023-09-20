@@ -1,32 +1,7 @@
-
-/* menu navgador */
-#idnav2{
-    position: static;
-    font-weight: bolder;
-}
-
-#id-header2{
-    background-color: #1D2B34;
-    padding: 2%;
-
-}
-
 #titulo {
     text-align: center;
     margin-top: 150px;
 }
-
-.fondo {
-    /* Cambiado de width: 1000px;  max-width: 100%;*/
-   /*margin-left: 8%;*/
-   /*margin-right: 8%; /* Agregado para centrar el elemento */
-   /*padding: 1.5%;*/
-   background-color: rgba(82, 132, 156, 0.464);
-   border-radius: 25px;
-   box-sizing: border-box; /* Evita que el padding afecte el ancho total */
-   padding: 5%;
-}
-
 
 
 .formulario {
@@ -34,8 +9,8 @@
     grid-template-columns: repeat(1, 1fr); /* Cambiado a una sola columna para pantallas pequeñas */
     grid-gap: 20px;
     text-align: center;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
 }
 
 /* Estilos para los elementos dentro del formulario */
@@ -46,8 +21,8 @@
         "titulo"; /* Cambiado el orden de las áreas para la imagen arriba y el título abajo */
     grid-template-rows: auto auto;
     text-align: center;
-    padding: 1%;
-    border: 1px solid yellow;
+    padding: 30px;
+    border: 1px solid #3de400;
     border-radius: 20px;
 }
 
@@ -67,15 +42,15 @@
 /* Consulta de medios para pantallas más grandes */
 @media screen and (min-width: 768px) {
     .formulario {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 button {
     display: inline-block;
-    padding: 30px 30px;
+    padding: 20px 20px;
     border: 1px solid #4f4f4f;
-    border-radius: 20px;
+    border-radius: 15px;
     transition: all 0.2s ease-in;
     position: relative;
     overflow: hidden;

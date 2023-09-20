@@ -8,6 +8,10 @@
 
       {% endblock %}
     </title>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+
     <!--css generales-->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
@@ -26,6 +30,7 @@
     {% endblock %}
 
     <footer></footer>
-    <script src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
+    {% block script %}
+    {% endblock %}
   </body>
 </html>

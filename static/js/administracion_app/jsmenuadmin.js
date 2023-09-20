@@ -1,4 +1,5 @@
 
+
 function mostrarContenido(idContenedor) {
     var contenedor = document.getElementById("contenedor-" + idContenedor);
     contenedor.style.display = "block";
@@ -54,3 +55,5 @@ function agregarFila() {
     document.getElementById("contrasena").value = "";
     document.getElementById("estado").value = "activo";
 }
+
+

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'inicio_app',
     'administracion_app',
     'bootstrap5',
+    
 ]
 
 MIDDLEWARE = [

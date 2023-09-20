@@ -1,0 +1,58 @@
+{% extends 'shared/baseadmin.html' %}
+
+{% block title %}
+  Marcas
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/inicio_admin.css' %}" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
+
+  <!-- css -->
+{% endblock %}
+
+{% block body %}
+  <label for="">Id Marca</label>
+  <input type="number" id="idmarca" /><br>
+  <label for="">Nombre Marca</label>
+  <input type="text" id="nombremarca" /><br>
+
+  <label for="">Descripcion</label>
+  <input type="text" id="descripcion" /><br>
+  <select name="" id="estado">
+    <option value="activo">Activo</option>
+    <option value="inactivo">Inactivo</option>
+  </select> <br />
+  <button>Guarda</button><br><br>
+
+  
+  <div>
+    <table id="datosmarca" border="1">
+      <thead>
+        <tr>
+          <th>Id Marca</th>
+          <th>Nombre Marca</th>
+          <th>Descripcion</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="tablaBody"></tbody>
+    </table>
+  </div>
+  <!--  -->
+
+  <!-- ! USANDO TABLE -->
+
+  <div></div>
+
+  <span id="mensajemarca"></span>
+{% endblock %}
+
+{% block script %}
+  {% load static %}
+
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="{% static 'js/marcas.js' %}"></script>
+{% endblock %}

@@ -3,6 +3,7 @@
     margin-top: 150px;
 }
 
+
 .formulario {
     display: grid;
     grid-template-columns: repeat(1, 1fr); /* Cambiado a una sola columna para pantallas pequeñas */
@@ -20,8 +21,9 @@
         "titulo"; /* Cambiado el orden de las áreas para la imagen arriba y el título abajo */
     grid-template-rows: auto auto;
     text-align: center;
-    padding: 10px;
-    border: 1px solid #dce400;
+    padding: 30px;
+    border: 1px solid rgb(238, 255, 0);
+    border-radius: 20px;
 }
 
 /* Imagen */
@@ -45,23 +47,62 @@
 }
 
 button {
-    --green: #1BFD9C;
-    font-size: 15px;
-    padding: 0.7em 2.7em;
-    letter-spacing: 0.06em;
+    display: inline-block;
+    padding: 20px 20px;
+    border: 1px solid #4f4f4f;
+    border-radius: 15px;
+    transition: all 0.2s ease-in;
     position: relative;
-    font-family: inherit;
-    border-radius: 0.6em;
     overflow: hidden;
-    transition: all 0.3s;
-    line-height: 1.4em;
-    border: 2px solid var(--green);
-    background: linear-gradient(to right, rgba(27, 253, 156, 0.1) 1%, transparent 40%,transparent 60% , rgba(27, 253, 156, 0.1) 100%);
-    color: var(--green);
-    box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.4), 0 0 9px 3px rgba(27, 253, 156, 0.1);
-  }
-  
-  form button:hover {
-    color: #82ffc9;
-    box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.6), 0 0 9px 3px rgba(27, 253, 156, 0.2);
-  }
+    font-size: 19px;
+    color: black;
+    z-index: 1;
+    font-size: 14px;
+   }
+   
+   button:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.25);
+    top: 100%;
+    width: 140%;
+    height: 180%;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+   }
+   
+   button:after {
+    content: "";
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%) scaleY(1) scaleX(1.45);
+    top: 180%;
+    width: 160%;
+    height: 190%;
+    background-color: #dce400;
+    border-radius: 50%;
+    display: block;
+    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+    z-index: -1;
+   }
+   
+   button:hover {
+    color: #ffffff;
+    border: 1px solid #39bda7;
+   }
+   
+   button:hover:before {
+    top: -35%;
+    background-color: #39bda7;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+   }
+   
+   button:hover:after {
+    top: -45%;
+    background-color: #39bda7;
+    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+   }

@@ -1,0 +1,49 @@
+{% extends 'shared/baseadmin.html' %}
+{% block title %}
+  Inicio
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reportes/reporteRea.css' %}" />
+  <!-- css -->
+{% endblock %}
+
+{% block body %}
+  <h1 id="titulo">REPORTE GENERAL DE REABASTECIMIENTO</h1>
+
+  <body>
+    <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nombre de Reporte</th>
+          <th>Fecha de Reporte</th>
+          <th>Visualizar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Reporte de Ventas</td>
+          <td>2023-09-18</td>
+          <td>
+            <button class="visualizar-button">Visualizar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Reporte de Inventario</td>
+          <td>2023-09-19</td>
+          <td>
+            <button class="visualizar-button">Visualizar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </body>
+
+  
+{% endblock %}

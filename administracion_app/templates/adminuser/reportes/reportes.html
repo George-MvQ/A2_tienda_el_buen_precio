@@ -1,0 +1,27 @@
+{% extends 'shared/baseadmin.html' %}
+{% block title %}
+  Inicio
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reportes/reportesgeneral.css' %}" />
+  <!-- css -->
+{% endblock %}
+
+{% block body %}
+<h1 id="titulo">REPORTE GENERAL</h1>
+  <form class="formulario">
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="">
+      <button onclick="" type="button">REPORTERIA DE REABASTECIMIENTO</button>
+    </div>
+
+    <div>
+      <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="">
+      <button onclick="" type="button">REPORTERIA GESION DE INVENTARIO</button>
+    </div>
+
+  </form>
+{% endblock %}
