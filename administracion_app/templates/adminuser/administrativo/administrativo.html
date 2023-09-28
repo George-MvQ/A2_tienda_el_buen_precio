@@ -10,7 +10,9 @@
   {% bootstrap_css %}
 
   {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
+  <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
 {% endblock %}
 
 {% block body %}
@@ -35,66 +37,74 @@
       </li>
     </ul>
   </header>
-  <hr>
-  <!-- Menú lateral desplegable -->
-  <div id="menu-lateral">
-    <h2>Administrar Usuarios</h2>
-    <ul>
-      <li>
-        <a onclick="mostrarContenido('agregarUsuario')">Agregar Usuario</a>
-      </li>
-      <li>
-        <a onclick="mostrarContenido('editarUsuario')">Editar Usuario</a>
-      </li>
-      <li>
-        <a onclick="mostrarContenido('eliminarUsuario')">Eliminar Usuario</a>
-      </li>
-    </ul>
-  </div>
+  <hr />
 
-  <div id="contenedor-agregarUsuario" class="contenedor">
-    <div class="contus">
-      <div id="agregaruser">
-        <input type="text" id="nombre" placeholder="Nombre" />
-        <input type="email" id="email" placeholder="Correo electrónico" />
-        <input type="text" id="username" placeholder="Username" />
-        <input type="password" id="contrasena" placeholder="Contraseña" />
-        <select id="estado">
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
-        <button onclick="agregarFila()">Agregar</button>
-      </div>
-    </div>
-  </div>
-  <div id="contenedor-editarUsuario" class="contenedor">
-    <div class="contedit">
-      <!-- Contenido para Editar Usuario -->
-    </div>
-  </div>
+  <!-- Botoones -->
+  <button type="button" class="btn btn-success ml-10">Agregar</button>
 
-  <div id="contenedor-eliminarUsuario" class="contenedor">
-    <div class="contelim">
-      <!-- Contenido para Eliminar Usuario -->
-    </div>
-  </div>
-
-  <div id="miDiv">
-    <table>
+  <div class="table-responsive" style="margin: 4%; font-size: 9px; ">
+    <table id="datosusuario" class="table table-hover table-responsive">
       <thead>
-        <tr>
-          <th>No.</th>
-          <th>Nombre</th>
-          <th>Acceso</th>
-          <th>E-mail</th>
-          <th>Username</th>
+        <tr class="text-center align-middle text-white font-weight-bold">
+          <th>Id</th>
           <th>Contraseña</th>
-          <th>Estado</th>
+          <th>Ultimo acceso</th>
+          <th>Es superusuario</th>
+          <th>Usuario</th>
+          <th>Primer nombre</th>
+          <th>Apellidos</th>
+          <th>Email</th>
+          <th>is_staff</th>
+          <th>Esta activo</th>
+          <th>Fecha de Registro</th>
+          <th>Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody"></tbody>
+      <tbody id="tablaBody" class="text-white"></tbody>
     </table>
   </div>
 
+  
+  <!--   <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>password</th>
+                <th>last_login</th>
+                <th>is_login</th>
+                <th>is_superuser</th>
+                <th>username</th>
+                <th>first_name</th>
+                <th>last_name</th>
+                <th>email</th>
+                <th>is_staff</th>
+                <th>is_active</th>
+                <th>date_joined</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Id</th>
+                <th>password</th>
+                <th>last_login</th>
+                <th>is_login</th>
+                <th>is_superuser</th>
+                <th>username</th>
+                <th>first_name</th>
+                <th>last_name</th>
+                <th>email</th>
+                <th>is_staff</th>
+                <th>is_active</th>
+                <th>date_joined</th>
+            </tr>
+        </tfoot>
+    </table>   -->
+{% endblock %}
+
+{% block script %}
+  {% load static %}
+  <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
 {% endblock %}

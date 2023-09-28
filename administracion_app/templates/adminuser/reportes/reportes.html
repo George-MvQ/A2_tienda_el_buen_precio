@@ -10,18 +10,35 @@
 {% endblock %}
 
 {% block body %}
-<h1 id="titulo">REPORTE GENERAL</h1>
-  <form class="formulario">
+  <header id="id-header2">
+    {% load static %}
+    <ul class="nav nav-underline" id="idnav2">
+      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
+      <li class="nav-item">
+        <a class="nav-link text-white text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'adm' %}">Modulos</a>
+      </li>
+    </ul>
+  </header>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="">
-      <button onclick="" type="button">REPORTERIA DE REABASTECIMIENTO</button>
+  <h1 id="titulo">REPORTE GENERAL</h1>
+  <form class="formulario form">
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen1.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">REPORTERIA DE REABASTECIMIENTO</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="">
-      <button onclick="" type="button">REPORTERIA GESION DE INVENTARIO</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen3.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">REPORTERIA GESTION DE INVENTARIO</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
-
   </form>
 {% endblock %}

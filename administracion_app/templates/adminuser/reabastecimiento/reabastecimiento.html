@@ -4,37 +4,45 @@
 {% endblock %}
 
 {% block link %}
-  {% load static %}
+
+{% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/abastecimiento.css' %}" />
   <!-- css -->
 {% endblock %}
 
 {% block body %}
-<h1 id="titulo">OPCIONES DE REABASTECIMIENTO</h1>
-  <form class="formulario">
-
-    <div>
-      <img src="{% static 'images/administracion_app/imagen5.png' %}" alt="">
-      <h2 onclick="" type ="">INGRESO DE PRODUCTOS</h2>
-      <button onclick="" type="button">INGRESO DE PRODUCTOS</button>
+  <h1 id="titulo">OPCIONES DE REABASTECIMIENTO</h1>
+  <form class="formulario form">
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen5.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">INGRESO DE PRODUCTOS</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen6.png' %}" alt="">
-      <h2>REPORTES</h2>
-      <button onclick="" type="button">REPORTES</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen6.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">REPORTES</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen7.png' %}" alt="">
-      <h2>PROVEEDORES</h2>
-      <button onclick="" type="button">PROVEEDORES</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen7.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">PROVEEDORES</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
 
-    <div>
-      <img src="{% static 'images/administracion_app/imagen8.png' %}" alt="">
-      <h2>GESTION DE PEDIDOS</h2>  
-      <button onclick="" type="button">GESTION DE PEDIDOS</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen8.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">GESTION DE PEDIDOS</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
+      </div>
     </div>
   </form>
 {% endblock %}

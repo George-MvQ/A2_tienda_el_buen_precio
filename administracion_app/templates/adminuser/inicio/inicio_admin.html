@@ -10,46 +10,38 @@
 {% endblock %}
 
 {% block body %}
-  <header id="id-header2">
-    {% load static %}
-    <ul class="nav nav-underline" id="idnav2">
-      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
-      <li class="nav-item">
-        <a class="nav-link text-white text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'adm' %}">Modulos</a>
-      </li>
-    </ul>
-  </header>
 
-  <h1 id="titulo">MODULO DEL ADMINISTRADOR</h1>
-  <form class="formulario">
-    <div class="fondo">
-      <div>
-        <img src="{% static 'images/administracion_app/imagen1.png' %}" alt="" />
-        <button onclick="" type="button">MÓDULO REABASTECIMIENTO</button>
+  <h1 id="titulo" style="font-size:24px;">MODULO DEL ADMINISTRADOR</h1>
+  <form class="formulario form">
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen1.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">MODULO DE REABASTECIMIENTO</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
       </div>
     </div>
 
-    <div class="fondo">
-      <div>
-        <img src="{% static 'images/administracion_app/imagen2.png' %}" alt="" />
-        <button onclick="" type="button">MÓDULO CONTROL DE INVENTARIO</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen2.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">MODULO CONTROL DE INVENTARIO</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
       </div>
     </div>
 
-    <div class="fondo">
-      <div>
-        <img src="{% static 'images/administracion_app/imagen3.png' %}" alt="" />
-        <button onclick="" type="button">MÓDULO DE REPORTES</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen3.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">MODULO DE REPORTES</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
       </div>
     </div>
 
-    <div class="fondo">
-      <div>
-        <img src="{% static 'images/administracion_app/imagen4.png' %}" alt="" />
-        <button onclick="" type="button">MÓDULO ADMINISTRATIVO</button>
+    <div class="card card1">
+      <img class="pading" src="{% static 'images/administracion_app/imagen4.png' %}" class="card-img-top" alt="..." />
+      <div class="card-body fondonegro">
+        <h5 class="card-title text-white achecinco">MODULO ADMINISTRATIVO</h5>
+        <a href="#" class="btn btn-primary boton">Gestionar Modulo</a>
       </div>
     </div>
   </form>

@@ -6,3 +6,4 @@ admin.site.register(Empleados)
 admin.site.register(Puestos)
 admin.site.register(Proveedores)
 
+admin.site.login_template = 'admin/login.html'

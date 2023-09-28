@@ -44,7 +44,7 @@ def logeo(request):
                    print('2')
                    return HttpResponse('<h1>Este es un usuario Normal :)</h1>')
             else:
-                return HttpResponse('j')
+                return redirect('/')
         else:
             return redirect('/')
     

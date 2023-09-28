@@ -126,6 +126,8 @@ class Marcas(models.Model):
     class Meta:
         managed = False
         db_table = 'Marcas'
+    def __str__(self) -> str:
+        return self.nombre_marca
 
 
 class MetodosPago(models.Model):

@@ -1,5 +1,44 @@
+#titulo{
+    font-size:24px;
+    text-align: center !important;
+    padding-top: 5%;
+    padding: 2%;
+    margin: 2.5%;
+}
 
-/* menu navgador */
+.form{
+    margin-top: 3%;
+}
+.card1{
+    width: 14rem ; 
+    background-color: white;
+    border:solid  gray 14px;
+    border-radius: 12%;
+}
+
+.achecinco{
+    text-align: center;
+    font-size: 17px;
+}
+
+.fondonegro{
+    background-color:#0F171A;
+    height: 8rem; 
+    border-radius: 6.5%;
+}
+
+.boton{
+    position: absolute;
+    bottom: 6%;
+    left: 11%;
+}
+
+.pading{
+    padding:5%;
+}
+
+
+/* menu nav2gador */
 #idnav2{
     position: static;
     font-weight: bolder;
@@ -8,126 +47,55 @@
 #id-header2{
     background-color: #1D2B34;
     padding: 2%;
-
 }
 
-#titulo {
-    text-align: center;
-    margin-top: 150px;
+.form{
+    display: flex;
+    gap: 3%;
+    justify-content: center;
 }
 
-.fondo {
-    /* Cambiado de width: 1000px;  max-width: 100%;*/
-   /*margin-left: 8%;*/
-   /*margin-right: 8%; /* Agregado para centrar el elemento */
-   /*padding: 1.5%;*/
-   background-color: rgba(82, 132, 156, 0.464);
-   border-radius: 25px;
-   box-sizing: border-box; /* Evita que el padding afecte el ancho total */
-   padding: 5%;
-}
-
-
-
-.formulario {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr); /* Cambiado a una sola columna para pantallas pequeñas */
-    grid-gap: 20px;
-    text-align: center;
-    margin-left: 10%;
-    margin-right: 10%;
-}
-
-/* Estilos para los elementos dentro del formulario */
-.formulario > div {
-    display: grid;
-    grid-template-areas:
-        "imagen"
-        "titulo"; /* Cambiado el orden de las áreas para la imagen arriba y el título abajo */
-    grid-template-rows: auto auto;
-    text-align: center;
-    padding: 1%;
-    border: 1px solid yellow;
-    border-radius: 20px;
-}
-
-/* Imagen */
-.formulario img {
+.form img {
     grid-area: imagen;
-    width: 100px; /* Tamaño de la imagen (ajusta según tus necesidades) */
-    margin: 0 auto; /* Centra horizontalmente la imagen */
+    width: 150px; 
+    margin: 0 auto;
+
 }
 
-/* Título */
-.formulario h2 {
-    grid-area: titulo;
-    margin: 0;
-}
+/* Manteniendo tus estilos existentes */
 
-/* Consulta de medios para pantallas más grandes */
+/* Estilos para pantallas medianas y grandes */
 @media screen and (min-width: 768px) {
-    .formulario {
+    .form {
+        display: grid;
         grid-template-columns: repeat(4, 1fr);
+        gap: 1%; /* Reducir el espacio entre elementos */
+        justify-content: center;
+        margin: 0 auto; /* Centrar el formulario en la pantalla */
+        max-width: 1200px; /* Ancho máximo del formulario */
+        margin-left: 8.5%;
+    }
+
+    .form img {
+        width: 150px;
+        margin: 0 auto;
     }
 }
 
-button {
-    display: inline-block;
-    padding: 30px 30px;
-    border: 1px solid #4f4f4f;
-    border-radius: 20px;
-    transition: all 0.2s ease-in;
-    position: relative;
-    overflow: hidden;
-    font-size: 19px;
-    color: black;
-    z-index: 1;
-    font-size: 14px;
-   }
-   
-   button:before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%) scaleY(1) scaleX(1.25);
-    top: 100%;
-    width: 140%;
-    height: 180%;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
-    display: block;
-    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-    z-index: -1;
-   }
-   
-   button:after {
-    content: "";
-    position: absolute;
-    left: 55%;
-    transform: translateX(-50%) scaleY(1) scaleX(1.45);
-    top: 180%;
-    width: 160%;
-    height: 190%;
-    background-color: #39bda7;
-    border-radius: 50%;
-    display: block;
-    transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
-    z-index: -1;
-   }
-   
-   button:hover {
-    color: #ffffff;
-    border: 1px solid #39bda7;
-   }
-   
-   button:hover:before {
-    top: -35%;
-    background-color: #39bda7;
-    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-   }
-   
-   button:hover:after {
-    top: -45%;
-    background-color: #39bda7;
-    transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
-   }
+/* Estilos para pantallas pequeñas (por ejemplo, dispositivos móviles) */
+@media screen and (max-width: 767px) {
+    .form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1%; /* Reducir el espacio entre elementos */
+        justify-content: center;
+        margin: 0 auto; /* Centrar el formulario en la pantalla */
+        max-width: 600px; /* Ancho máximo del formulario */
+    }
+
+    .form img {
+        width: 100px;
+        margin: 0 auto;
+    }
+}
+
