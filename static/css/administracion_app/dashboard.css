@@ -1,20 +1,33 @@
 
 
 .sidebar {
-    height: auto;
+    height: 100%;
     width: 235px;
     /* position: fixed; */
   
-    /* background-color:#d37f44; */
+    /* background-color:#55d344; */
     /* background-color:#1F2C34;  */
     background-color:#1D2B34; 
     padding-top: 20px;
     margin-top: 0px;
     /* padding: 20px; */
-    padding-bottom: 100%;
+    /* padding-bottom: 100%; */
+   
   }
   
+.barra{
+  height: 100%;
+}
+
+
+.pruebaPepito{
+ 
+  height: 100%;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
   .sidebar ul {
+
     list-style-type: none;
     padding: 0;
   }

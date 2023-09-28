@@ -16,7 +16,8 @@
     <!-- css generales -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
-
+    <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/dashboard.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" />
     <!-- bloque espesifico de css -->
     {% block link %}
 
@@ -36,15 +37,14 @@
         </li>
       </ul>
     </header>
-
-    <section>
+    <section class="juanito">
       {% block body %}
 
       {% endblock %}
     </section>
 
     <footer>
-      <p>Abigal y Gilda</p>
+      <p>💕Abigal y Gilda 💕</p>
     </footer>
     {% load static %}
     {% load sweetify %}

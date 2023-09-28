@@ -1,3 +1,17 @@
+.container {
+    position: relative; /* Establece la posición del contenedor como relativa */
+}
+
+#btnAgregarMarca {
+    position: absolute; /* Establece la posición del botón como absoluta con respecto al contenedor */
+    top: 15px; /* Ajusta la posición vertical según tus necesidades */
+    left: 20px; /* Ajusta la posición horizontal según tus necesidades */
+}
+
+
+
+
+
 .div_form_marca{
     display: none;
     width: 35vw;
@@ -12,4 +26,16 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     grid-template-rows: 1fr 1fr 1fr;
+}
+
+/*
+.pruebaA{
+    background-color: aqua;
+    height: 90%;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+*/
+#datosmarca_length{
+    padding-left: 50%;
 }

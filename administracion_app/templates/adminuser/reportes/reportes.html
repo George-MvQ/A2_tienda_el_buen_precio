@@ -10,18 +10,6 @@
 {% endblock %}
 
 {% block body %}
-  <header id="id-header2">
-    {% load static %}
-    <ul class="nav nav-underline" id="idnav2">
-      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
-      <li class="nav-item">
-        <a class="nav-link text-white text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'adm' %}">Modulos</a>
-      </li>
-    </ul>
-  </header>
 
   <h1 id="titulo">REPORTE GENERAL</h1>
   <form class="formulario form">

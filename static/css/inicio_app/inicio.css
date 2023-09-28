@@ -1,0 +1,14 @@
+.inicio_seccion {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 75% 25%;
+
+  
+}
+
+.division1 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+
