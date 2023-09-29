@@ -4,12 +4,13 @@
 
 body{
     display: grid;
-    min-height: 100vh; /* Asegurar que el contenido ocupe al menos la altura completa de la ventana */
+    min-height: 100vh; 
     grid-template-rows: 10% 85% 5%;
     background-color: #0F171A;
     color: white;
     box-sizing: border-box;
-
+/*     background-image: url('static/images/lago.jpg') */
+    /* style.css */
 } 
 
 /* #idnav{
@@ -166,4 +167,25 @@ main{
     display: flex;
   align-items: center; /* Centra verticalmente */
   justify-content: center; 
+}
+
+.opciones_tabla{
+    display: grid;
+    grid-template-columns: 15% 30% 55%;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: rgb(183, 0, 255);
+    place-items: center;
+}
+
+.botonFormulario{
+    order: 1;
+    z-index: 2;
+}
+.filter{
+    order:3;
+}
+.length{
+    order: 2;
 }

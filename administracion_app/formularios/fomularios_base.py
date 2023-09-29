@@ -18,3 +18,22 @@ class MarcaForm(forms.Form):
         label='Estado', 
         choices=_opciones
        )
+
+
+# formulario de Categorias
+
+class CategoriaForm(forms.Form):
+    nombreCategoria = forms.CharField(
+        label='Nombre Categoria', 
+        max_length=100,
+        widget = forms.TextInput(attrs={'id':'in_nombre'}),
+        )
+    descripcion = forms.CharField(
+        label='Descripción', 
+        max_length=255,
+        widget = forms.TextInput(attrs={'id':'in_descripcion'})
+        )
+    estado = forms.ChoiceField(
+        label='Estado', 
+        choices=_opciones
+       )

@@ -11,13 +11,30 @@
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/agregar_marcas.css' %}" />
-{% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/gridjs.css' %}" />
+          
+  {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <button id="btnAgregarMarca" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div>
 
+
+  <h2>Marcas</h2>
+<!--   <div class="container botonFormulario" id="meter">
+    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div> -->
+
+
+  <div class="pollito"></div>
+  
+<!--
+  <label for="recordsPerPage">Registros por página:</label>
+  <select id="selectElementos">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+  </select>
+-->
   <div class="container my-3">
     <table id="datosmarca" class="table table-striped">
       <thead>
@@ -58,18 +75,25 @@
       </div>
     </div>
   </div>
+<br>
+<br>
+  <div id="tablaPrueba"></div>
+
 
   <!-- ! USANDO TABLE -->
 
   <span id="mensajemarca"></span>
-  <br />
+
 {% endblock %}
 
 {% block script %}
   {% load static %}
   <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/marcas.js' %}"></script>
+  <script type="module" src="{% static 'js/gridjs.js' %}"></script>
+  <script type="module" src="{% static 'js/tablagrid.js' %}"></script>
 {% endblock %}

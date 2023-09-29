@@ -1,0 +1,99 @@
+{% extends 'shared/menu_lateral.html' %}
+
+{% block title %}
+  Marcas
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <!--  <script src="{% static 'js/jquery.min.js' %}"></script>
+          --> <!-- css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
+  <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/proveedores.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/gridjs.css' %}" />
+          
+  {% endblock %}
+
+{% block content %}
+
+
+  <h2>Proveedores</h2>
+<!--   <div class="container botonFormulario" id="meter">
+    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div> -->
+
+
+  <div class="pollito"></div>
+  
+<!--
+  <label for="recordsPerPage">Registros por página:</label>
+  <select id="selectElementos">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+  </select>
+-->
+  <div class="container my-3">
+    <table id="datosmarca" class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-white font-weight-bold">Codigo</th>
+          <th class="text-white font-weight-bold">Nombre de Empresa</th>
+          <th class="text-white font-weight-bold">Vendedor</th>
+          <th class="text-white font-weight-bold">Telefono</th>
+          <th class="text-white font-weight-bold">Opciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaBody"></tbody>
+    </table>
+  </div>
+
+  <div class="modal fade otraClase" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-black">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVO PROVEEDOR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="form_body" id="form_agregar_marca" method="POST">
+            {% csrf_token %}
+            {{ form.nombreproveedor.label_tag }}
+            {{ form.nombreproveedor }}
+            {{ form.vendedor.label_tag }}
+            {{ form.venndedor }}
+            {{ form.telefono.label_tag }}
+            {{ form.telefono }}
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<br>
+<br>
+  <div id="tablaPrueba"></div>
+
+
+  <!-- ! USANDO TABLE -->
+
+  <span id="mensajemarca"></span>
+
+{% endblock %}
+
+{% block script %}
+  {% load static %}
+  <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/Crud.js' %}"></script>
+  <script type="module" src="{% static 'js/marcas.js' %}"></script>
+  <script type="module" src="{% static 'js/gridjs.js' %}"></script>
+  <script type="module" src="{% static 'js/tablagrid.js' %}"></script>
+{% endblock %}

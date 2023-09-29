@@ -7,15 +7,23 @@ let datosTablaInicializados = false
 const mantenimiento = new Mantenimineto()
 
 const opcionesTabla = {
+    "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
+    // Renderizar el lengthMenu personalizado
     buttons: [
         {
-            extend: 'excelHtml5', // Utiliza 'excelHtml5' para exportar a Excel
-            text: "Excel", // Texto del botón
-            titleAttr: 'Exportar Excel', // Título al pasar el mouse sobre el botón
-            className: 'btn btn-success', // Clase de estilo para el botón (Bootstrap, en este caso)
-            // Puedes agregar más opciones aquí según tus necesidades
+            text: 'Agregar',
+            className:'btn btn-primary ',
+            init: function (api,node,conf){
+                // Agregar los atributos data-bs-toggle y data-bs-target
+                $(node).attr('data-bs-toggle', 'modal');
+                $(node).attr('data-bs-target', '#staticBackdrop');
+                  // Agregar un ID al botón
+                 $(node).attr('id', 'btnAgregdarMarca');
+            }
         }
     ],
+    scrollCollapsey:true,
+    scrollY: '400px',
     pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
@@ -31,9 +39,11 @@ const opcionesTabla = {
     },// {width: '50%',targets:[0]} para el ancho entre columnas 
 
     ],
-
     language: {
-        "decimal": "",
+        "sFilter": "<span class='mi-clase-filtro'>Filtro:</span>", // Nombre de clase personalizado para el filtro
+        "sLengthMenu": "<span class='mi-clase-longitud'>Mostrar _MENU_ registros por página</span>" // Nombre de clase personalizado para la longitud
+   
+        ,"decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
@@ -53,6 +63,47 @@ const opcionesTabla = {
         }
     }
 }
+/*
+
+---|----|---
+---|----|---
+---|----|---
+*/
+
+
+
+/////----------------------
+
+
+
+
+
+
+/////----------------------
+
+
+///------------------------
+/*
+$(document).ready(function () {
+    // Obtén el elemento select y la tabla
+    var selectElementos = $("#selectElementos");
+    var miTabla = $("#datosmarca tbody");
+
+    // Agrega un evento de cambio al elemento select
+    selectElementos.on("change", function () {
+        var cantidadMostrar = parseInt(selectElementos.val()); // Convierte el valor a un número entero
+        var filas = miTabla.find('tr');
+        console.log("pollo");
+        // Oculta todas las filas de la tabla
+        filas.hide();
+
+        // Muestra la cantidad seleccionada de filas
+        filas.slice(0, cantidadMostrar).show();
+    });
+});
+///------------------------*/
+
+
 
 const iniciarDatosTabla = async () => {
     if (datosTablaInicializados) [
@@ -93,20 +144,20 @@ const filaTabla = (elementos) => {
 
 const agregarBotonEliminar = () => {
     const botonesEliminar = document.querySelectorAll('.btn-eliminar-marca');
-  
+
     botonesEliminar.forEach((boton) => {
-      boton.addEventListener('click', function () {
-        const idMarcaAEliminar = this.getAttribute('data-id');
-        console.log(idMarcaAEliminar);
-        eliminarMarca(idMarcaAEliminar);
-      });
+        boton.addEventListener('click', function () {
+            const idMarcaAEliminar = this.getAttribute('data-id');
+            console.log(idMarcaAEliminar);
+            eliminarMarca(idMarcaAEliminar);
+        });
     });
-  };
+};
 
 
 
 //con esta funcion agregamos todo los datos a la tabla 
-const agregarDatosTabla = (datos)=>{
+const agregarDatosTabla = (datos) => {
     let contenido = '';
     datos.respuesta.marcas.forEach((elementos) => {
         contenido += `
@@ -120,6 +171,12 @@ const agregarDatosTabla = (datos)=>{
 //listamos las informacion a traves de nuetro backend
 const listarMarcas = async () => {
     const datos = await mantenimiento.obtenerDatos('/obtener_marcas/')
+    datos.respuesta.marcas = datos.respuesta.marcas.map(marc => {
+             marc.estado = marc.estado ? 'Activo' : 'Inactivo';  
+             return marc;
+            });
+
+    
     if (datos.estado) {
         agregarDatosTabla(datos)
         console.log(datos);
@@ -153,9 +210,9 @@ function getCookie(name) {
 //evento para guardar los datos
 btGuardarMarca.addEventListener('click', async () => {
     let formAgregar = new FormData(form_agregar_marca);
-    const datos = await mantenimiento.agregarDatos('/ingresomarcas/',formAgregar)
+    const datos = await mantenimiento.agregarDatos('/ingresomarcas/', formAgregar)
 
-    if(datos.estado){
+    if (datos.estado) {
         in_nombre.value = ""
         in_descripcion.value = ""
         console.log('------------------');
@@ -169,7 +226,7 @@ btGuardarMarca.addEventListener('click', async () => {
             'success'
         )
     }
-    else{
+    else {
         console.log('Error al ingresar Datos');
     }
 

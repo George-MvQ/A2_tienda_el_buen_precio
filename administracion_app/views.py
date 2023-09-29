@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from administracion_app.models import *
 from django.http import JsonResponse
-from .formularios.marcas import MarcaForm 
+from .formularios.fomularios_base import MarcaForm
+from .formularios.fomularios_base import CategoriaForm
 from .validaciones import ingeso_marca,eliminar_marcas
 import json 
 
@@ -9,14 +10,17 @@ def admon(request):
 
     return render(request, 'adminuser/inicio/inicio_admin.html')
 
+""" En este apartado nosotro estamos administrando los usuarios de nuestro sistema  """
 
-def adminpanel(request):
+def administar_usuario(request):
     if request.method == 'GET':
-        return render(request, 'adminuser/administrativo/administrativo.html')
+        usuarios:AuthUser = list(AuthUser.objects.values_list('id','first_name','username','is_superuser'))
+        return render(request, 'adminuser/administrativo/administrativo.html', {'usuarios':usuarios})
     elif request.method == 'POST':
         form = MarcaForm(request.POST)
         respuesta:dict = ingeso_marca(form)
         return JsonResponse(respuesta)
+
 
 
   #/obertern_usuarios/  
@@ -36,6 +40,12 @@ def obtenerUsuarios(request):
 
 def opciones(request):
     return render(request, 'adminuser/reabastecimiento/reabastecimiento.html')
+
+def proveedores(request):
+    return render(request, 'adminuser/reabastecimiento/proveedores.html')
+
+def inventariosbajos(request):
+    return render(request, 'adminuser/controlinventario/inventariobajo.html')
 
 
 def reporte(request):
@@ -101,3 +111,30 @@ def dashboard(request):
 
 def adminbarra(request):
     return render(request, 'adminuser/administrativo/adminBarra.html')
+
+
+# Defiendo las vista de categoria
+
+
+def categorias(request):
+    if request.method == 'GET':
+        form = CategoriaForm()
+        return render(request, 'adminuser/reabastecimiento/Categorias.html', {'form': form})
+    elif request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        respuesta = ingeso_marca(form)
+        return JsonResponse(respuesta)
+  
+
+def obtenerDatosCategoria(request):
+    # creaando la lista de todas las marcas
+    categorias = list(Categorias.objects.values())
+    if len(categorias) > 0:
+        dato = {
+            'mensaje': 'Si funciono',
+            'categoria': categorias
+        }
+    else:
+
+        dato = {'mensaje': 'sin datos'}
+    return JsonResponse(dato)

@@ -6,61 +6,49 @@
 
 {% block link %}
   <!-- carga de archivo css general -->
-  {% load bootstrap5 %}
-  {% bootstrap_css %}
 
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
 {% endblock %}
 
 {% block body %}
+
+<h1 class="titulo">GESTION DE USUARIO</h1>
   <!-- cargando imagenes -->
   {% load static %}
 
   <header id="id-header-admin">
     {% load static %}
-    <ul class="nav nav-underline" id="id-nav-admin">
-      <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" />
-      <li class="nav-item" id="spaces">
-        <a class="nav-link active text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'adm' %}">Modulo</a>
-      </li>
-      <li>
-        <form class="d-flex" role="search" id="id-buscar">
-          <input class="form-control me-2" type="search" placeholder="Escribe algo aqui" aria-label="Search" />
-          <button button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-      </li>
-    </ul>
   </header>
-  <hr />
-
-  <!-- Botoones -->
-  <button type="button" class="btn btn-success ml-10">Agregar</button>
 
   <div class="table-responsive" style="margin: 4%; font-size: 9px; ">
     <table id="datosusuario" class="table table-hover table-responsive">
       <thead>
         <tr class="text-center align-middle text-white font-weight-bold">
           <th>Id</th>
-          <th>Contraseña</th>
-          <th>Ultimo acceso</th>
-          <th>Es superusuario</th>
+          <th>Nombre</th>
           <th>Usuario</th>
-          <th>Primer nombre</th>
-          <th>Apellidos</th>
-          <th>Email</th>
-          <th>is_staff</th>
-          <th>Esta activo</th>
-          <th>Fecha de Registro</th>
+          <th>Es superusuario</th>
           <th>Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody" class="text-white"></tbody>
+      <tbody id="tablaBody" class="text-white">
+        {% for usuario in usuarios %}
+        <tr data-id="{{ usuario.0 }}">
+          <td>{{usuario.0}}</td>
+          <td>{{usuario.1}}</td>
+          <td>{{usuario.2}}</td>
+          <td>{{usuario.3}}</td>
+          <td>
+            <button class=" btn-espacio btn-eliminar-usuario btn btn-outline-danger"  data-id="{{usuario.0}}">Eliminar</button> 
+            <button class="btn-detalles-usuario btn btn-outline-info"  data-id="{{usuario.0}}">Detalles</button>
+          </td>
+     
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
@@ -105,6 +93,7 @@
   {% load static %}
   <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
-  <script src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
+  <script  src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
 {% endblock %}

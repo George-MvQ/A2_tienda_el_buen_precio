@@ -1,6 +1,9 @@
 
-body{
-    background-color: #0F171A;
+
+.titulo{
+    text-align: center;
+    color: aqua;
+    margin-top: 40px;
 }
 
 /* menu de navegacion */
@@ -10,7 +13,7 @@ body{
     font-weight: bolder;
 }
 #id-header-admin{
-    padding: 3%;
+    padding: -1%;
 }
 
 #id-buscar{
@@ -23,15 +26,10 @@ body{
 }
 
 
-
-
-th{
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.btn-espacio{
+    margin-right: 0.5em;
 }
- 
+
 
 /* Estilos para el contenedor divs emergentes */
 

@@ -26,3 +26,14 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
+
+
+class Categorias(models.Model):
+    id_categoria = models.AutoField(db_column='ID_categoria', primary_key=True)  # Field name made lowercase.
+    nombre_categoria = models.CharField(db_column='Nombre_categoria', max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
+    descripcion = models.CharField(db_column='Descripcion', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Categorias'

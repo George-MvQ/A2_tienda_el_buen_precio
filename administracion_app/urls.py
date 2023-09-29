@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
      path('admon/',views.admon, name='inicio_admin'),
-     path('panel/',views.adminpanel,name='panel'),
+     path('panel/',views.administar_usuario,name='panel'),
      path('opciones/',views.opciones, name='reabastecimiento'),
      path('reporte/',views.reporte, name='reportes'),
      path('ingresomarcas/',views.marcas, name='marcas'),
@@ -13,9 +13,17 @@ urlpatterns = [
      # prueba dashboard
      path('bernar/',views.dashboard,  name='dashboard'),
      path('modifica-marcas/',views.modificar_marcas,name='modificar_marcas'),
+     path('proveedores/',views.proveedores, name='proveedores'),
+     path('inventariosbajos/',views.inventariosbajos, name='inventariosbajos'),
 
-      path('adminbarra/',views.adminbarra,  name='adminbarra')
-     
+
+
+      path('adminbarra/',views.adminbarra,  name='adminbarra'),
+
+      # Categorias
+
+      path('ingresocategorias/',views.categorias, name='categorias'),
+      path('obtener_categorias/',views.obtenerDatosCategoria,name='obtener_categorias')
 ]
 
 
