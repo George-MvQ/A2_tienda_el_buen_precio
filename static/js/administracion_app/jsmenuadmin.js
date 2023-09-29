@@ -349,6 +349,7 @@ const agregarFuncionBtnActualizar = () => {
 //funcion eliminar 
 const eliminarUsuario= (id)=>{
     alert(`el id es ${id}`)
+    
 }
 
 //funcion detalle de usuario 

@@ -14,7 +14,7 @@ urlpatterns = [
      path('bernar/',views.dashboard,  name='dashboard'),
      path('modifica-marcas/',views.modificar_marcas,name='modificar_marcas'),
      path('proveedores/',views.proveedores, name='proveedores'),
-     path('inventariosbajos/',views.inventariosbajos, name='inventariosbajos'),
+     path('inventariobajo/',views.inventariobajo, name='inventariobajo'),
 
 
 
@@ -24,6 +24,7 @@ urlpatterns = [
 
       path('ingresocategorias/',views.categorias, name='categorias'),
       path('obtener_categorias/',views.obtenerDatosCategoria,name='obtener_categorias')
+      #registro Producto
 ]
 
 

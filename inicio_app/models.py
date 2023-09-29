@@ -51,11 +51,11 @@ class DetalleCompra(models.Model):
     cantidad_compra = models.IntegerField(db_column='Cantidad_compra')  # Field name made lowercase.
     precio_unitario_compra = models.DecimalField(max_digits=19, decimal_places=4)
     precio_sugerido_venta = models.DecimalField(db_column='Precio_sugerido_venta', max_digits=19, decimal_places=4)  # Field name made lowercase.
+    no_lote = models.IntegerField(db_column='No_lote')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Detalle_compra'
-
 
 class DetalleListadoDePedidos(models.Model):
     id_ls_detalle_producto = models.BigAutoField(db_column='ID_ls_detalle_producto', primary_key=True)  # Field name made lowercase.

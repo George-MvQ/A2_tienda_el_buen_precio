@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from administracion_app.models import *
+from inicio_app.models import AuthUser
 from django.http import JsonResponse
 from .formularios.fomularios_base import MarcaForm
 from .formularios.fomularios_base import CategoriaForm
+from .formularios.fomularios_base import ComprasForm
 from .validaciones import ingeso_marca,eliminar_marcas
 import json 
 
@@ -44,7 +46,7 @@ def opciones(request):
 def proveedores(request):
     return render(request, 'adminuser/reabastecimiento/proveedores.html')
 
-def inventariosbajos(request):
+def inventariobajo(request):
     return render(request, 'adminuser/controlinventario/inventariobajo.html')
 
 
@@ -114,12 +116,11 @@ def adminbarra(request):
 
 
 # Defiendo las vista de categoria
-
-
 def categorias(request):
     if request.method == 'GET':
         form = CategoriaForm()
-        return render(request, 'adminuser/reabastecimiento/Categorias.html', {'form': form})
+        categorias = list(Categorias.objects.values())
+        return render(request, 'adminuser/reabastecimiento/Categorias.html', {'form': form,'datos':categorias})
     elif request.method == 'POST':
         form = CategoriaForm(request.POST)
         respuesta = ingeso_marca(form)
@@ -138,3 +139,16 @@ def obtenerDatosCategoria(request):
 
         dato = {'mensaje': 'sin datos'}
     return JsonResponse(dato)
+
+
+# Definiendo las vista de Registro de Productos
+
+def registrocategorias(request):
+    if request.method == 'GET':
+        form = ComprasForm()
+        compras = list(Compras.objects.values())
+        return render(request, 'adminuser/reabastecimiento/registroproductos.html', {'form': form,'datos':compras})
+    elif request.method == 'POST':
+        form = ComprasForm(request.POST)
+        respuesta = ingeso_marca(form)
+        return JsonResponse(respuesta)
