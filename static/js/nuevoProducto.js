@@ -1,5 +1,4 @@
 
-
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
     // Renderizar el lengthMenu personalizado
@@ -60,13 +59,13 @@ const opcionesTabla = {
 }
 
 window.addEventListener('load',()=>{
-    $('#datoscategoria').DataTable(opcionesTabla)
+    $('#datosproductos').DataTable(opcionesTabla)
     agregarBotonEliminar()
 })
 
 
 const agregarBotonEliminar= ()=>{
-    const botonEliminar = document.querySelectorAll('.btn-eliminar-categoria')
+    const botonEliminar = document.querySelectorAll('.btn-eliminar-producto')
     botonEliminar.forEach((boton) =>{
         boton.addEventListener ('click', function(){
             const idCategoria = this.getAttribute('data-id');

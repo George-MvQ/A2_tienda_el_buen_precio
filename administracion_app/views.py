@@ -143,12 +143,47 @@ def obtenerDatosCategoria(request):
 
 # Definiendo las vista de Registro de Productos
 
-def registrocategorias(request):
+def registrocompras(request):
     if request.method == 'GET':
         form = ComprasForm()
-        compras = list(Compras.objects.values())
+        compras = list(Compras.objects.values_list('id_compra','fecha_compra','fk_proveedor__nombre_vendedor','fk_empleado__primer_nombre','fk_metodo_pago__nombre','observaciones'))
         return render(request, 'adminuser/reabastecimiento/registroproductos.html', {'form': form,'datos':compras})
     elif request.method == 'POST':
         form = ComprasForm(request.POST)
         respuesta = ingeso_marca(form)
         return JsonResponse(respuesta)
+
+def obtenerDatosCompras(request):
+    # creaando la lista de todas las marcas
+    compras = list(Compras.objects.values())
+    if len(compras) > 0:
+        dato = {
+            'mensaje': 'Si funciono',
+            'compra': compras
+        }
+    else:
+
+        dato = {'mensaje': 'sin datos'}
+    return JsonResponse(dato)
+
+"""Nuevo Producto"""
+
+
+def nuevo_producto(request):
+    if request.method == 'GET':
+        nuevoProducto=Productos.objects.values_list(
+            'id_productos',
+            'nombre_producto',
+            'descripcion',
+            'codigo_barras',
+            'tamanio',
+            'imagen',
+            'estado',
+            'fk_presentacion__nombre_presentacion',
+            'fk_unidad_medida__prefijo',
+            'fk_categoria__nombre_categoria',
+            'fk_marca__nombre_marca'
+        )
+        return render(request,'adminuser/reabastecimiento/nuevoProducto.html',{'datos':nuevoProducto } )
+    
+        

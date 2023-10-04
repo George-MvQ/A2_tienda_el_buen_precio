@@ -1,5 +1,8 @@
 from django.db import models
 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+
 # Create your models here.
 class Caja(models.Model):
     id_caja = models.AutoField(db_column='ID_caja', primary_key=True)  # Field name made lowercase.
@@ -83,6 +86,7 @@ class Empleados(models.Model):
     segundo_apellido = models.CharField(db_column='Segundo_apellido', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     apellido_casada = models.CharField(db_column='Apellido_casada', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     fk_id_puesto = models.ForeignKey('Puestos', models.DO_NOTHING, db_column='fk_id_puesto', blank=True, null=True)
+    fk_usuario = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='fk_usuario', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -227,3 +231,23 @@ class Ventas(models.Model):
     class Meta:
         managed = False
         db_table = 'Ventas'
+
+
+
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.BooleanField()
+    username = models.CharField(unique=True, max_length=150, db_collation='Modern_Spanish_CI_AS')
+    first_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
+    last_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
+    email = models.CharField(max_length=254, db_collation='Modern_Spanish_CI_AS')
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+

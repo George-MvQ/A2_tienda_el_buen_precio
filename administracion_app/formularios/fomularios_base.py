@@ -1,5 +1,7 @@
 from django import forms
 from ..models import Proveedores
+from ..models import Empleados
+from ..models import MetodosPago
 #tupla contiene dos elementos 1. valor que se envia 2. texto se se muestra
 _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
 
@@ -44,7 +46,8 @@ class CategoriaForm(forms.Form):
 
 class ComprasForm(forms.Form):
     _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')
-    _p:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')
+    _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
+    _metodopago:MetodosPago = MetodosPago.objects.values_list('id_metodo_pago','nombre')
     fechaCompra = forms.DateField(
         label='Fecha Compra',
         widget=forms.DateInput(attrs={'id': 'in_fecha', 'type': 'date'}),
@@ -54,13 +57,16 @@ class ComprasForm(forms.Form):
         label='Proveedores', 
         choices=_proveedores
       )
-
-    empleado = forms.CharField(
-        label='empleado', 
+    empleado = forms.ChoiceField(
+        label='Empleado', 
+        choices=_empleado
+      )
+    metodopago = forms.ChoiceField(
+        label='Metodo de Pago', 
+        choices=_metodopago
+      )
+    observaciones = forms.CharField(
+        label='observaciones', 
         max_length=255,
-        widget = forms.TextInput(attrs={'id':'in_proveedor'})
+        widget = forms.TextInput(attrs={'id':'in_observaciones'})
         )
-    estado = forms.ChoiceField(
-        label='Estado', 
-        choices=_proveedores
-       )

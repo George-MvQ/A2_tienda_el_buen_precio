@@ -88,6 +88,7 @@ class Empleados(models.Model):
     segundo_apellido = models.CharField(db_column='Segundo_apellido', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     apellido_casada = models.CharField(db_column='Apellido_casada', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     fk_id_puesto = models.ForeignKey('Puestos', models.DO_NOTHING, db_column='fk_id_puesto', blank=True, null=True)
+    fk_usuario = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='fk_usuario', blank=True, null=True)
 
     class Meta:
         managed = False

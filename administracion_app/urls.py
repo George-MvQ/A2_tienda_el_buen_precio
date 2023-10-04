@@ -23,8 +23,14 @@ urlpatterns = [
       # Categorias
 
       path('ingresocategorias/',views.categorias, name='categorias'),
-      path('obtener_categorias/',views.obtenerDatosCategoria,name='obtener_categorias')
-      #registro Producto
+      path('obtener_categorias/',views.obtenerDatosCategoria,name='obtener_categorias'),
+      
+      
+      path('ingresocompras/',views.registrocompras, name='compras'),
+      path('obtener_compras/',views.obtenerDatosCompras,name='obtener_compras'),
+      #Ingreso-producto
+
+      path('ingreso_productos/',views.nuevo_producto, name='productosnuevos')
 ]
 
 

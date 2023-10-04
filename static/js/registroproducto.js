@@ -1,5 +1,4 @@
 
-
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
     // Renderizar el lengthMenu personalizado
@@ -24,7 +23,7 @@ const opcionesTabla = {
     lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
-        targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
+        targets: [0, 1, 2, 3, 4,5,6]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen  
         targets: [3, 4]
@@ -60,23 +59,25 @@ const opcionesTabla = {
 }
 
 window.addEventListener('load',()=>{
-    $('#datoscategoria').DataTable(opcionesTabla)
+    $('#datoscompra').DataTable(opcionesTabla)
     agregarBotonEliminar()
 })
 
-
 const agregarBotonEliminar= ()=>{
-    const botonEliminar = document.querySelectorAll('.btn-eliminar-categoria')
+    const botonEliminar = document.querySelectorAll('.btn-eliminar-compra')
     botonEliminar.forEach((boton) =>{
         boton.addEventListener ('click', function(){
-            const idCategoria = this.getAttribute('data-id');
-            console.log(idCategoria)
-            accionEliminarCategoria(idCategoria)
+            const idCompras = this.getAttribute('data-id');
+            console.log(idCompra)
+            accionEliminarCategoria(idCompra)
         })
     });
 }
 
-//accion de eliminar boton 
-const accionEliminarCategoria = (idCategoria)=>{
-    alert(`el id que correposnde a este boton es: ${idCategoria}`)
+const accionEliminarCategoria = (idCompra)=>{
+    alert(`el id que correposnde a este boton es: ${idCompra}`)
+}
+
+const detallesUsuario= (idCompra)=>{
+    alert(`el id es de detalle es ${idCompra}`)
 }

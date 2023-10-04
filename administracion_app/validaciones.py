@@ -61,10 +61,21 @@ def eliminar_marcas(_id_marca:int):
 
 """--------------para otros----------------"""
 
-
+# datos categoria
 def obtener_datos_categoria(form) -> dict:
     datos: dict = {}
     datos['nombre_categoria'] = form.cleaned_data['nombrecategoria']
     datos['descripcion'] = form.cleaned_data['descripcion']
     datos['estado'] = form.cleaned_data['estado']
+    return datos
+
+
+#Datos compras
+def obtener_datos_compras(form) -> dict:
+    datos: dict = {}
+    datos['fecha_compra'] = form.cleaned_data['nombrecompra']
+    datos['fk_proveedor'] = form.cleaned_data['proveedor']
+    datos['fk_empleado'] = form.cleaned_data['empleado']
+    datos['fk_metodo_pago'] = form.cleaned_data['metodopago']
+    datos['observaciones'] = form.cleaned_data['observaciones']
     return datos
