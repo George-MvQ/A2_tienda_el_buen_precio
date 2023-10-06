@@ -7,8 +7,8 @@ _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
 
     
 class MarcaForm(forms.Form):
-    _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')  
-    nombrombemarca = forms.CharField(
+    # _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')  
+    nombremarca = forms.CharField(
         label='Nombre Marca', 
         max_length=100,
         widget = forms.TextInput(attrs={'id':'in_nombre'}),
@@ -20,7 +20,7 @@ class MarcaForm(forms.Form):
         )
     estado = forms.ChoiceField(
         label='Estado', 
-        choices=_proveedores
+        choices=_opciones
        )
 
 
@@ -50,8 +50,8 @@ class ComprasForm(forms.Form):
     _metodopago:MetodosPago = MetodosPago.objects.values_list('id_metodo_pago','nombre')
     fechaCompra = forms.DateField(
         label='Fecha Compra',
-        widget=forms.DateInput(attrs={'id': 'in_fecha', 'type': 'date'}),
-        input_formats=['%Y-%m-%d'], 
+        widget=forms.DateInput(attrs={'id': 'in_fecha', 'type': 'date','format': '%d/%m/%Y'}),
+        input_formats=['%d/%m/%Y'], 
         )
     proveedor = forms.ChoiceField(
         label='Proveedores', 

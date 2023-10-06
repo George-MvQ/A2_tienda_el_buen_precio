@@ -1,4 +1,4 @@
-class Mantenimineto {
+class Mantenimiento {
     constructor() {
 
     }
@@ -45,27 +45,31 @@ class Mantenimineto {
 
 
     
-    async eliminarDato(url_elimnar, objetoId) {
+    async eliminarDato(url_eliminar, id) {
+        const identificador = {identificador:id} 
         let datos = {
             mensaje: '',
             estado: true,
         }
         try {
-            const eliminar = await fetch(url_elimnar, {
+            const eliminar = await fetch(url_eliminar, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json', //espesifica que se envian datos al servido en formato JSon 
                     'X-CSRFToken': this.getCookie('csrftoken')
                 },
-                body: JSON.stringify(objetoId)
+                body: JSON.stringify(identificador)
             })
-            const mensaje = await eliminar.json();
-            datos.mensaje = mensaje
-            datos.estado = true
+            if(eliminar.ok){
+                const respuesta = await eliminar.json();
+                datos.mensaje =respuesta.mensaje
+            }
         } catch (error) {
             console.error(error)
+            datos.mensaje="Error fatal";
             datos.estado = false
         }
+        return datos
     }
 
     async actualizarDato() {
@@ -89,9 +93,121 @@ class Mantenimineto {
         return cookieValue;
     }
 
+    eliminarFilaTabla = (identificador,idTabla) => {
+        // Utiliza el ID de la marca para encontrar la fila correspondiente y eliminarla
+        const filaAEliminar = $(`#${idTabla} tr[data-id='${identificador}']`);
+        $(`#${idTabla}`).DataTable().row(filaAEliminar).remove().draw(false);
+    };
+
 
 }
 
+class AlertasBotones {
+
+    eliminar(id,callback){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'bg-danger',
+              cancelButton: 'bg-success',
+              toast: true
+            },
+            buttonsStyling: true,
+           
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro quieres eliminar este usuario?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                const respuesta = await callback(id)
+                if (respuesta.estado){
+                    console.log(respuesta.mensaje);
+                    swalWithBootstrapButtons.fire(
+                        'El usuario se eliminado!',
+                        respuesta.mensaje,
+                        'success')
+                }
+                else{
+                    
+                }
+               
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'Esta accion se ha cancelado',
+                'error'
+              )
+            }
+          })
+    }
+
+    todoBien (encavezado,mensaje){
+        Swal.fire(
+            encavezado,
+            mensaje,
+            'success'
+          )
+    }
+
+
+}
+
+/* function pollo (callback){
+    callback()
+}
+
+function a(b){
+    console.log(b);
+}
+
+
+pollo (a) */
+
+//ejemplo
+/* 
+function pollo(callback) {
+    callback("Gallo", "Pato");
+}
+
+pollo(function(a, b) {
+    console.log("Argumentos recibidos:", a, b);
+});
+
+function pollo(callback) {
+    console.log("Antes de llamar al callback");
+    callback();
+    console.log("Después de llamar al callback");
+}
+
+pollo(function() {
+    console.log("Dentro del callback");
+});
+
+function pollo(callback) {
+    try {
+        callback();
+    } catch (error) {
+        console.error("Se produjo un error:", error);
+    }
+}
+
+pollo(function() {
+    // Algo que podría generar una excepción
+    throw new Error("Este es un error de ejemplo");
+});
+ */
+
 //exportar clase
 
-export default Mantenimineto
+
+
+export {Mantenimiento,AlertasBotones} 

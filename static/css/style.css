@@ -34,8 +34,6 @@ body{
     height: 25%;
     position: absolute;
 
-    
-
 } 
 
 /*Letras */
@@ -144,7 +142,8 @@ footer{
     padding-top: 5px;
     background-color: #1D2B34;
 }
-.juanito{
+
+.principal{
     height: 100%;
 }
 
@@ -188,4 +187,9 @@ main{
 }
 .length{
     order: 2;
+}
+
+
+.colorb{
+    background-color: aqua !important;
 }

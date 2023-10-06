@@ -1,0 +1,116 @@
+{% extends 'shared/baseadmin.html' %}
+
+{% block title %}
+  detalle de usuario
+{% endblock %}
+
+{% block link %}
+  <!-- carga de archivo css general -->
+
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
+  <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div>
+        <h1>{{ usuario.username }}</h1>
+        <hr class="border border-primary border-3 opacity-75">
+    </div>
+    <div class="text-dark bg-light rounded">
+      <br>
+      <p><span class="fw-bold">Id Usuario:</span><span>{{usuario.id}}</span></p>
+      <p><span class="fw-bold">Super Usuario: </span><span>{{ usuario.is_superuser|yesno:"Sí,No" }}</span></p>
+      <p><span class="fw-bold">username:</span><span>{{usuario.id}}</span></p>
+      <p><span class="fw-bold">Email:</span><span>{{usuario.id}}</span></p>
+      <p><span class="fw-bold">is_active:</span><span>{{usuario.id}}</span></p>
+      <p><span class="fw-bold">Fecha Registro: </span><span>{{usuario.date_joined}}</span></p>
+      <br>
+      <hr/>
+    </div>
+    <button>Regresar</button>
+    <button>Modificar</button>
+
+
+
+
+    <form class="row g-3">
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input type="email" class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Password</label>
+    <input type="password" class="form-control" id="inputPassword4">
+  </div>
+  <div class="col-12">
+    <label for="inputAddress" class="form-label">Address</label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+  </div>
+  <div class="col-12">
+    <label for="inputAddress2" class="form-label">Address 2</label>
+    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">City</label>
+    <input type="text" class="form-control" id="inputCity">
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">State</label>
+    <select id="inputState" class="form-select">
+      <option selected>Choose...</option>
+      <option>...</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label for="inputZip" class="form-label">Zip</label>
+    <input type="text" class="form-control" id="inputZip">
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck">
+      <label class="form-check-label" for="gridCheck">
+        Check me out
+      </label>
+    </div>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </div>
+</form>
+  <!--
+    password 
+    last_login 
+    is_superuser
+    username 
+    email 
+    is_active  
+    date_joined 
+  -->
+<!--     <p></p>
+    <p class="fw-bold">Bold text.</p>
+    <p class="fw-bolder">Bolder weight text (relative to the parent element).</p>
+    <p class="fw-semibold">Semibold weight text.</p>
+    <p class="fw-medium">Medium weight text.</p>
+    <p class="fw-normal">Normal weight text.</p>
+    <p class="fw-light">Light weight text.</p>
+    <p class="fw-lighter">Lighter weight text (relative to the parent element).</p>
+    <p class="fst-italic">Italic text.</p>
+    <p class="fst-normal">Text with normal font style</p>
+    <hr />
+    <p class="fs-1">.fs-1 text</p>
+    <p class="fs-2">.fs-2 text</p>
+    <p class="fs-3">.fs-3 text</p>
+    <p class="fs-4">.fs-4 text</p>
+    <p class="fs-5">.fs-5 text</p>
+    <p class="fs-6">.fs-6 text</p>
+    <hr />
+    <p class="text-lowercase">Lowercased text.</p>
+    <p class="text-uppercase">Uppercased text.</p>
+    <p class="text-capitalize">CapiTaliZed text.</p> -->
+  </div>
+
+
+{% endblock %}

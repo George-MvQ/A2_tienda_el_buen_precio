@@ -1,10 +1,10 @@
-import Mantenimineto from "./Crud.js";
+import {Mantenimiento} from "./Crud.js";
 
 
 
 let datosTabla;
 let datosTablaInicializados = false
-const mantenimiento = new Mantenimineto()
+const mantenimiento = new Mantenimiento()
 
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
@@ -170,7 +170,7 @@ const agregarDatosTabla = (datos) => {
 
 //listamos las informacion a traves de nuetro backend
 const listarMarcas = async () => {
-    const datos = await mantenimiento.obtenerDatos('/obtener_marcas/')
+    const datos = await mantenimiento.obtenerDatos('/admon/obtener-marcas/')
     datos.respuesta.marcas = datos.respuesta.marcas.map(marc => {
              marc.estado = marc.estado ? 'Activo' : 'Inactivo';  
              return marc;
@@ -210,7 +210,7 @@ function getCookie(name) {
 //evento para guardar los datos
 btGuardarMarca.addEventListener('click', async () => {
     let formAgregar = new FormData(form_agregar_marca);
-    const datos = await mantenimiento.agregarDatos('/ingresomarcas/', formAgregar)
+    const datos = await mantenimiento.agregarDatos('/admon/ingreso-marcas/', formAgregar)
 
     if (datos.estado) {
         in_nombre.value = ""
@@ -259,7 +259,7 @@ const crearBotonActualizar = (idMarca) => {
 const eliminarMarca = async (idMarca) => {
     try {
         const dato = { id_marca: idMarca }
-        const eliminar = await fetch('/modifica-marcas/', {
+        const eliminar = await fetch('/admon/modifica-marcas/', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json', //espesifica que se envian datos al servido en formato JSon 

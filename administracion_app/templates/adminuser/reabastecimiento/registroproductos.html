@@ -18,7 +18,7 @@ Registro de Productos
 {% block content %}
 
 
-  <h2>Registro Productos</h2>
+  <h2>REGISTRO COMPRAS</h2>
 <!--   <div class="container botonFormulario" id="meter">
     <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
   </div> -->
@@ -72,18 +72,22 @@ Registro de Productos
     <div class="modal-dialog">
       <div class="modal-content text-black">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA MARCA</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA COMPRA</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form class="form_body" id="form_agregar_marca" method="POST">
             {% csrf_token %}
-            {{ form.nombremarca.label_tag }}
-            {{ form.nombremarca }}
-            {{ form.descripcion.label_tag }}
-            {{ form.descripcion }}
-            {{ form.estado.label_tag }}
-            {{ form.estado }}
+            {{ form.fechaCompra.label_tag }}
+            {{ form.fechaCompra }}
+            {{ form.proveedor.label_tag }}
+            {{ form.proveedor }}
+            {{ form.empleado.label_tag }}
+            {{ form.empleado }}
+            {{ form.metodopago.label_tag }}
+            {{ form.metodopago }}
+            {{ form.observaciones.label_tag }}
+            {{ form.observaciones }}
           </form>
         </div>
         <div class="modal-footer">

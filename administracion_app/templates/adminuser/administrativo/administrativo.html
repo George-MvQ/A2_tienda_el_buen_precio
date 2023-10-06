@@ -28,9 +28,9 @@
       <thead>
         <tr class="text-center align-middle text-white font-weight-bold">
           <th>Id</th>
-          <th>Nombre</th>
           <th>Usuario</th>
-          <th>Es superusuario</th>
+          <th>email</th>
+          <th>superusuario</th>
           <th>Opciones</th>
         </tr>
       </thead>
@@ -44,57 +44,22 @@
           <td>{{usuario.3}}</td>
           <td>
             <button class=" btn-espacio btn-eliminar-usuario btn btn-outline-danger"  data-id="{{usuario.0}}">Eliminar</button> 
-            <button class="btn-detalles-usuario btn btn-outline-info"  data-id="{{usuario.0}}">Detalles</button>
+            <a class="btn btn-outline-info" href="{% url 'detalles_usuario' usuario.0 %}">Detalles</a>
           </td>
-     
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 
-  
-  <!--   <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>password</th>
-                <th>last_login</th>
-                <th>is_login</th>
-                <th>is_superuser</th>
-                <th>username</th>
-                <th>first_name</th>
-                <th>last_name</th>
-                <th>email</th>
-                <th>is_staff</th>
-                <th>is_active</th>
-                <th>date_joined</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Id</th>
-                <th>password</th>
-                <th>last_login</th>
-                <th>is_login</th>
-                <th>is_superuser</th>
-                <th>username</th>
-                <th>first_name</th>
-                <th>last_name</th>
-                <th>email</th>
-                <th>is_staff</th>
-                <th>is_active</th>
-                <th>date_joined</th>
-            </tr>
-        </tfoot>
-    </table>   -->
 {% endblock %}
 
 {% block script %}
   {% load static %}
   <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
+  <script src="{% static 'js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
-  <script  src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
+  <script type="module" src="{% static 'js/Crud.js' %}"> </script>
+  <script type="module" src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
 {% endblock %}

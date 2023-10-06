@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
-from administracion_app.models import *
-from inicio_app.models import AuthUser
+#from administracion_app.models import *
+""" from inicio_app.models import AuthUser """
 from django.http import JsonResponse
 from .formularios.fomularios_base import MarcaForm
 from .formularios.fomularios_base import CategoriaForm
 from .formularios.fomularios_base import ComprasForm
-from .validaciones import ingeso_marca,eliminar_marcas
+from django.views import View
+from .validaciones import *
 import json 
 
 def admon(request):
@@ -14,15 +15,31 @@ def admon(request):
 
 """ En este apartado nosotro estamos administrando los usuarios de nuestro sistema  """
 
-def administar_usuario(request):
+#
+def administrar_usuarios(request):
+    mantenimiento = MantenimientoUsuario()
     if request.method == 'GET':
-        usuarios:AuthUser = list(AuthUser.objects.values_list('id','first_name','username','is_superuser'))
+        usuarios:list = mantenimiento.obtener_usuarios()
         return render(request, 'adminuser/administrativo/administrativo.html', {'usuarios':usuarios})
+    
     elif request.method == 'POST':
         form = MarcaForm(request.POST)
         respuesta:dict = ingeso_marca(form)
         return JsonResponse(respuesta)
+    
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        identificador = dato_obtenido.get('identificador')
+        respuesta:dict = mantenimiento.eliminar_usuario(identificador)
+        return JsonResponse(respuesta)
 
+
+def detalles_usuario(request,id):
+    mantenimiento = MantenimientoUsuario()
+    if request.method == 'GET':
+        datos = mantenimiento.buscar_un_usuario(id)
+        return render(request,'adminuser/administrativo/detalles_usuario.html',datos)
+    
 
 
   #/obertern_usuarios/  
@@ -37,6 +54,9 @@ def obtenerUsuarios(request):
         datos = {'mensaje':'sin datos'}
     return JsonResponse(datos)
     
+
+
+
 
 
 
@@ -70,8 +90,11 @@ def marcas(request):
 """Vista para eliminar y acatualizar dato en espesifico"""  
 def modificar_marcas(request):
     if request.method == "DELETE":
+        #obteniedo los el id que nos envian en el frontend
         datos = json.loads(request.body)
+        #del json obtenemos el id 
         id_marca = datos.get('id_marca')
+        #procedemos a eliminarlo y devolvemos una respuesta
         respuesta = eliminar_marcas(id_marca)
     elif request.method == "PUT":
         respuesta = {'mensaje':'dato actualizado'}

@@ -1,5 +1,5 @@
-import Mantenimineto from "./Crud.js";
-const mantenimiento = new Mantenimineto()
+import Mantenimiento from "./Crud.js";
+const mantenimiento = new Mantenimiento()
 
 
 

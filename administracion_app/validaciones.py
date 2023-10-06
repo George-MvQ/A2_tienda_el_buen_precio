@@ -1,6 +1,7 @@
 from .models import Marcas
 # los objetos, listas y dicionarios se pasan por referencia y no por valor
 # las variables simples se se pasan por valor osea por copia
+from .models import *
 
 """funcion que me permite obtener datos del formularios de ingreso de datos"""
 
@@ -53,12 +54,6 @@ def eliminar_marcas(_id_marca:int):
         return {'mensaje':'Error'}
     
     
-    
-    
-
-
-
-
 """--------------para otros----------------"""
 
 # datos categoria
@@ -79,3 +74,60 @@ def obtener_datos_compras(form) -> dict:
     datos['fk_metodo_pago'] = form.cleaned_data['metodopago']
     datos['observaciones'] = form.cleaned_data['observaciones']
     return datos
+
+
+#----------Usuarios------------
+class MantenimientoUsuario():
+    def obtener_usuarios(self):
+        usuarios:list = list(AuthUser.objects.values_list('id','username','email','is_superuser'))
+        return usuarios
+    
+    def buscar_un_usuario(self,identificador:int):
+        try:
+            usuario = AuthUser.objects.get(id=identificador)
+            dato = {"usuario":usuario}
+            return dato
+        except AuthUser.DoesNotExist:
+            print("no existe usuario")
+            return {"mensaje":"error"}
+            
+    """Un ejemplo de actualizacion 
+    
+    def actualizar_usuario(self, id_usuario: int, nuevos_datos: dict):
+    try:
+        usuario_actualizar = AuthUser.objects.get(id=id_usuario)
+        
+        # Actualiza los campos del usuario con los nuevos datos proporcionados
+        for clave, valor in nuevos_datos.items():
+            setattr(usuario_actualizar, clave, valor)
+        
+        # Guarda los cambios en la base de datos
+        usuario_actualizar.save()
+        
+        return {'mensaje': 'El usuario se ha actualizado correctamente!'}
+    
+    except AuthUser.DoesNotExist:
+        print('No se encontró el usuario')
+        return {'mensaje': 'Usuario no encontrado'}
+    
+    except Exception as error:
+        print(f'Error al actualizar el usuario: {error}')
+        return {'mensaje': 'Error'}
+    """
+
+
+    def eliminar_usuario(self, id_usuario:int):
+        try:
+            usuario_eliminar = AuthUser.objects.get(id = id_usuario)
+            usuario_eliminar.delete()
+            return {'mensaje':'El usuario se ha eliminado correctamente!'}
+        except usuario_eliminar.DoesNotExist:
+            print('No se encontro el dato')
+            return {'mensaje':'Dato no econtrado'}
+        except Exception as error:
+            print(f'erro al eliminar {error}')
+            return {'mensaje':'Error'}
+    
+    
+
+
