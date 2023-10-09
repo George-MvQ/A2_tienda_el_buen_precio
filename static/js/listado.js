@@ -1,7 +1,7 @@
-import {Mantenimiento, AlertasBotones } from "../Crud.js";
+/* import {Mantenimiento, AlertasBotones } from "../Crud.js";
 
 const mantenimiento = new Mantenimiento()
-const alertas = new AlertasBotones()
+const alertas = new AlertasBotones() */
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
     // Renderizar el lengthMenu personalizado
@@ -25,7 +25,7 @@ const opcionesTabla = {
     lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
-        targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
+        targets: [0, 1, 2, 3, 4,]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen  
         targets: [3, 4]
@@ -60,31 +60,8 @@ const opcionesTabla = {
     }
 }
 
+
 window.addEventListener('load', () => {
-    agregarFuncionBtnEliminar();
-    $('#datosusuario').DataTable(opcionesTabla);
+    // agregarFuncionBtnEliminar();
+    $('#datoslistado').DataTable(opcionesTabla);
 });
-
-//funcion que agregar accion al boton eliminar 
-const agregarFuncionBtnEliminar = () => {
-    const botonesEliminar = document.querySelectorAll('.btn-eliminar-usuario');
-    botonesEliminar.forEach((boton) => {
-        boton.addEventListener('click', function () {
-            const identificador = this.getAttribute('data-id');
-            alertas.eliminar(identificador,eliminarUsuario)
-            console.log(identificador);
-        });
-    });
-};
-
-//funcion eliminar 
-const eliminarUsuario= async(id)=>{
-        const respuesta = await mantenimiento.eliminarDato('/admon/gestion-usuarios/',id)
-        if (respuesta.estado){
-            mantenimiento.eliminarFilaTabla(id,'datosusuario')
-        }
-        return respuesta
-}
-
-/*  AGREGAR DATOS  */
-

@@ -1,15 +1,58 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para hacerlo responsivo */
+.meta-viewport {
+    width: device-width;
+    initial-scale: 1.0;
+}
 
 .inicio_seccion {
     height: 100%;
     display: grid;
     grid-template-rows: 75% 25%;
-
-  
+    gap: 20px; /* Espacio entre las filas */
 }
 
 .division1 {
     display: grid;
     grid-template-columns: 50% 50%;
+    gap: 20px; /* Espacio entre las columnas */
+}
+
+#logotienda {
+    max-width: 40%; /* Ajusta automáticamente el tamaño de la imagen al 100% del contenedor */
+    height: auto;
+    width: auto; /* Deja que el ancho se ajuste automáticamente según la relación de aspecto */
+}
+
+
+@media screen and (max-width: 768px) {
+    .inicio_seccion {
+        grid-template-rows: auto auto; /* Ajusta las filas automáticamente */
+    }
+
+    .division1 {
+        grid-template-columns: 100%;
+        text-align: center; /* Centra el contenido cuando la pantalla es pequeña */
+    }
+
+    #logotienda {
+        max-width: 55%; /* Reduce el tamaño máximo de la imagen en pantallas pequeñas */
+    }
+
+    #pbienvenida,
+    #p2bienvenida {
+        font-size: 25px; /* Tamaño de fuente más pequeño para pantallas pequeñas */
+    }
+
+    .division1 > div {
+        margin-bottom: 10px; /* Agrega espacio entre las dos etiquetas <div> */
+    }
 }
 
 

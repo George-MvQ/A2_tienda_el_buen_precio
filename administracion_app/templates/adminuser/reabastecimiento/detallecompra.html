@@ -1,7 +1,7 @@
 {% extends 'shared/menu_lateral.html' %}
 
 {% block title %}
-  Categorias
+  Detalle Compra
 {% endblock %}
 
 {% block link %}
@@ -15,43 +15,38 @@
 {% endblock %}
 
 {% block content %}
-  <h2>INGRESO CATEGORIAS</h2>
-  <!--    <div class="container botonFormulario" id="meter">
-    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div>  -->
+  <h2>DETALLE COMPRA</h2>
 
   <div class="pollito"></div>
 
-  <!-- 
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
- -->
-  <p>{{ datos }}</p>
   <div class="container my-3">
-    <table id="datoscategoria" class="table table-striped">
+    <table id="datosdetalle" class="table table-striped">
       <thead>
         <tr>
-          <th class="text-white font-weight-bold">Id Marca</th>
-          <th class="text-white font-weight-bold">Nombre Marca</th>
-          <th class="text-white font-weight-bold">Descripcion</th>
-          <th class="text-white font-weight-bold">Estado</th>
-          <th class="text-white font-weight-bold">Opciones</th>
+          <th>Id Detalle Compra</th>
+          <th>No Producto</th>
+          <th>No Compra</th>
+          <th>Descuentos</th>
+          <th>Cantidad Compra</th>
+          <th>Precio Compra</th>
+          <th>Precio Venta</th>
+          <th>No lote</th>
+          <th>Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody">
-        {% for categoria in datos %}
-          <tr data-id="{{ categoria.id_categoria }}">
-            <td>{{ categoria.id_categoria }}</td>
-            <td>{{ categoria.nombre_categoria }}"</td>
-            <td>{{ categoria.descripcion }}</td>
-            <td>{{ categoria.estado }}</td>
+      <tbody id="tablaBody" class="text-white">
+        {% for detalle in datos %}
+          <tr data-id="{{ detalle.0 }}">
+            <td>{{ detalle.0 }}</td>
+            <td>{{ detalle.1 }}"</td>
+            <td>{{ detalle.2 }}</td>
+            <td>{{ detalle.3 }}</td>
+            <td>{{ detalle.4 }}</td>
+            <td>{{ detalle.5 }}</td>
+            <td>{{ detalle.6 }}</td>
+            <td>{{ detalle.7 }}</td>
             <td>
-              <button class="btn-espacio btn-eliminar-categoria btn btn-outline-danger" data-id="{{ categoria.id_categoria }}">Eliminar</button>
+              <button class="btn-espacio btn-eliminar-categoria btn btn-outline-danger" data-id="{{ listado.id_listado }}">Eliminar</button>
               <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ categoria.id_categoria }}">Detalles</button>
             </td>
           </tr>
@@ -64,18 +59,28 @@
     <div class="modal-dialog">
       <div class="modal-content text-black">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA CATEGORIAS</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVO DETALLE COMPRA</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form class="form_body" id="form_agregar_marca" method="POST">
             {% csrf_token %}
-            {{ form.nombrecategoria.label_tag }}
-            {{ form.nombrecategoria }}
-            {{ form.descripcion.label_tag }}
-            {{ form.descripcion }}
-            {{ form.estado.label_tag }}
-            {{ form.estado }}
+            {{ form.detallecompra.label_tag }}
+            {{ form.detallecompra }}
+            {{ form.producto.label_tag }}
+            {{ form.producto }}
+            {{ form.compras.label_tag }}
+            {{ form.compras }}
+            {{ form.descuentos.label_tag }}
+            {{ form.descuentos }}
+            {{ form.cantidad.label_tag }}
+            {{ form.cantidad }}
+            {{ form.preciounitario.label_tag }}
+            {{ form.preciounitario }}
+            {{ form.preciosugerido.label_tag }}
+            {{ form.preciosugerido }}
+            {{ form.numerolote.label_tag }}
+            {{ form.numerolote }}
           </form>
         </div>
         <div class="modal-footer">
@@ -101,6 +106,6 @@
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
-  <script type="module" src="{% static 'js/categorias.js' %}"></script>
+  <script type="module" src="{% static 'js/detallecompra.js' %}"></script>
   
 {% endblock %}

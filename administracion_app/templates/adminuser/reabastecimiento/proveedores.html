@@ -1,32 +1,27 @@
 {% extends 'shared/menu_lateral.html' %}
 
 {% block title %}
-  Marcas
+  Proveedores
 {% endblock %}
 
 {% block link %}
   {% load static %}
-  <!--  <script src="{% static 'js/jquery.min.js' %}"></script>
-          --> <!-- css -->
+  <!--        <script src="{% static 'js/jquery.min.js' %}"></script>
+                --> <!-- css -->
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/proveedores.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/gridjs.css' %}" />
-          
-  {% endblock %}
+{% endblock %}
 
 {% block content %}
-
-
-  <h2>Proveedores</h2>
-<!--   <div class="container botonFormulario" id="meter">
+  <h2>PROVEEDORES</h2>
+  <!--         <div class="container botonFormulario" id="meter">
     <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div> -->
-
+  </div>       -->
 
   <div class="pollito"></div>
-  
-<!--
+
+  <!--      
   <label for="recordsPerPage">Registros por página:</label>
   <select id="selectElementos">
       <option value="5">5</option>
@@ -34,19 +29,39 @@
       <option value="15">15</option>
       <option value="20">20</option>
   </select>
--->
+      -->
+  <p>{{ datos }}</p>
   <div class="container my-3">
-    <table id="datosmarca" class="table table-striped">
+    <table id="datosproveedores" class="table table-striped text-white">
       <thead>
         <tr>
-          <th class="text-white font-weight-bold">Codigo</th>
-          <th class="text-white font-weight-bold">Nombre de Empresa</th>
-          <th class="text-white font-weight-bold">Vendedor</th>
-          <th class="text-white font-weight-bold">Telefono</th>
-          <th class="text-white font-weight-bold">Opciones</th>
+          <th>Id Proveedor</th>
+          <th>Nombre de Vendedor</th>
+          <th>Telefono</th>
+          <th>Dia de Visita</th>
+          <th>Dia de Entrega</th>
+          <th>Descripcion</th>
+          <th>Estado</th>
+          <th>Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody"></tbody>
+      <tbody id="tablaBody" class="text-white">
+        {% for proveedor in datos %}
+          <tr data-id="{{ proveedor[0] }}">
+            <td>{{ proveedor[0] }}</td>
+            <td>{{ proveedor[1] }}</td>
+            <td>{{ proveedor[2] }}</td>
+            <td>{{ proveedor[3] }}</td>
+            <td>{{ proveedor[4] }}</td>
+            <td>{{ proveedor[5] }}</td>
+            <td>{{ proveedor[6] }}</td>
+            <td>
+              <button class="btn-espacio btn-eliminar-categoria btn btn-outline-danger" data-id="{{ proveedor.id_proveedor }}">Eliminar</button>
+              <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ categoria.id_categoria }}">Detalles</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
@@ -58,14 +73,30 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form_body" id="form_agregar_marca" method="POST">
+          <form class="row" id="form_agregar_marca" method="POST">
             {% csrf_token %}
-            {{ form.nombreproveedor.label_tag }}
-            {{ form.nombreproveedor }}
-            {{ form.vendedor.label_tag }}
-            {{ form.venndedor }}
-            {{ form.telefono.label_tag }}
-            {{ form.telefono }}
+
+            <div class="col-md-6">
+              <div class="row">
+                <dir class="col-md-6">{{ form.nombrevendedor.label_tag }}
+                  {{ form.telefono.label_tag }}
+                  {{ form.diavisita.label_tag }}</dir>
+                <dir class="col-md-6">{{ form.nombrevendedor }}
+                  {{ form.telefono }}
+                  {{ form.diavisita }}</dir>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row">
+                <dir class="col-md-6">{{ form.diaentrega.label_tag }}
+                  {{ form.descripcion.label_tag }}
+                  {{ form.estado.label_tag }}</dir>
+                <dir class="col-md-6">{{ form.diaentrega }}
+                  {{ form.descripcion }}
+                  {{ form.estado }}</dir>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -75,15 +106,13 @@
       </div>
     </div>
   </div>
-<br>
-<br>
+  <br />
+  <br />
   <div id="tablaPrueba"></div>
-
 
   <!-- ! USANDO TABLE -->
 
   <span id="mensajemarca"></span>
-
 {% endblock %}
 
 {% block script %}
@@ -93,7 +122,5 @@
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
-  <script type="module" src="{% static 'js/marcas.js' %}"></script>
-  <script type="module" src="{% static 'js/gridjs.js' %}"></script>
-  <script type="module" src="{% static 'js/tablagrid.js' %}"></script>
+  <script type="module" src="{% static 'js/proveedores.js' %}"></script>
 {% endblock %}

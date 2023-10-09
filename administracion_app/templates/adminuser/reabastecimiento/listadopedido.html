@@ -1,72 +1,71 @@
 {% extends 'shared/menu_lateral.html' %}
 
 {% block title %}
-  Marcas
+  Listado de Pedidos
 {% endblock %}
 
 {% block link %}
   {% load static %}
-  <!--  <script src="{% static 'js/jquery.min.js' %}"></script>
-          --> <!-- css -->
+  <!--   <script src="{% static 'js/jquery.min.js' %}"></script>
+           --> <!-- css -->
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/agregar_marcas.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/gridjs.css' %}" />
-          
-  {% endblock %}
+{% endblock %}
 
 {% block content %}
-
-
-  <h2>Marcas</h2>
-<!--   <div class="container botonFormulario" id="meter">
+  <h2>LISTADO DE PEDIDOS</h2>
+  <!--    <div class="container botonFormulario" id="meter">
     <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div> -->
-
+  </div>  -->
 
   <div class="pollito"></div>
-  
-<!--
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
--->
 
-{% comment %} TABLA {% endcomment %}
+
+  <p>{{ datos }}</p>
   <div class="container my-3">
-    <table id="datosmarca" class="table table-striped">
+    <table id="datoslistado" class="table table-striped">
       <thead>
         <tr>
-          <th class="text-white font-weight-bold">Id Marca</th>
-          <th class="text-white font-weight-bold">Nombre Marca</th>
-          <th class="text-white font-weight-bold">Descripcion</th>
-          <th class="text-white font-weight-bold">Estado</th>
-          <th class="text-white font-weight-bold">Opciones</th>
+          <th>Id Listado</th>
+          <th>Fecha Creacion</th>
+          <th>Empleado</th>
+          <th>Estado</th>
+          <th>Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody"></tbody>
+      <tbody id="tablaBody" class="text-white">
+        {% for listado in datos %}
+          <tr data-id="{{ listado.0 }}">
+            <td>{{ listado.0 }}</td>
+            <td>{{ listado.1 }}"</td>
+            <td>{{ listado.2 }}</td>
+            <td>{{ listado.3 }}</td>
+            <td>
+              <button class="btn-espacio btn-eliminar-categoria btn btn-outline-danger" data-id="{{ listado.id_listado }}">Eliminar</button>
+              <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ categoria.id_categoria }}">Detalles</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
-  {% comment %} SECCION MODAL {% endcomment %}
   <div class="modal fade otraClase" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content text-black">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA MARCA</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVO LISTADO</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form class="form_body" id="form_agregar_marca" method="POST">
             {% csrf_token %}
-            {{ form.nombremarca.label_tag }}
-            {{ form.nombremarca }}
-            {{ form.descripcion.label_tag }}
-            {{ form.descripcion }}
+            {{ form.fechacreacion.label_tag }}
+            {{ form.fechacreacion }}
+            {{ form.empleado.label_tag }}
+            {{ form.empleado }}
             {{ form.estado.label_tag }}
             {{ form.estado }}
           </form>
@@ -78,15 +77,13 @@
       </div>
     </div>
   </div>
-<br>
-<br>
+  <br />
+  <br />
   <div id="tablaPrueba"></div>
-
 
   <!-- ! USANDO TABLE -->
 
   <span id="mensajemarca"></span>
-
 {% endblock %}
 
 {% block script %}
@@ -96,7 +93,6 @@
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
-  <script type="module" src="{% static 'js/marcas.js' %}"></script>
-  <script type="module" src="{% static 'js/gridjs.js' %}"></script>
-  <script type="module" src="{% static 'js/tablagrid.js' %}"></script>
+  <script type="module" src="{% static 'js/listado.js' %}"></script>
+  
 {% endblock %}

@@ -31,6 +31,24 @@
 }
 
 
+.div_form_agregar{
+    display: none;
+    width: 35vw;
+    height: 5%;
+    color: black;
+}
+
+.form_body{
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    row-gap: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+
+
 /* Estilos para el contenedor divs emergentes */
 
 /* .contenedor {

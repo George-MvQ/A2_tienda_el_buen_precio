@@ -52,8 +52,8 @@ def eliminar_marcas(_id_marca:int):
     except Exception as error:
         print(f'erro al eliminar {error}')
         return {'mensaje':'Error'}
-    
-    
+
+
 """--------------para otros----------------"""
 
 # datos categoria
@@ -81,7 +81,7 @@ class MantenimientoUsuario():
     def obtener_usuarios(self):
         usuarios:list = list(AuthUser.objects.values_list('id','username','email','is_superuser'))
         return usuarios
-    
+
     def buscar_un_usuario(self,identificador:int):
         try:
             usuario = AuthUser.objects.get(id=identificador)
@@ -90,30 +90,62 @@ class MantenimientoUsuario():
         except AuthUser.DoesNotExist:
             print("no existe usuario")
             return {"mensaje":"error"}
-            
-    """Un ejemplo de actualizacion 
-    
+
+    """Un ejemplo de actualizacion
+
     def actualizar_usuario(self, id_usuario: int, nuevos_datos: dict):
     try:
         usuario_actualizar = AuthUser.objects.get(id=id_usuario)
-        
+
         # Actualiza los campos del usuario con los nuevos datos proporcionados
         for clave, valor in nuevos_datos.items():
             setattr(usuario_actualizar, clave, valor)
-        
+
         # Guarda los cambios en la base de datos
         usuario_actualizar.save()
-        
+
         return {'mensaje': 'El usuario se ha actualizado correctamente!'}
-    
+
     except AuthUser.DoesNotExist:
         print('No se encontró el usuario')
         return {'mensaje': 'Usuario no encontrado'}
-    
+
     except Exception as error:
         print(f'Error al actualizar el usuario: {error}')
         return {'mensaje': 'Error'}
     """
+
+    """ METODO PRINCIPAL PARA AGREGAR USUARIO"""
+    def agregar_usuario(self,form):
+        if form.is_valid():
+            datos = self._obtener_datos_usuario(form)
+            self._guardar_usuario(datos)
+        else:
+            datos['mensaje']= 'Error'
+            print("sin datos")
+        return datos
+
+    """METODO PARA OBTENER DATOS DEL FORMULARIO """
+    def _obtener_datos_usuario(self, form):
+        datos: dict = {}
+        datos['nombre_usuario']= form.cleaned_data['nombre_usuario']
+        datos['contra']= form.cleaned_data['contrasenia']
+        datos['correo']= form.cleaned_data['correo']
+        datos['estado']= form.cleaned_data['estado']
+        datos['super_usuario']= form.cleaned_data['super_usuario']
+
+    """ METODO PARA GUARDAR LOS DATOS EN LA BASE DE DATOS"""
+    def _guardar_usuario(self,datos:dict):
+        nuevo_usuario = AuthUser(
+            username = datos['nombre_usuario'],
+            password = datos['contra'],
+            email = datos['Correo'],
+            is_superuser =['super_usuario']
+        )
+        nuevo_usuario.save()
+        datos['id_usuario'] = nuevo_usuario.id
+        datos['mensaje'] = 'bien'
+
 
 
     def eliminar_usuario(self, id_usuario:int):
@@ -127,7 +159,6 @@ class MantenimientoUsuario():
         except Exception as error:
             print(f'erro al eliminar {error}')
             return {'mensaje':'Error'}
-    
-    
 
-
+    def guardarUsuario(self, form):
+        pass

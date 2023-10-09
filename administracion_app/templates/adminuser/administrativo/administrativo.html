@@ -11,19 +11,13 @@
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
+  
 {% endblock %}
 
 {% block body %}
-
-<h1 class="titulo">GESTION DE USUARIO</h1>
-  <!-- cargando imagenes -->
-  {% load static %}
-
-  <header id="id-header-admin">
-    {% load static %}
-  </header>
-
-  <div class="table-responsive" style="margin: 4%; font-size: 9px; ">
+  <h1 class="titulo">GESTION DE USUARIO abc</h1>
+  {% comment %}TABLA DE DATOS{% endcomment %}
+  <div class="table-responsive">
     <table id="datosusuario" class="table table-hover table-responsive">
       <thead>
         <tr class="text-center align-middle text-white font-weight-bold">
@@ -34,24 +28,57 @@
           <th>Opciones</th>
         </tr>
       </thead>
-      
+
       <tbody id="tablaBody" class="text-white">
         {% for usuario in usuarios %}
-        <tr data-id="{{ usuario.0 }}">
-          <td>{{usuario.0}}</td>
-          <td>{{usuario.1}}</td>
-          <td>{{usuario.2}}</td>
-          <td>{{usuario.3}}</td>
-          <td>
-            <button class=" btn-espacio btn-eliminar-usuario btn btn-outline-danger"  data-id="{{usuario.0}}">Eliminar</button> 
-            <a class="btn btn-outline-info" href="{% url 'detalles_usuario' usuario.0 %}">Detalles</a>
-          </td>
-        </tr>
+          <tr data-id="{{ usuario.0 }}">
+            <td>{{ usuario.0 }}</td>
+            <td>{{ usuario.1 }}</td>
+            <td>{{ usuario.2 }}</td>
+            <td>{{ usuario.3 }}</td>
+            <td>
+              <button class="btn-espacio btn-eliminar-usuario btn btn-outline-danger" data-id="{{ usuario.0 }}">Eliminar</button>
+              <a class="btn btn-outline-info" href="{% url 'detalles_usuario' usuario.0 %}">Detalles</a>
+            </td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 
+  {% comment %}SECCION MODAL{% endcomment %}
+  <div class="modal fade otraClase  " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-black">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA MARCA</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="form_body"  method="POST">
+            {% csrf_token %}
+            {{ form.nombre_usuario.label_tag }}
+            {{ form.nombre_usuario }}
+            {{ form.contrasenia.label_tag }}
+            {{ form.contrasenia }}
+            <label for="confirmar_contraenia">Confirmar Contraseña:</label>
+            <input type="password" id="confirmar_contraenia" name="confirmar_contraenia" />
+            {{ form.correo.label_tag }}
+            {{ form.correo }}
+            {{ form.estado.label_tag }}
+            {{ form.estado }}
+            {{ form.super_usuario.label_tag }}
+            {{ form.super_usuario }}
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block script %}
@@ -60,6 +87,6 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
-  <script type="module" src="{% static 'js/Crud.js' %}"> </script>
+  <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/administracion_app/jsmenuadmin.js' %}"></script>
 {% endblock %}

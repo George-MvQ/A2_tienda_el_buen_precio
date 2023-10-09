@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate
 from .form_users import LoginForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.views.generic.base import View, TemplateView
 
 
 # Create your views here.
@@ -38,7 +39,7 @@ def logeo(request):
                 #si es superusiario se va al panel de adiministrador 
                 if user.is_superuser:
                     print('1')
-                    return redirect('/admin/')
+                    return redirect('/admon/')
                 #panel de vendedro 
                 else:
                    print('2')
@@ -65,3 +66,7 @@ def prueba(request):
         'form': UserCreationForm
     }
     return render(request, 'pruebas.html', datos)
+
+
+def error_404(request, exception):
+    return render(request,'error404.html',status=404)

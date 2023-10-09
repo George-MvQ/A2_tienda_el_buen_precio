@@ -161,6 +161,74 @@ class AlertasBotones {
 
 }
 
+/* sweet alert de gestion de usuario */
+
+class AlertasBotonesss {
+
+    eliminar(id,callback){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'bg-danger',
+              cancelButton: 'bg-success',
+              toast: true
+            },
+            buttonsStyling: true,
+           
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro quieres modificar los datos?',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Actualizar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                const respuesta = await callback(id)
+                if (respuesta.estado){
+                    console.log(respuesta.mensaje);
+                    swalWithBootstrapButtons.fire(
+                        'Los datos de este usuario se ha actualizado!',
+                        respuesta.mensaje,
+                        'success')
+                }
+                else{
+                    
+                }
+               
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelado',
+                'Esta accion se ha cancelado',
+                'error'
+              )
+            }
+          })
+    }
+
+    todoBien (encavezado,mensaje){
+        Swal.fire(
+            encavezado,
+            mensaje,
+            'success'
+          )
+    }
+
+
+}
+class Utilidades{
+    
+}
+
+
+
+
+
 /* function pollo (callback){
     callback()
 }

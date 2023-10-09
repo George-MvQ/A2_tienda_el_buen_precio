@@ -174,7 +174,7 @@ main{
     justify-content: center;
     box-sizing: border-box;
     overflow: hidden;
-    background-color: rgb(183, 0, 255);
+    /* background-color: rgb(183, 0, 255); */
     place-items: center;
 }
 
@@ -187,6 +187,15 @@ main{
 }
 .length{
     order: 2;
+}
+
+.form_body_ingreso{
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    row-gap: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 

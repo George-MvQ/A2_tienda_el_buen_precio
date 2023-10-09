@@ -27,6 +27,11 @@
                       <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                       <span>Registro Productos</span>
                     </a>
+                    <a href="{% url 'detalle_compras' %}" class="nav-link px-1">
+                      <!-- Aca metemos los links de los index -->
+                      <span class="me-2"><i class="bi bi-cart-plus"></i></span>
+                      <span>Detalles Compras</span>
+                    </a>
                     <a href="{% url 'productos_nuevos' %}" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
@@ -56,16 +61,16 @@
               <div class="collapse" id="segundo">
                 <ul class="navbar-nav ps-3">
                   <li>
-                    <a href="#" class="nav-link px-1">
+                    <a href="{% url 'listadopedidos' %}" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-card-checklist"></i></span>
                       <span>Listado de Pedidos</span>
                     </a>
-                    <a href="#" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
+                    <!-- <a href="#" class="nav-link px-1">
+                      Aca metemos los links de los index
                       <span class="me-2"><i class="bi bi-list-ol"></i></span>
                       <span>Comprobante Pedido</span>
-                    </a>
+                    </a> -->
                     <a href="#" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-card-list"></i></span>
