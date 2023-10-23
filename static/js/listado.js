@@ -1,7 +1,7 @@
-/* import {Mantenimiento, AlertasBotones } from "../Crud.js";
+import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
 
 const mantenimiento = new Mantenimiento()
-const alertas = new AlertasBotones() */
+const alertas = new AlertasBotones() 
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
     // Renderizar el lengthMenu personalizado
@@ -14,7 +14,7 @@ const opcionesTabla = {
                 $(node).attr('data-bs-toggle', 'modal');
                 $(node).attr('data-bs-target', '#staticBackdrop');
                   // Agregar un ID al botón
-                 $(node).attr('id', 'btnAgregdarMarca');
+                 $(node).attr('id', 'btnAgregdarListado');
             }
         }
     ],
@@ -62,6 +62,78 @@ const opcionesTabla = {
 
 
 window.addEventListener('load', () => {
-    // agregarFuncionBtnEliminar();
+    agregarFuncionBtnEliminar();
     $('#datoslistado').DataTable(opcionesTabla);
 });
+
+const agregarFuncionBtnEliminar = () => {
+    const botonesEliminar = document.querySelectorAll('.btn-eliminar-listado');
+    botonesEliminar.forEach((boton) => {
+        boton.addEventListener('click', function () {
+            const identificador = this.getAttribute('data-id');
+            alertas.eliminar(identificador, eliminarListado)
+            console.log(identificador);
+        });
+    });
+};
+
+const eliminarListado = async (id) => {
+    const respuesta = await mantenimiento.eliminarDato('/admon/listado-pedidos/', id)
+    if (respuesta.condicion === 'ok') {
+        mantenimiento.eliminarFilaTabla(id, 'datoslistado')
+    }
+    return respuesta
+}
+
+btGuardarListado.addEventListener('click', async (e) => {
+    e.preventDefault()
+    let formAgregar = new FormData(form_agregar_listado);//pasamos como parametro el id del formulario que queremos 
+
+    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+    convertirStrNumeric(jSonObjetos)
+    console.log(jSonObjetos);
+    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/listado-pedidos/', jSonObjetos)
+    console.log('---------')
+    console.log(respuesta)
+    console.log(respuesta.condicion)
+    console.log('---------')
+    if (respuesta.condicion === 'ok') {
+        // mantenimiento.limpiarInputs('input_form')
+
+        const fila = filaTabla(respuesta.datos)
+        console.log(fila)
+        $('#datoslistado').DataTable().row.add($(fila)).draw(false);
+        agregarFuncionBtnEliminar()
+
+        alertas.exelente(respuesta.mensaje)
+    }
+    else {
+        alertas.error(respuesta.mensaje)
+    }
+
+});
+
+const convertirStrNumeric= (jSonObjetos)=>{
+    jSonObjetos.fk_empleado=parseInt(jSonObjetos.fk_empleado)
+   jSonObjetos.estado=jSonObjetos.estado=='on'?true:false 
+ }
+
+
+
+
+const filaTabla = (elementos) => {
+    const estado = elementos.estado ? 'Activo' : 'Inactivo';
+    let datos = `
+    <tr data-id="${elementos.id_listado}">
+        <td>${elementos.id_listado}</td>
+        <td  >${elementos.fecha_creacion}</td>
+        <td>${elementos.fk_empleado}</td>
+        <td>${estado}</td>
+        <td>
+            ${crearBotonEliminar(elementos.id_proveedor, 'btn-eliminar-listado')}
+            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id}/">Actualizar</a>
+        </td> 
+    </tr>
+    `
+    return datos
+}

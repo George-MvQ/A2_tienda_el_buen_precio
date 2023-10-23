@@ -1,4 +1,4 @@
-import {Mantenimiento, AlertasBotones } from "../Crud.js";
+import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "../Crud.js";
 
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
@@ -20,7 +20,7 @@ const opcionesTabla = {
     ],
     scrollCollapsey:true,
     scrollY: '400px',
-    pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
+    pageLength: 5, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
@@ -62,7 +62,7 @@ const opcionesTabla = {
 
 window.addEventListener('load', () => {
     agregarFuncionBtnEliminar();
-    $('#datosusuario').DataTable(opcionesTabla);
+    $('#tbDatosUsuarios').DataTable(opcionesTabla);
 });
 
 //funcion que agregar accion al boton eliminar 
@@ -80,11 +80,69 @@ const agregarFuncionBtnEliminar = () => {
 //funcion eliminar 
 const eliminarUsuario= async(id)=>{
         const respuesta = await mantenimiento.eliminarDato('/admon/gestion-usuarios/',id)
-        if (respuesta.estado){
-            mantenimiento.eliminarFilaTabla(id,'datosusuario')
+        if (respuesta.condicion === 'ok'){
+            mantenimiento.eliminarFilaTabla(id,'tbDatosUsuarios')
         }
         return respuesta
 }
 
 /*  AGREGAR DATOS  */
+btGuardarDato.addEventListener('click', async (e) => {
+    e.preventDefault()
+    let formAgregar = new FormData(form_usuario);//pasamos como parametro el id del formulario que queremos 
+    
+    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+    validarBol(jSonObjetos)
+    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/gestion-usuarios/', jSonObjetos)
+    /* console.log('---------')
+    console.log(respuesta)
+    console.log(respuesta.condicion)
+    console.log('---------') */
+    if (respuesta.condicion==='ok') {
+        mantenimiento.limpiarInputs('input_form')
+        const fila = filaTabla(respuesta.datos)
+        $('#tbDatosUsuarios').DataTable().row.add($(fila)).draw(false);
+        agregarFuncionBtnEliminar()
+        Swal.fire(
+            respuesta.mensaje,
+            'Preciona clic en el boton!',
+            'success'       
+        )
+    }
+    else {
+        Swal.fire(
+            respuesta.mensaje,
+            'Datos no guardados, Preciona clic en el boton!',
+            'warning'
+        )
+    }
 
+});
+
+const validarBol = (datos) => {
+    datos.is_superuser =  datos.is_superuser =='TRUE'?true:false 
+    datos.is_active =  datos.is_active =='TRUE'?true:false 
+}
+
+const filaTabla = (elementos) => {
+    const estado = elementos.estado ? 'Sí' : 'No';   
+    let datos = `
+    <tr data-id="${elementos.id}">
+        <td>${elementos.id}</td>
+        <td  >${elementos.username}</td>
+        <td>${elementos.email}</td>
+        <td>${estado}</td>
+        <td>
+            ${crearBotonEliminar(elementos.id,'btn-eliminar-usuario')}
+            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id}/">Detalles</a>
+        </td> 
+    </tr>
+    `
+    return datos
+}
+
+/* //eliminar datos de tabla 
+const crearBotonEliminar = (identicador,clase) => {
+    return `<button class="${clase} btn btn-outline-danger"  data-id="${identicador}">Eliminar</button>`;
+};
+ */

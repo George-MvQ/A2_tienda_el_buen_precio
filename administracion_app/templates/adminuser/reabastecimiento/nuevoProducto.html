@@ -11,7 +11,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
   <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/agregar_marcas.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/gridjs.css' %}" />
+
 {% endblock %}
 
 {% block content %}
@@ -48,14 +48,15 @@
         {% for producto in datos %}
           <tr data-id="{{ producto.0}}">
             <td>{{ producto.0}}</td>
-            <td>{{ producto.1}}"</td>
+            <td>{{ producto.1}}</td>
             <td>{{ producto.2 }}</td>
             <td>{{ producto.9 }}</td>
-            <td>{{ producto.6 }}</td>
+            <td>{{ producto.6  |yesno:'Activo,Inactivo' }}</td>
             <td>
                 
               <button class="btn-espacio btn-eliminar-producto btn btn-outline-danger" data-id="{{ producto.0 }}">Eliminar</button>
-              <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ producto.0 }}" data-bs-toggle="modal" data-bs-target="#detalleProductoModal{{ producto.0 }}">Detalles</button>
+              <a class="btn btn-outline-info" href="{% url 'modal_actualizacion' producto.0 %}">Detalles</a>
+            <!--   <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ producto.0 }}" data-bs-toggle="modal" data-bs-target="#detalleProductoModal{{ producto.0 }}">Detalles</button> -->
             </td>
           </tr>
         {% endfor %}
@@ -96,27 +97,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="form_body" id="form_agregar_marca" method="POST">
+        <form class="form_body" id="form_agregar_marca">
           {% csrf_token %}
-          <div class="mb-3">
-            <label for="nombreProducto" class="form-label">Nombre del Producto:</label>
-            <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" required>
-          </div>
-          <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción:</label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion">
-          </div>
-          <div class="mb-3">
-            <label for="codigoBarras" class="form-label">Código de Barras:</label>
-            <input type="text" class="form-control" id="codigoBarras" name="codigoBarras">
-          </div>
-          <div class="mb-3">
-            <label for="tamanio" class="form-label">Tamaño:</label>
-            <input type="number" class="form-control" id="tamanio" name="tamanio" step="0.01" required>
-          </div>
-          <!-- Agregar más campos aquí según tus necesidades -->
-          <button type="submit" id="'btnAgregarDatos" data-bs-dismiss="modal" class="btn btn-primary">Guardar Producto</button>
-        </form>
+          {% load bootstrap5 %}
+           {% bootstrap_form form %}
+          </form>
+          {% buttons %}
+          <button id="btGuardarDato" type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        {% endbuttons %}
       </div>
     </div>
   </div>
@@ -176,5 +165,4 @@
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/nuevoProducto.js' %}"></script>
   <script type="module" src="{% static 'js/el_buen_precio/detallescatalogopro.js' %}"></script>
-  
 {% endblock %}

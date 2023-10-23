@@ -1,8 +1,9 @@
 class Mantenimiento {
-    constructor() {
 
+    #datosError = {
+        mensaje: "Error fatal",
+        condicion: 'Error'
     }
-
     async obtenerDatos(url_obtener) {
         const datos = {
             respuesta: '',
@@ -18,39 +19,63 @@ class Mantenimiento {
         return datos
     }
 
-    async agregarDatos(url_obtener, formulario) {
-        const datos = {
-            respuesta: {},
-            estado:true
-        };
-
-        try {
-            const respuesta = await fetch(url_obtener, {
+    async agregarDatos(url_agregar, formulario) {       
+        try { 
+            console.log('-------------fdfdfdf--------');
+            console.log(formulario);
+            const respuesta = await fetch(url_agregar, {
                 method: 'POST',
                 body: formulario,
                 headers: { 'X-CSRFToken': this.getCookie('csrftoken') }
             })
 
             if (respuesta.ok) {
-                datos.respuesta = await respuesta.json()
+                const datos = await respuesta.json()
+                return datos
+            }else{
+                console.log('error suave');
+                return this.#datosError
+            }
+        } 
+        catch (error) {
+            return this.#datosError
+        }
+    };
+
+//usar esto para agreagar datos 
+    async agregarNuevoRegistro(url_agregar, datos_objeto) {
+        try {
+            let crfToken;
+            if ('csrfmiddlewaretoken' in datos_objeto){
+                crfToken = datos_objeto.csrfmiddlewaretoken
+                delete datos_objeto.csrfmiddlewaretoken
+            }else crfToken = this.getCookie('csrftoken')
+
+            const respuesta = await fetch(url_agregar, {
+                method: 'POST',
+                body: JSON.stringify(datos_objeto),
+                headers: { 'X-CSRFToken': crfToken }
+            })
+
+            if (respuesta.ok) {
+                const datos = await respuesta.json()
+                return datos
+            }
+            else{
+                console.log('error suave');
+                return this.#datosError
             }
 
         } catch (error) {
             console.error(error);
-            datos.estado =false
+            console.log('error nada');
+            return this.#datosError
         }
-        return datos
     };
 
 
-
-    
     async eliminarDato(url_eliminar, id) {
         const identificador = {identificador:id} 
-        let datos = {
-            mensaje: '',
-            estado: true,
-        }
         try {
             const eliminar = await fetch(url_eliminar, {
                 method: 'DELETE',
@@ -62,20 +87,53 @@ class Mantenimiento {
             })
             if(eliminar.ok){
                 const respuesta = await eliminar.json();
-                datos.mensaje =respuesta.mensaje
+                return respuesta
+            }
+            else{
+                return this.#datosError
             }
         } catch (error) {
             console.error(error)
-            datos.mensaje="Error fatal";
-            datos.estado = false
+            console.log('error duro');
+            return this.#datosError
+            
         }
-        return datos
+    } 
+
+    async actualizarRegistroCompleto(url_actualizar, datos) {
+        
+      try{
+            const actualizar = await fetch(url_actualizar,{
+                method: 'PUT',
+                headers:{
+                    'Content-Type': 'application/json', //espesifica que se envian datos al servido en formato JSon
+                    'X-CSRFToken': this.getCookie('csrftoken')
+                },
+                body: JSON.stringify(datos)
+            })
+            if(actualizar.ok){
+                const respuesta = await actualizar.json();
+                console.log('--------------------------------');
+                console.log(respuesta);
+                return respuesta
+            }
+            else{
+                return this.#datosError
+            }
+        }
+        catch(error){
+            console.error(error)
+            return this.#datosError
+        }
+
     }
 
-    async actualizarDato() {
-
+    limpiarInputs(claseEtiqueta){
+        const inputs_forms = document.getElementsByClassName(claseEtiqueta)
+        Array.from(inputs_forms).forEach((entradas) => {
+            entradas.value = '';
+        })
     }
-
 
     getCookie(name) {
         let cookieValue = null;
@@ -99,12 +157,19 @@ class Mantenimiento {
         $(`#${idTabla}`).DataTable().row(filaAEliminar).remove().draw(false);
     };
 
+    formulariosAObjeto(formulario) {
+        const objeto = {}
+        formulario.forEach((value, key) => {objeto[key] = value})
+        return objeto;
+    }
 
 }
 
+
+
 class AlertasBotones {
 
-    eliminar(id,callback){
+    eliminar(id,callback,titulo='registro'){
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'bg-danger',
@@ -116,7 +181,7 @@ class AlertasBotones {
           })
           
           swalWithBootstrapButtons.fire({
-            title: '¿Estás seguro quieres eliminar este usuario?',
+            title: `¿Estás seguro quieres eliminar este ${titulo}?`,
             text: "No podrás revertir esto!",
             icon: 'warning',
             showCancelButton: true,
@@ -126,16 +191,28 @@ class AlertasBotones {
           }).then(async (result) => {
             if (result.isConfirmed) {
                 const respuesta = await callback(id)
-                if (respuesta.estado){
+                if (respuesta.condicion==='ok'){
                     console.log(respuesta.mensaje);
                     swalWithBootstrapButtons.fire(
-                        'El usuario se eliminado!',
+                        `El  ${titulo} se ha eliminado!`,
                         respuesta.mensaje,
-                        'success')
+                        'success'
+                        )
+                }
+                else if(respuesta.condicion==='ref_error'){
+                    swalWithBootstrapButtons.fire(
+                        `El  ${titulo} no se a eliminado!`,
+                        respuesta.mensaje,
+                        'warning'
+                        )
                 }
                 else{
-                    
-                }
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        respuesta.mensaje,
+                        'error'
+                      )
+                } 
                
             } else if (
               /* Read more about handling dismissals below */
@@ -143,29 +220,17 @@ class AlertasBotones {
             ) {
               swalWithBootstrapButtons.fire(
                 'Cancelado',
-                'Esta accion se ha cancelado',
+                'Esta accion se ha cancelado, por un error fatal',
                 'error'
               )
             }
-          })
-    }
-
-    todoBien (encavezado,mensaje){
-        Swal.fire(
-            encavezado,
-            mensaje,
-            'success'
-          )
+        })
     }
 
 
-}
+//--------------------ALERTA DE ACTUALIZACION--------------------------------
 
-/* sweet alert de gestion de usuario */
-
-class AlertasBotonesss {
-
-    eliminar(id,callback){
+    actualizar(datos,callback,titulo='registro'){
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'bg-danger',
@@ -177,7 +242,7 @@ class AlertasBotonesss {
           })
           
           swalWithBootstrapButtons.fire({
-            title: '¿Estás seguro quieres modificar los datos?',
+            title: `¿Estás seguro quieres Actualizar este ${titulo}?`,
             text: "No podrás revertir esto!",
             icon: 'warning',
             showCancelButton: true,
@@ -186,17 +251,29 @@ class AlertasBotonesss {
             reverseButtons: true
           }).then(async (result) => {
             if (result.isConfirmed) {
-                const respuesta = await callback(id)
-                if (respuesta.estado){
+                const respuesta = await callback(datos)
+                if (respuesta.condicion==='ok'){
                     console.log(respuesta.mensaje);
                     swalWithBootstrapButtons.fire(
-                        'Los datos de este usuario se ha actualizado!',
+                        `El  ${titulo} se a actualizado exitosamente!`,
                         respuesta.mensaje,
-                        'success')
+                        'success'
+                        )
+                }
+                else if(respuesta.condicion==='ref_error'){
+                    swalWithBootstrapButtons.fire(
+                        `El  ${titulo} no se ha actualizado!`,
+                        respuesta.mensaje,
+                        'warning'
+                        )
                 }
                 else{
-                    
-                }
+                    swalWithBootstrapButtons.fire(
+                        'Cancelado',
+                        respuesta.mensaje,
+                        'error'
+                      )
+                } 
                
             } else if (
               /* Read more about handling dismissals below */
@@ -204,11 +281,11 @@ class AlertasBotonesss {
             ) {
               swalWithBootstrapButtons.fire(
                 'Cancelado',
-                'Esta accion se ha cancelado',
+                'Esta accion se ha cancelado, por un error fatal',
                 'error'
               )
             }
-          })
+        })
     }
 
     todoBien (encavezado,mensaje){
@@ -219,8 +296,28 @@ class AlertasBotonesss {
           )
     }
 
+    exelente(mensaje) {
+        Swal.fire(
+            mensaje,
+            'Preciona clic en el boton!',
+            'success'       
+        )
+    }
+    error(mensaje) {
+        Swal.fire(
+            mensaje,
+            'Datos no guardados, Preciona clic en el boton!',
+            'warning'
+        )
+        
+    }
+
 
 }
+
+/* sweet alert de gestion de usuario */
+
+
 class Utilidades{
     
 }
@@ -276,6 +373,11 @@ pollo(function() {
 
 //exportar clase
 
+//eliminar datos de tabla 
+const crearBotonEliminar = (identicador,clase) => {
+    return `<button class="${clase} btn btn-outline-danger"  data-id="${identicador}">Eliminar</button>`;
+};
 
 
-export {Mantenimiento,AlertasBotones} 
+
+export {Mantenimiento,AlertasBotones,crearBotonEliminar} 

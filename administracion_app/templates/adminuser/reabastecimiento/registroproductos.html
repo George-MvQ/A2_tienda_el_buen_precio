@@ -59,8 +59,9 @@ Registro de Productos
           <td>{{ compra.4 }}</td>
           <td>{{ compra.5 }}</td>
           <td>
-            <button class="btn-espacio btn-eliminar-compra btn btn-outline-danger" data-id="{{ compra.id_compra }}">Eliminar</button>
-            <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ compra.id_compra }}">Detalles</button>
+            <button class="btn-espacio btn-eliminar-compra btn btn-outline-danger" data-id="{{ compra.0 }}">Eliminar</button>
+            <a class="btn btn-outline-info" href="{% url 'detalle_compras'%}" data-id="{{ compra.id_compra }}">Detalles</a>
+            <!-- {% comment %} <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ compra.id_compra }}">Detalles</button> {% endcomment %} -->
           </td>
         </tr>
       {% endfor %}
@@ -76,9 +77,9 @@ Registro de Productos
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form_body" id="form_agregar_marca" method="POST">
+          <form class="form_body" id="form_agregar_compra" method="POST">
             {% csrf_token %}
-            {{ form.fechaCompra.label_tag }}
+            <!-- {{ form.fechaCompra.label_tag }}
             {{ form.fechaCompra }}
             {{ form.proveedor.label_tag }}
             {{ form.proveedor }}
@@ -87,12 +88,14 @@ Registro de Productos
             {{ form.metodopago.label_tag }}
             {{ form.metodopago }}
             {{ form.observaciones.label_tag }}
-            {{ form.observaciones }}
+            {{ form.observaciones }} -->
+            {% load bootstrap5 %}
+            {% bootstrap_form form %}
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+          <button id="btGuardarCompra" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
         </div>
       </div>
     </div>

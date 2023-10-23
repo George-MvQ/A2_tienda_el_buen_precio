@@ -1,4 +1,6 @@
-
+import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+const mantenimiento = new Mantenimiento()
+const alertas = new AlertasBotones()
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
     // Renderizar el lengthMenu personalizado
@@ -18,9 +20,9 @@ const opcionesTabla = {
     
     scrollCollapsey:true,
     scrollY: '400px',
-    pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
+    pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
-    lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
+    lengthMenu: [3,7, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
         targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
@@ -59,23 +61,90 @@ const opcionesTabla = {
 }
 
 window.addEventListener('load',()=>{
+    agregarFuncionBtnEliminar()
     $('#datosproductos').DataTable(opcionesTabla)
-    agregarBotonEliminar()
+    
 })
 
 
-const agregarBotonEliminar= ()=>{
-    const botonEliminar = document.querySelectorAll('.btn-eliminar-producto')
-    botonEliminar.forEach((boton) =>{
-        boton.addEventListener ('click', function(){
-            const idCategoria = this.getAttribute('data-id');
-            console.log(idCategoria)
-            accionEliminarCategoria(idCategoria)
-        })
+
+const agregarFuncionBtnEliminar = () => {
+    const botonesEliminar = document.querySelectorAll('.btn-eliminar-producto');
+    botonesEliminar.forEach((boton) => {
+        boton.addEventListener('click', function () {
+            const identificador = this.getAttribute('data-id');
+            alertas.eliminar(identificador,eliminarProducto)
+            console.log(identificador);
+        });
     });
+};
+
+//! funcion eliminar tipo collback
+const eliminarProducto= async(id)=>{
+    const respuesta = await mantenimiento.eliminarDato('/admon/ingreso-productos/',id)
+    if (respuesta.condicion === 'ok'){
+        mantenimiento.eliminarFilaTabla(id,'datosproductos')
+    }
+    return respuesta
 }
 
-//accion de eliminar boton 
-const accionEliminarCategoria = (idCategoria)=>{
-    alert(`el id que correposnde a este boton es: ${idCategoria}`)
+btGuardarDato.addEventListener('click', async (e) => {
+
+    e.preventDefault()
+    let formAgregar = new FormData(form_agregar_marca);
+    
+    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+    
+    convertirStrNumeric(jSonObjetos)
+    console.log(jSonObjetos);
+    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos) 
+    console.log('---------')
+    console.log(respuesta)
+    console.log(respuesta.condicion)
+    console.log('---------') 
+    if (respuesta.condicion==='ok') {
+        // mantenimiento.limpiarInputs('input_form') 
+        const fila = filaTabla(respuesta.datos)
+        console.log(fila);
+        $('#datosproductos').DataTable().row.add($(fila)).draw(false);
+        agregarFuncionBtnEliminar() 
+        alertas.exelente(respuesta.mensaje)
+    }
+    else {
+        alertas.error(respuesta.mensaje)
+    }
+
+ }); 
+
+
+
+ const convertirStrNumeric= (jSonObjetos)=>{
+    jSonObjetos.fk_categoria=parseInt(jSonObjetos.fk_categoria)
+    jSonObjetos.fk_marca=parseInt(jSonObjetos.fk_marca)
+    jSonObjetos.fk_presentacion= parseInt(jSonObjetos.fk_presentacion)
+    jSonObjetos.fk_unidad_medida=parseInt(jSonObjetos.fk_unidad_medida)
+     jSonObjetos.tamanio = parseFloat(jSonObjetos.tamanio)
+   jSonObjetos.estado=jSonObjetos.estado=='on'?true:false 
+ }
+
+
+
+const filaTabla = (elementos) => {
+    const estado = elementos.estado ? 'Activo' : 'Inactivo';   
+    let datos = `
+    <tr data-id="${elementos.id_productos}">
+        <td>${elementos.id_productos}</td>
+        <td  >${elementos.nombre_producto}</td>
+        <td>${elementos.descripcion}</td>
+        <td>${elementos.fk_categoria}</td>
+        <td>${estado}</td>
+        <td>
+            ${crearBotonEliminar(elementos.id_productos,'btn-eliminar-producto')}
+            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id_productos}/">Detalles</a>
+        </td> 
+    </tr>
+    `
+    return datos
 }
+
+ 

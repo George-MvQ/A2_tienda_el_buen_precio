@@ -23,9 +23,18 @@ class Categorias(models.Model):
     descripcion = models.CharField(db_column='Descripcion', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
 
+
     class Meta:
         managed = False
         db_table = 'Categorias'
+        
+    def __str__(self):
+        if self.nombre_categoria is not None:
+            return self.nombre_categoria
+        else:
+            return "Sin nombre de categoria" 
+    
+    
 
 
 class Compras(models.Model):
@@ -91,6 +100,13 @@ class Empleados(models.Model):
     class Meta:
         managed = False
         db_table = 'Empleados'
+        
+    def __str__(self):
+        if self.primer_nombre is not None:
+            return self.primer_nombre
+        else:
+            return "Sin Empleados"  
+    
 
 
 class Inventario(models.Model):
@@ -117,24 +133,70 @@ class ListadoPedidos(models.Model):
 
 
 class Marcas(models.Model):
-    id_marcas = models.AutoField(db_column='ID_marcas', primary_key=True)  # Field name made lowercase.
-    nombre_marca = models.CharField(db_column='Nombre_marca', max_length=80, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
-    estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
-    descripcion = models.CharField(db_column='Descripcion', max_length=150, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
-
+    id_marcas = models.AutoField(
+        db_column='ID_marcas', 
+        primary_key=True)  # Field name made lowercase.
+    nombre_marca = models.CharField(
+        unique=True, 
+        db_column='Nombre_marca', 
+        max_length=80, 
+        db_collation='Modern_Spanish_CI_AS'
+        )  # Field name made lowercase.
+    estado = models.BooleanField(
+        db_column='Estado'
+        )  # Field name made lowercase.
+    descripcion = models.CharField(
+        db_column='Descripcion', 
+        max_length=150, 
+        db_collation='Modern_Spanish_CI_AS', 
+        blank=True, 
+        null=True
+        )  # Field name made lowercase.
+ 
+    
     class Meta:
         managed = False
         db_table = 'Marcas'
+        
+    def __str__(self):
+        if self.nombre_marca is not None:
+            return self.nombre_marca
+        else:
+            return "Sin nombre de marca" 
+    
 
 
 class MetodosPago(models.Model):
-    id_metodo_pago = models.AutoField(db_column='ID_metodo_pago', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='Nombre', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='Descripcion', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    id_metodo_pago = models.AutoField(
+        db_column='ID_metodo_pago', 
+        primary_key=True
+        )  # Field name made lowercase.
+    nombre = models.CharField(
+        db_column='Nombre', 
+        max_length=50, 
+        db_collation='Modern_Spanish_CI_AS', 
+        blank=True, 
+        null=True
+        )  # Field name made lowercase.
+    descripcion = models.CharField(
+        db_column='Descripcion', 
+        max_length=100, 
+        db_collation='Modern_Spanish_CI_AS', 
+        blank=True, 
+        null=True
+        )  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Metodos_pago'
+    
+    def __str__(self):
+        if self.nombre is not None:
+            return self.nombre
+        else:
+            return "Sin empleados" 
+    
+    
 
 
 class MovimientoCaja(models.Model):
@@ -161,11 +223,17 @@ class Movimientos(models.Model):
 
 class Presentacion(models.Model):
     id_presentacion = models.AutoField(db_column='ID_presentacion', primary_key=True)  # Field name made lowercase.
-    nombre_presentacion = models.CharField(db_column='Nombre_presentacion', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    nombre_presentacion = models.CharField(db_column='Nombre_presentacion', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Presentacion'
+    
+    def __str__(self):
+        if self.nombre_presentacion is not None:
+            return self.nombre_presentacion
+        else:
+            return "Sin nombre de presentación" 
 
 
 class Productos(models.Model):
@@ -175,15 +243,19 @@ class Productos(models.Model):
     codigo_barras = models.CharField(db_column='Codigo_barras', max_length=20, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     tamanio = models.DecimalField(db_column='Tamanio', max_digits=4, decimal_places=2)  # Field name made lowercase.
     imagen = models.BinaryField(db_column='Imagen')  # Field name made lowercase.
-    estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
+      # Field name made lowercase.
     fk_presentacion = models.ForeignKey(Presentacion, models.DO_NOTHING, db_column='fk_presentacion')
     fk_unidad_medida = models.ForeignKey('UnidadesMedidas', models.DO_NOTHING, db_column='fk_unidad_medida')
     fk_categoria = models.ForeignKey(Categorias, models.DO_NOTHING, db_column='fk_categoria')
     fk_marca = models.ForeignKey(Marcas, models.DO_NOTHING, db_column='fk_marca')
-
+    estado = models.BooleanField(db_column='Estado')
+        
     class Meta:
         managed = False
         db_table = 'Productos'
+    def __str__(self):
+        return self.nombre_producto
+    
 
 
 class Proveedores(models.Model):
@@ -198,6 +270,12 @@ class Proveedores(models.Model):
     class Meta:
         managed = False
         db_table = 'Proveedores'
+        
+    def __str__(self):
+        if self.nombre_vendedor is not None:
+            return self.nombre_vendedor
+        else:
+            return "Sin proveedores" 
 
 
 class Puestos(models.Model):
@@ -212,12 +290,19 @@ class Puestos(models.Model):
 
 class UnidadesMedidas(models.Model):
     id_medicion = models.AutoField(db_column='ID_medicion', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='Descripcion', max_length=10, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    prefijo = models.CharField(max_length=6, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    descripcion = models.CharField(db_column='Descripcion', max_length=20, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)  # Field name made lowercase.
+    prefijo = models.CharField(max_length=6, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)
+
 
     class Meta:
         managed = False
         db_table = 'Unidades_medidas'
+        
+    def __str__(self):
+        if self.descripcion is not None:
+            return self.descripcion
+        else:
+            return "Sin descripcion"     
 
 
 class Ventas(models.Model):

@@ -1,5 +1,5 @@
 from django import forms
-from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos
+from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos, ListadoPedidos, Compras, Productos
 
 #tupla contiene dos elementos 1. valor que se envia 2. texto se se muestra
 _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
@@ -7,15 +7,20 @@ _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
 
 class MarcaForm(forms.Form):
     # _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')
-    nombremarca = forms.CharField(
+    nombre_marca = forms.CharField(
         label='Nombre Marca',
         max_length=100,
         widget = forms.TextInput(attrs={'id':'in_nombre'}),
+        error_messages={
+        'required': 'Este campo es obligatorio. Por favor, ingresa un nombre de marca.',
+        },
+        required=True
         )
     descripcion = forms.CharField(
         label='Descripción',
         max_length=255,
-        widget = forms.TextInput(attrs={'id':'in_descripcion'})
+        widget = forms.TextInput(attrs={'id':'in_descripcion'}),
+        required=False,  # Establece el campo como opcional
         )
     estado = forms.ChoiceField(
         label='Estado',
@@ -26,7 +31,7 @@ class MarcaForm(forms.Form):
 # formulario de Categorias
 
 class CategoriaForm(forms.Form):
-    nombreCategoria = forms.CharField(
+    nombre_categoria = forms.CharField(
         label='Nombre Categoria',
         max_length=100,
         widget = forms.TextInput(attrs={'id':'in_nombre'}),
@@ -43,47 +48,60 @@ class CategoriaForm(forms.Form):
 
 # formulario compras
 
-class ComprasForm(forms.Form):
-    _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')
-    _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
-    _metodopago:MetodosPago = MetodosPago.objects.values_list('id_metodo_pago','nombre')
-    fechaCompra = forms.DateField(
-        label='Fecha Compra',
-        widget=forms.DateInput(attrs={'id': 'in_fecha', 'type': 'date','format': '%d/%m/%Y'}),
-        input_formats=['%d/%m/%Y'],
-        )
-    proveedor = forms.ChoiceField(
-        label='Proveedores',
-        choices=_proveedores
-      )
-    empleado = forms.ChoiceField(
-        label='Empleado',
-        choices=_empleado
-      )
-    metodopago = forms.ChoiceField(
-        label='Metodo de Pago',
-        choices=_metodopago
-      )
-    observaciones = forms.CharField(
-        label='observaciones',
-        max_length=255,
-        widget = forms.TextInput(attrs={'id':'in_observaciones'})
-        )
+class Comprasform(forms.ModelForm):
+    fecha_compra = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = Compras
+        fields = '__all__'
+        labels = {
+
+            'id_compra' :'Compra',
+            'fk_proveedor' : 'Proveedor',
+            'fk_empleado'  :'Empleado',
+            'fk_metodo_pago': 'Metodo de Pago',
+            'observaciones'  : 'Observaciones',
+
+        }
+
+
+
+
+    # _proveedores:Proveedores = Proveedores.objects.values_list('id_proveedor','nombre_vendedor')
+    # _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
+    # _metodopago:MetodosPago = MetodosPago.objects.values_list('id_metodo_pago','nombre')
+    # fechaCompra = forms.DateField(
+    #     label='Fecha Compra',
+    #     widget=forms.DateInput(attrs={'id': 'in_fecha', 'type': 'date','format': '%d/%m/%Y'}),
+    #     input_formats=['%d/%m/%Y'],
+    #     )
+    # proveedor = forms.ChoiceField(
+    #     label='Proveedores',
+    #     choices=_proveedores
+    #   )
+    # empleado = forms.ChoiceField(
+    #     label='Empleado',
+    #     choices=_empleado
+    #   )
+    # metodopago = forms.ChoiceField(
+    #     label='Metodo de Pago',
+    #     choices=_metodopago
+    #   )
+    # observaciones = forms.CharField(
+    #     label='observaciones',
+    #     max_length=255,
+    #     widget = forms.TextInput(attrs={'id':'in_observaciones'})
+    #     )
+
+
 """ DETALLE COMPRA"""
 class DetalleForm(forms.Form):
         _producto:Productos = Productos.objects.values_list('id_productos','nombre_producto')
-
-        detallecompra = forms.CharField(
-            label='Id Detalle Compra',
-            max_length=100,
-            widget = forms.TextInput(attrs={'id':'in_detalle'}),
-        )
         producto = forms.ChoiceField(
             label='Nombre Producto',
             choices=_producto
         )
         compras = forms.CharField(
-            label='Compras',
+            label='No. Compra',
             max_length=100,
             widget = forms.TextInput(attrs={'id':'in_compras'}),
         )
@@ -115,24 +133,8 @@ class DetalleForm(forms.Form):
 
 
 
-class CategoriaForm(forms.Form):
-        nombrecategoria = forms.CharField(
-        label='Nombre Categoria',
-        max_length=100,
-        widget = forms.TextInput(attrs={'id':'in_nombre'}),
-        )
-        descripcion = forms.CharField(
-        label='Descripción',
-        max_length=255,
-        widget = forms.TextInput(attrs={'id':'in_descripcion'})
-        )
-        estado = forms.ChoiceField(
-        label='Estado',
-        choices=_opciones
-       )
-
 class ProveedoresForm(forms.Form):
-        nombrevendedor = forms.CharField(
+        nombre_vendedor = forms.CharField(
         label='Nombre Proveedor',
         max_length=100,
         widget = forms.TextInput(attrs={'id':'in_nombre'}),
@@ -142,12 +144,12 @@ class ProveedoresForm(forms.Form):
         max_length=20,
         widget = forms.TextInput(attrs={'id':'in_telefono'}),
         )
-        diavisita = forms.DateField(
+        dia_visita = forms.DateField(
         label='Dia de visita',
         widget=forms.DateInput(attrs={'id': 'in_fechavi', 'type': 'date','format': '%d/%m/%Y'}),
         input_formats=['%d/%m/%Y'],
         )
-        diaentrega = forms.DateField(
+        dia_entrega = forms.DateField(
         label='Dia de entrega',
         widget=forms.DateInput(attrs={'id': 'in_fechavi', 'type': 'date','format': '%d/%m/%Y'}),
         input_formats=['%d/%m/%Y'],
@@ -164,54 +166,92 @@ class ProveedoresForm(forms.Form):
 
 
 class UsuarioForm(forms.Form):
-    nombre_usuario = forms.CharField(
+    username = forms.CharField(
         label='Nombre de usuario',
         max_length=100,
-        widget = forms.TextInput(attrs={'id':'in_nombre'}),
+        widget = forms.TextInput(attrs={
+            'id':'in_nombre_usuario',
+            'class': 'input_form'
+        }),
+        required=True
     )
 
-    contrasenia = forms.CharField(
+    password = forms.CharField(
         label='Contraseña',
         max_length=100,
-        widget = forms.PasswordInput(attrs={'id':'in_contra'}),
+        widget = forms.PasswordInput(attrs={
+            'id':'in_contra',
+            'class': 'input_form'
+        }),
+        required=True
 
     )
 
-    correo = forms.CharField(
+    email = forms.CharField(
         label='Correo',
         max_length=255,
-        widget = forms.EmailInput (attrs={'id':'in_correo'})
+        widget = forms.EmailInput (attrs={
+            'id':'in_correo',
+            'class': 'input_form'
+            }),
+        required=True
         )
 
-    estado = forms.ChoiceField(
+    is_active = forms.ChoiceField(
         label='Estado',
         choices=_opciones
        )
 
-    super_usuario = forms.ChoiceField(
-        label='Estado',
+    is_superuser = forms.ChoiceField(
+        label='super usuario',
         choices=_opciones
        )
 
 
 
-class listadoForm(forms.Form):
-        _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
-        fechacreacion = forms.DateField(
-        label='Fecha Creacion',
-        widget=forms.DateInput(attrs={'id': 'in_fechavi', 'type': 'date','format': '%d/%m/%Y'}),
-        input_formats=['%d/%m/%Y'],
-        )
-        empleado = forms.ChoiceField(
-        label='Empleado',
-        choices=_empleado
-        )
-        estado = forms.ChoiceField(
-        label='Estado',
-        choices=_opciones
-       )
+class listadoForm(forms.ModelForm):
+    fecha_creacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = ListadoPedidos
+        fields = '__all__'
+        labels = {
+            # 'fecha_creacion':'Fecha de Creación',
+            'fk_empleado':'Empleado',
+            'estado':'Estado',
+        }
+    #     _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
+    #     fecha_creacion = forms.DateField(
+    #     label='Fecha Creacion',
+    #     widget=forms.DateInput(attrs={'id': 'in_fechavi', 'type': 'date','format': '%d/%m/%Y'}),
+    #     input_formats=['%d/%m/%Y'],
+    #     )
+    #     empleado = forms.ChoiceField(
+    #     label='Empleado',
+    #     choices=_empleado
+    #     )
+    #     estado = forms.ChoiceField(
+    #     label='Estado',
+    #     choices=_opciones
+    #    )
 
-
+        
+        
+class NuevoProducto(forms.ModelForm):
+    class Meta: 
+        model = Productos
+        fields = '__all__'
+        labels = {
+            'nombre_producto':' Nombre del Producto',
+            'descripcion':'Descripción del Producto',
+            'codigo_producto':'Código del Producto',
+            'tamanio':'Tamaño',
+            'imagen':'Imagen',
+            'fk_presentacion':'Presentación', 
+            'fk_unidad_medida' :'Unidada de Medida',
+            'fk_categoria':'Categoría',
+            'fk_marca':'Marca',
+            'estado': 'Estado',
+        }
 
 """ password = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
     is_superuser = models.BooleanField()

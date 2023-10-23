@@ -169,13 +169,14 @@ main{
 }
 
 .opciones_tabla{
+   /*  background-color: #5fef8d; */
     display: grid;
     grid-template-columns: 15% 30% 55%;
-    justify-content: center;
+    /* background-color: rgb(183, 0, 255); */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
     box-sizing: border-box;
     overflow: hidden;
-    /* background-color: rgb(183, 0, 255); */
-    place-items: center;
 }
 
 .botonFormulario{
@@ -189,7 +190,7 @@ main{
     order: 2;
 }
 
-.form_body_ingreso{
+.form_ingreso_col2{
     display: grid;
     grid-template-columns: repeat(2, 50%);
     row-gap: 0.5rem;
@@ -198,6 +199,14 @@ main{
     grid-template-rows: 1fr 1fr 1fr;
 }
 
+.form_ingreso_col4{
+    display: grid;
+    grid-template-columns: repeat(4, 50%);
+    row-gap: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    grid-template-rows: 1fr 1fr 1fr;
+}
 
 .colorb{
     background-color: aqua !important;

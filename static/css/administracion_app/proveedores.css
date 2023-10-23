@@ -42,14 +42,15 @@ h2{
     overflow: scroll;
 }
 */
-
+/* 
+aqui quite el color amarillo pero no funciona no quita el color */
 .opciones_tabla{
     display: grid;
     grid-template-columns: 15% 30% 55%;
     justify-content: center;
     box-sizing: border-box;
     overflow: hidden;
-    background-color: rgb(246, 255, 0);
+   
     place-items: center;
 }
 

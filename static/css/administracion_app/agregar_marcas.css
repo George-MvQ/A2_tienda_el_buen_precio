@@ -29,6 +29,7 @@ h2{
     display: grid;
     grid-template-columns: repeat(2, 50%);
     row-gap: 0.5rem;
+    column-gap: 1rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     grid-template-rows: 1fr 1fr 1fr;
@@ -44,12 +45,14 @@ h2{
 */
 
 
-
-.dataTables_filter{
-    /* background-color: aquamarine; */
+.cuerpo-tabla{
+    background-color:rgb(35, 43, 49);
 }
-
-
+.tabla-datos{
+    background-color: blueviolet;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
 /* .row{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

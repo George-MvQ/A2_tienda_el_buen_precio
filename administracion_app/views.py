@@ -7,6 +7,8 @@ from django.views import View
 from .validaciones import *
 import json
 from django.contrib.auth.decorators import login_required
+from .models import AuthUser, Marcas
+
 
 @login_required
 def admon(request):
@@ -16,98 +18,69 @@ def admon(request):
 
 #
 def administrar_usuarios(request):
-    mantenimiento = MantenimientoUsuario()
+    validaciones = ValidarUsuarios()
     if request.method == 'GET':
         form = UsuarioForm()
-        usuarios:list = mantenimiento.obtener_usuarios()
-        datos = {'usuarios':usuarios,"form":form}
+        datos:list = validaciones.obtener_datos()
         return render(request, 'adminuser/administrativo/administrativo.html', datos)
 
     elif request.method == 'POST':
-        form=UsuarioForm(request.POST)
-        respuesta:dict = ingeso_marca(form)
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.agregar_usuario(dato_obtenido)
         return JsonResponse(respuesta)
 
     elif request.method == 'DELETE':
         dato_obtenido = json.loads(request.body)
-        identificador = dato_obtenido.get('identificador')
-        respuesta:dict = mantenimiento.eliminar_usuario(identificador)
+        respuesta = validaciones.eliminar_usuario(dato_obtenido)
         return JsonResponse(respuesta)
 
 
 def detalles_usuario(request,id):
-    mantenimiento = MantenimientoUsuario()
+    validaciones = ValidarUsuarios()
     if request.method == 'GET':
-        datos = mantenimiento.buscar_un_usuario(id)
+        datos = validaciones.buscar_usuario(id)
         return render(request,'adminuser/administrativo/detalles_usuario.html',datos)
-
-
-
-  #/obertern_usuarios/
-def obtenerUsuarios(request):
-    usuarios = list(AuthUser.objects.values())
-    if (len(usuarios)>0):
-        datos = {
-            'mensaje':'con datos',
-            'usuarios':usuarios
-            }
-    else:
-        datos = {'mensaje':'sin datos'}
-    return JsonResponse(datos)
-
-
-
-
-
-
+    if request.method == 'PUT':
+        datos = json.loads(request.body)
+        respuesta = validaciones.actualizar_datos(datos,id)
+        return JsonResponse(respuesta)
+ 
 
 def opciones(request):
     return render(request, 'adminuser/reabastecimiento/reabastecimiento.html')
 
 
-
 def inventariobajo(request):
     return render(request, 'adminuser/controlinventario/inventariobajo.html')
-
 
 def reporte(request):
     return render(request, 'adminuser/reportes/reportes.html')
 
 # vista para mostrar los datops
 
+#-----------------------------MARCAS------------------------------------------------
 
 def marcas(request):
+    validaciones = ValidacionesMarcas()
+
     if request.method == 'GET':
-        form = MarcaForm()
-        return render(request, 'adminuser/reabastecimiento/marcas.html', {'form': form})
+        respuesta = validaciones.obetener_datos_marcas()
+        return render(request, 'adminuser/reabastecimiento/Marcas.html', respuesta)
+    
     elif request.method == 'POST':
-        form = MarcaForm(request.POST)
-        respuesta = ingeso_marca(form)
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.agregar_marcas(dato_obtenido)
         return JsonResponse(respuesta)
 
-
-
-"""Vista para eliminar y acatualizar dato en espesifico"""
-def modificar_marcas(request):
-    if request.method == "DELETE":
-        #obteniedo los el id que nos envian en el frontend
-        datos = json.loads(request.body)
-        #del json obtenemos el id
-        id_marca = datos.get('id_marca')
-        #procedemos a eliminarlo y devolvemos una respuesta
-        respuesta = eliminar_marcas(id_marca)
-    elif request.method == "PUT":
-        respuesta = {'mensaje':'dato actualizado'}
-    return JsonResponse(respuesta)
-
-
-
-
-
-#def guardaMarca():
-
-# vista que nos da los datos
-
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.eliminar_marca(dato_obtenido)
+        return JsonResponse(respuesta)
+    elif request.method == 'PUT':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.actualizar_datos(datosJson)
+        return JsonResponse(respuesta)
+   
 
 def obtenerDatos(request):
     # creaando la lista de todas las marcas
@@ -138,16 +111,32 @@ def adminbarra(request):
     return render(request, 'adminuser/administrativo/adminBarra.html')
 
 
-# Defiendo las vista de categoria
-def categorias(request):
+
+
+'''------------------------------------ CATEGORIA ------------------------------------------------'''
+
+def administrar_categoria(request):
+    validaciones = MantenimientoCategoria()
+
     if request.method == 'GET':
-        form = CategoriaForm()
-        categorias = list(Categorias.objects.values())
-        return render(request, 'adminuser/reabastecimiento/Categorias.html', {'form': form,'datos':categorias})
+        respuesta = validaciones.obtener_categorias()
+        return render(request, 'adminuser/reabastecimiento/Categorias.html', respuesta)
+
     elif request.method == 'POST':
-        form = CategoriaForm(request.POST)
-        respuesta = ingeso_marca(form)
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.agregar_categorias(dato_obtenido)
         return JsonResponse(respuesta)
+
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.eliminar_categoria(dato_obtenido)
+        return JsonResponse(respuesta)
+    
+    elif request.method == 'PUT':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.actualizar_datos(datosJson)
+        return JsonResponse(respuesta)
+
 
 
 def obtenerDatosCategoria(request):
@@ -164,17 +153,31 @@ def obtenerDatosCategoria(request):
     return JsonResponse(dato)
 
 
-# Definiendo las vista de Registro de Productos
+
+'''---------------Definiendo las vista de Registro de Productos --------------------'''
 
 def registrocompras(request):
+    validaciones = ValidacionesCompra()
     if request.method == 'GET':
-        form = ComprasForm()
-        compras = list(Compras.objects.values_list('id_compra','fecha_compra','fk_proveedor__nombre_vendedor','fk_empleado__primer_nombre','fk_metodo_pago__nombre','observaciones'))
-        return render(request, 'adminuser/reabastecimiento/registroproductos.html', {'form': form,'datos':compras})
-    elif request.method == 'POST':
-        form = ComprasForm(request.POST)
-        respuesta = ingeso_marca(form)
+        datos = validaciones.obtener_datos_compra()
+        return render(request,'adminuser/reabastecimiento/registroproductos.html',datos)
+    
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.eliminar_compra(dato_obtenido)
         return JsonResponse(respuesta)
+
+    elif request.method == 'POST':
+        datos = json.loads(request.body)
+        respuesta = validaciones.guardar_nueva_compra(datos)
+        return JsonResponse(respuesta)
+
+
+
+
+
+
+
 
 def obtenerDatosCompras(request):
     # creaando la lista de todas las marcas
@@ -190,7 +193,7 @@ def obtenerDatosCompras(request):
     return JsonResponse(dato)
 
 
-""" DETALLE COMPRA """
+"""--------------------------- DETALLE COMPRA ----------------------------------------------"""
 
 def detallecompras(request):
     if request.method == 'GET':
@@ -198,14 +201,14 @@ def detallecompras(request):
         detallecompras = list(DetalleCompra.objects.values_list(
             'id_detalle_compra',
             'fk_producto_id__nombre_producto',
-            'fk_compra_id',
+            'fk_compra',
             'descuentos',
             'cantidad_compra',
             'precio_unitario_compra',
             'precio_sugerido_venta',
             'no_lote'
             ))
-        return render(request, 'adminuser/reabastecimiento/detallecompra.html', {'form': form,'datos':detallecompras})
+        return render(request, 'adminuser/reabastecimiento/detallecompras.html', {'form': form,'datos':detallecompras})
     elif request.method == 'POST':
         form = DetalleForm(request.POST)
         respuesta = ingeso_marca(form)
@@ -217,7 +220,7 @@ def obtenerDatosDetalle(request):
     if len(detallecompras) > 0:
         dato = {
             'mensaje': 'Si funciono',
-            'compra': detalllecompras
+            'compra': detallecompras
         }
     else:
 
@@ -226,45 +229,42 @@ def obtenerDatosDetalle(request):
 
 
 
-"""Nuevo Producto"""
-
-
+"""----------------------------Nuevo Producto-------------------------------------------"""
 def nuevo_producto(request):
+    validaciones = ValidacionesProductos()
     if request.method == 'GET':
-        nuevoProducto=Productos.objects.values_list(
-            'id_productos',
-            'nombre_producto',
-            'descripcion',
-            'codigo_barras',
-            'tamanio',
-            'imagen',
-            'estado',
-            'fk_presentacion__nombre_presentacion',
-            'fk_unidad_medida__prefijo',
-            'fk_categoria__nombre_categoria',
-            'fk_marca__nombre_marca'
-        )
-        return render(request,'adminuser/reabastecimiento/nuevoProducto.html',{'datos':nuevoProducto } )
+        datos=validaciones.obtener_datos_producto()
+        return render(request,'adminuser/reabastecimiento/nuevoProducto.html',datos)
+    
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.eliminar_producto(dato_obtenido)
+        return JsonResponse(respuesta)
+    
+    elif request.method =='POST':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.guardar_nuevo_producto(datosJson)
+        return JsonResponse(respuesta)
+        
 
 
-# Vista de Proveedores
+'''------------------------------------ Vista de Proveedores-------------------------------------'''
 def proveedores(request):
+    validaciones = ValidacionesProveedores()
     if request.method == 'GET':
-        form = ProveedoresForm()
-        proveedores = list(Proveedores.objects.values_list(
-            'id_proveedor',
-            'nombre_vendedor',
-            'telefono',
-            'dia_visita',
-            'dia_entrega',
-            'descripcion',
-            'estado',
-            ))
-        return render(request, 'adminuser/reabastecimiento/proveedores.html', {'form': form,'datos':proveedores})
+        datos=validaciones.obtener_datos_proveedores()
+        return render(request,'adminuser/reabastecimiento/proveedores.html',datos)
+       
     elif request.method == 'POST':
-         form = Proveedores(request.POST)
-         respuesta = ingeso_marca(form)
-         return JsonResponse(respuesta)
+        dato_obtenido=json.loads(request.body)
+        respuesta = validaciones.agregar_proveedores(dato_obtenido)
+        return JsonResponse(respuesta)
+
+    elif request.method == 'DELETE':
+        dato_obtenido=json.loads(request.body)
+        respuesta = validaciones.eliminar_proveedor(dato_obtenido)
+        return JsonResponse(respuesta)
+    
 
 def obtenerDatosProveedor(request):
     # creaando la lista de todas las marcas
@@ -280,25 +280,44 @@ def obtenerDatosProveedor(request):
     return JsonResponse(dato)
 
 
-#creando vista de listado de pedidos
-def listadopedidos(request):
-    if request.method == 'GET':
-        form = listadoForm()
-        listadopedido = list(ListadoPedidos.objects.values_list(
-            'id_listado',
-            'fecha_creacion',
-            'fk_empleado_id__primer_nombre',
-            'estado'
 
-            ))
-        return render(request, 'adminuser/reabastecimiento/listadopedido.html', {'form': form,'datos':listadopedido})
-    elif request.method == 'POST':
-         form = ListadoPedidos(request.POST)
-         respuesta = ingeso_marca(form)
-         return JsonResponse(respuesta)
+''' -------------------------- LISTAD DE PEDIDOS ---------------------------------'''
+
+def listadopedidos(request):
+    validaciones = ValidacionListadoProductos()
+    if request.method == 'GET':
+        datos=validaciones.obtener_listado_producto()
+        return render(request,'adminuser/reabastecimiento/listadopedido.html',datos)
+
+    elif request.method == 'DELETE':
+        dato_obtenido=json.loads(request.body)
+        respuesta = validaciones.eliminar_listado(dato_obtenido)
+        return JsonResponse(respuesta)
+    
+    elif request.method =='POST':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.agregar_listado(datosJson)
+        return JsonResponse(respuesta)
+    
+    
+    # if request.method == 'GET':
+    #     form = listadoForm()
+    #     listadopedido = list(ListadoPedidos.objects.values_list(
+    #         'id_listado',
+    #         'fecha_creacion',
+    #         'fk_empleado_id__primer_nombre',
+    #         'estado',
+    #         ))
+    #     return render(request, 'adminuser/reabastecimiento/listadopedido.html', {'form': form,'datos':listadopedido})
+    # elif request.method == 'POST':
+    #      form = ListadoPedidos(request.POST)
+    #      respuesta = ingeso_marca(form)
+    #      return JsonResponse(respuesta)
+
+
 
 def obtenerDatoslistado(request):
-    # creaando la lista de todas las marcas
+        # creaando la lista de todas las marcas
     listadopedido = list(ListadoPedidos.objects.values())
     if len(listadopedido) > 0:
         dato = {
@@ -311,3 +330,47 @@ def obtenerDatoslistado(request):
     return JsonResponse(dato)
 
 
+
+
+#-----------------------VISTAS DE CONTROL DE MOVIMIENTO --------------------------------
+
+def historialventas(request):
+    return render(request, 'adminuser/controlinventario/historialventas.html')
+
+def historialentradas(request):
+    return render(request, 'adminuser/controlinventario/historialentradas.html')
+
+def historialsalidas(request):
+    return render(request, 'adminuser/controlinventario/historialsalidas.html')
+
+def cardex(request):
+    return render(request, 'adminuser/controlinventario/cardex.html')
+
+def analisisgrafica(request):
+    return render(request, 'adminuser/controlinventario/analisisgrafica.html')
+
+
+    #---------------BALANCE DE CAJA----------------------------
+def agregaregreso(request):
+    return render(request, 'adminuser/controlinventario/agregaregresos.html')
+
+def agregaringreso(request):
+    return render(request, 'adminuser/controlinventario/agregaringreso.html')
+
+def balancecaja(request):
+    return render(request, 'adminuser/controlinventario/balancecaja.html')
+
+def informeanalisis(request):
+    return render(request, 'adminuser/controlinventario/informeanalisis.html')
+
+#---------------MODAL ACTUALIZACION NUEVO PRODUCTO----------------------------
+
+def modalactualizacion(request,id):
+    validaciones = ValidacionesProductos()
+    if request.method == 'GET':
+        datos = validaciones.buscar_producto(id)
+        return render(request, 'adminuser/reabastecimiento/modalactualizacion.html',datos)
+    if request.method == 'PUT':
+        datos = json.loads(request.body)
+        respuesta = validaciones.actualizar_datos(datos,id)
+        return JsonResponse(respuesta)

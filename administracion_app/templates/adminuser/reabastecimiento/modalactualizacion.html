@@ -1,0 +1,175 @@
+{% extends 'shared/baseadmin.html' %}
+
+{% block title %}
+  detalle de usuario
+{% endblock %}
+
+{% block link %}
+  <!-- carga de archivo css general -->
+
+  {% load static %}
+ 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/adminstyle.css' %}" />
+
+  {% endblock %}
+
+{% block body %}
+
+  <div class="container mt-5">
+    
+    <div class="text-dark bg-light rounded p-4">
+
+      <div class="row">
+        <div class="col-md-6">
+          <h1 id="sp_nombre_producto" >{{ producto.nombre_producto }}</h1>
+          <hr class="border border-primary border-3 opacity-75" />
+          <p class="border p-2">
+            <span class="fw-bold">Id Producto: </span><span id="sp_id">{{ producto.id_productos }}</span>
+          </p>
+            <p class="border p-2">
+                <span class="fw-bold">Descripcion: </span><span id="sp_email" >{{ producto.descripcion }}</span>
+            </p>
+            <p class="border p-2">
+                <span class="fw-bold">Codigo de Barras: </span><span id="sp_email" >{{ producto.codigo_barras }}</span>
+            </p>
+            <p class="border p-2">
+                <span class="fw-bold">Tamaño: </span><span id="sp_email" >{{ producto.tamanio }}</span>
+            </p>
+          <p class="border p-2">
+            <span class="fw-bold">Estado: </span><span id="sp_is_superuser" >{{ producto.estado|yesno:'Sí,No' }}</span>
+          </p>
+
+        </div>
+        
+        <div class="col-md-6 pt-5 mt-4">
+           <br>
+          <p class="border p-2">
+            <span class="fw-bold">Presentacion: </span><span id="sp_is_active">{{ producto.fk_presentacion.nombre_presentacion}}</span>
+          </p>
+          <p class="border p-2">
+            <span class="fw-bold">Unidad de Medida: </span><span id="sp_is_active">{{ producto.fk_unidad_medida.prefijo}}</span>
+          </p>
+          <p class="border p-2">
+            <span class="fw-bold">Categoría: </span><span id="sp_is_active">{{ producto.fk_categoria.nombre_categoria}}</span>
+          </p>
+          <p class="border p-2">
+            <span class="fw-bold">Marca: </span><span id="sp_is_active">{{ producto.fk_marca.nombre_marca}}</span>
+          </p>
+        </div>
+      </div>
+      <br />
+      <hr class="my-4" />
+    </div>
+    <br />
+    <a class="btn btn-info" href="{% url 'productos_nuevos' %}">Regresar</a>
+    <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal">Modificar</a>
+  </div>
+
+  <!-- Modal para Actualizar producto -->
+
+  <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content row">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="modalLabel">Editar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark">
+         {% comment %}  <form id="formulario_actualizacion">
+            <div class="mb-3 ">
+              <label for="nombreUsuario" class="form-label">Nombre del Producto:</label>
+              <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" value="{{ producto.nombre_producto }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Descripcion:</label>
+              <input type="email" class="form-control" id="descripcion" name="descripcion" value="{{ producto.descripcion }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Codigo de Barras:</label>
+              <input type="email" class="form-control" id="codigo_barras" name="codigo_barras" value="{{ producto.codigo_barras }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Tamaño:</label>
+              <input type="email" class="form-control" id="tamanio" name="tamanio" value="{{ producto.tamanio }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Presentacion:</label>
+              <select name="fk_presentacion" class="form-select" id="fk_presentacion">
+                {% for presentacion in producto.fk_presentacion  %}
+                  <option value="{{presentacion.fk_presentacion}}">{{presentacion}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Unidad de Medida:</label>
+              <input type="email" class="form-control" id="fk_unidad_medida" name="fk_unidad_medida" value="{{ producto.fk_unidad_medida.prefijo }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Categoria:</label>
+              <input type="email" class="form-control" id="fk_categoria" name="fk_categoria" value="{{ producto.fk_categoria.nombre_categoria }}" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Marca:</label>
+              <input type="email" class="form-control" id="fk_marca" name="fk_marca" value="{{ producto.fk_marca.nombre_marca }}" required />
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" role="switch" name="estado" id="flexSwitchCheckDefault" {% if usuario.is_active %}checked{% endif %} />
+              <label class="form-check-label" for="flexSwitchCheckDefault" id="switchLabel">Activo</label>
+           </div>
+            <div class="mb-3">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" id="btnGuardarCambios">Guardar Cambios</button>
+            </div>
+          </form> {% endcomment %}
+
+          <form class="form_body" id="form_agregar_marca">
+            {% csrf_token %}
+            {% load bootstrap5 %}
+             {% bootstrap_form form %}
+            </form>
+            {% buttons %}
+            <button id="btGuardarDato" type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          {% endbuttons %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% comment %} 
+<div class="modal fade" id="editarUsuarioModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-black">
+      <div class="modal-header">
+        <h5 class="modal-title" id="agregarProductoModalLabel">Agregar Nuevo Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="form_body" id="form_agregar_marca">
+          {% csrf_token %}
+          {% load bootstrap5 %}
+           {% bootstrap_form form %}
+          </form>
+          {% buttons %}
+          <button id="btGuardarDato" type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        {% endbuttons %}
+      </div>
+    </div>
+  </div>
+</div>
+ {% endcomment %}
+
+{% endblock %}
+{% block script %}
+  {% load static %}
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+  <script type="module" src="{% static 'js/Crud.js' %}"></script>
+  <script type="module" src="{% static 'js/detallesproductos.js' %}"></script>
+  <script type="module" src="{% static 'js/modal_actualizacion.js' %}"></script>
+  
+{% endblock %}

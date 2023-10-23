@@ -1,3 +1,6 @@
+import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+const mantenimiento = new Mantenimiento()
+const alertas = new AlertasBotones()
 
 const opcionesTabla = {
     "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
@@ -18,9 +21,9 @@ const opcionesTabla = {
     
     scrollCollapsey:true,
     scrollY: '400px',
-    pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
+    pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
-    lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
+    lengthMenu: [3, 5, 7, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
         targets: [0, 1, 2, 3, 4,5,6]//columnas inicia del 0 a n de las que se aplican los cabios
@@ -59,25 +62,83 @@ const opcionesTabla = {
 }
 
 window.addEventListener('load',()=>{
+    agregarFuncionBtnEliminar()
     $('#datoscompra').DataTable(opcionesTabla)
-    agregarBotonEliminar()
+    
 })
 
-const agregarBotonEliminar= ()=>{
-    const botonEliminar = document.querySelectorAll('.btn-eliminar-compra')
-    botonEliminar.forEach((boton) =>{
-        boton.addEventListener ('click', function(){
-            const idCompras = this.getAttribute('data-id');
-            console.log(idCompra)
-            accionEliminarCategoria(idCompra)
-        })
+const agregarFuncionBtnEliminar = () => {
+    const botonesEliminar = document.querySelectorAll('.btn-eliminar-compra');
+    botonesEliminar.forEach((boton) => {
+        boton.addEventListener('click', function () {
+            const identificador = this.getAttribute('data-id');
+            alertas.eliminar(identificador,eliminarCompra)
+            console.log(identificador);
+        });
     });
+};
+
+//! funcion eliminar tipo collback
+const eliminarCompra= async(id)=>{
+    const respuesta = await mantenimiento.eliminarDato('/admon/compras/',id)
+    if (respuesta.condicion === 'ok'){
+        mantenimiento.eliminarFilaTabla(id,'datoscompra')
+    }
+    return respuesta
 }
 
-const accionEliminarCategoria = (idCompra)=>{
-    alert(`el id que correposnde a este boton es: ${idCompra}`)
-}
+btGuardarCompra.addEventListener('click', async (e) => {
 
-const detallesUsuario= (idCompra)=>{
-    alert(`el id es de detalle es ${idCompra}`)
+    e.preventDefault()
+    let formAgregar = new FormData(form_agregar_compra);
+    
+    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+    
+    convertirStrNumeric(jSonObjetos)
+    console.log(jSonObjetos);
+    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/compras/', jSonObjetos) 
+    console.log('---------')
+    console.log(respuesta)
+    console.log(respuesta.condicion)
+    console.log('---------') 
+    if (respuesta.condicion==='ok') {
+        // mantenimiento.limpiarInputs('input_form') 
+        const fila = filaTabla(respuesta.datos)
+        console.log(fila);
+        $('#datoscompra').DataTable().row.add($(fila)).draw(false);
+        agregarFuncionBtnEliminar() 
+        alertas.exelente(respuesta.mensaje)
+    }
+    else {
+        alertas.error(respuesta.mensaje)
+    }
+
+ }); 
+
+
+ const convertirStrNumeric= (jSonObjetos)=>{
+    jSonObjetos.fk_proveedor=parseInt(jSonObjetos.fk_proveedor)
+    jSonObjetos.fk_empleado=parseInt(jSonObjetos.fk_empleado)
+    jSonObjetos.fk_metodo_pago= parseInt(jSonObjetos.fk_metodo_pago)
+    // jSonObjetos.estado=jSonObjetos.estado=='on'?true:false 
+ }
+
+ const filaTabla = (elementos) => {
+    const estado = elementos.estado ? 'Activo' : 'Inactivo';   
+    let datos = `
+    <tr data-id="${elementos.id_compra}">
+        <td>${elementos.id_compra}</td>
+        <td  >${elementos.fecha_compra}</td>
+        <td>${elementos.fk_proveedor}</td>
+        <td>${elementos.fk_empleado}</td>
+        <td>${elementos.fk_metodo_pago}</td>
+        <td>${elementos.observaciones}</td>
+        
+        <td>
+            ${crearBotonEliminar(elementos.id_compra,'btn-eliminar-compra')}
+            <a class="btn btn-outline-info" href="/admon/detalle-compras/${elementos.id_compra}/">Detalles</a>
+        </td> 
+    </tr>
+    `
+    return datos
 }

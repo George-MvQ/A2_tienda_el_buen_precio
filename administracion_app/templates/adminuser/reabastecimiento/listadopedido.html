@@ -39,11 +39,11 @@
         {% for listado in datos %}
           <tr data-id="{{ listado.0 }}">
             <td>{{ listado.0 }}</td>
-            <td>{{ listado.1 }}"</td>
-            <td>{{ listado.2 }}</td>
-            <td>{{ listado.3 }}</td>
+            <td>{{ listado.1}}"</td>
+            <td>{{ listado.2}}</td>
+            <td>{{ listado.estado |yesno:'Activo,Inactivo'}}</td>
             <td>
-              <button class="btn-espacio btn-eliminar-categoria btn btn-outline-danger" data-id="{{ listado.id_listado }}">Eliminar</button>
+              <button class="btn-espacio btn-eliminar-listado btn btn-outline-danger" data-id="{{ listado.id_listado }}">Eliminar</button>
               <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ categoria.id_categoria }}">Detalles</button>
             </td>
           </tr>
@@ -60,19 +60,22 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form_body" id="form_agregar_marca" method="POST">
-            {% csrf_token %}
-            {{ form.fechacreacion.label_tag }}
-            {{ form.fechacreacion }}
+          <form class="" id="form_agregar_listado" method="POST">
+            <!-- {% csrf_token %}
+            {{ form.fecha_creacion.label_tag }}
+            {{ form.fecha_creacion }}
             {{ form.empleado.label_tag }}
             {{ form.empleado }}
             {{ form.estado.label_tag }}
-            {{ form.estado }}
+            {{ form.estado }} -->
+            {% csrf_token %}
+          {% load bootstrap5 %}
+           {% bootstrap_form form %}
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+          <button id="btGuardarListado" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
         </div>
       </div>
     </div>
