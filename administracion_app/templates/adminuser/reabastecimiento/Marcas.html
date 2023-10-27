@@ -24,14 +24,17 @@
   </div> -->
 
 
-  <div class="pollito"></div>
+    <button class="btn btn-danger" id = "btn_imprimir" data-url= "/admon/reporte-prueba/">
+      &#128424;Imprimir
+  </button>
 
+ 
 
 {% comment %} TABLA {% endcomment %}
   <div class="container my-3 contenedor-tabla">
     <table id="datosmarca" class="table table-striped text-white">
       <thead>
-        <tr>
+        <tr  class="text-center align-middle text-white font-weight-bold">
           <th>Id Marca</th>
           <th>Nombre Marca</th>
           <th>Descripcion</th>
@@ -40,19 +43,19 @@
         </tr>
       </thead>
       <tbody id="tablaBody" class="text-white">
-      {% for marca in datos %}
-      <tr data-id="{{ marca.id_marcas}}">
-        <td> {{marca.id_marcas}} </td>
-        <td> {{marca.nombre_marca}} </td>
-        <td> {{marca.descripcion}} </td>
-        <td> {{marca.estado|yesno:'Activo,Inactivo' }} </td>
-        <td>
-          <button class="btn-espacio btn-eliminar-marca btn btn-outline-danger" data-id="{{ marca.id_marcas }}">Eliminar</button>
-          <button class="btn-formActualizar btn btn-outline-info" data-id="{{ marca.id_marcas }}" data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+        {% for marca in datos %}
+          <tr data-id="{{ marca.id_marcas}}">
+            <td>{{marca.id_marcas}}</td>
+            <td>{{marca.nombre_marca}}</td>
+            <td>{{marca.descripcion}}</td>
+            <td>{{marca.estado|yesno:'Activo,Inactivo'}}</td>
+            <td>
+              <button class="btn-espacio btn-eliminar-marca btn btn-outline-danger" data-id="{{ marca.id_marcas }}">Eliminar</button>
+              <button class="btn-formActualizar btn btn-outline-info" data-id="{{ marca.id_marcas }}" data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   </div>
 
@@ -72,7 +75,7 @@
             {{ form.descripcion.label_tag }}
             {{ form.descripcion }}
             {{ form.estado.label_tag }}
-            {{ form.estado }}
+            {{ form.estado  }}
           </form>
         </div>
         <div class="modal-footer">
@@ -98,7 +101,7 @@
         <form id="form_actualizar">
           <div class="form-group">
             <label class= "text-black" for="exampleInputText1">Nombre Categoria</label>
-            <input type="text" class="form-control" id="frm_nom_categoria" name="nombre_categoria" placeholder="Texto">
+            <input type="text" class="form-control" id="frm_nom_categoria" name="nombre_marca" placeholder="Texto">
           </div>
           <div class="form-group">
             <label class= "text-black" for="exampleInputText1">Descripcion</label>
@@ -132,4 +135,7 @@
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/marcas.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
+  
+  
 {% endblock %}

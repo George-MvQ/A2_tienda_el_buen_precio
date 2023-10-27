@@ -1,5 +1,5 @@
 from django import forms
-from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos, ListadoPedidos, Compras, Productos
+from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos, ListadoPedidos, Compras, Productos, DetalleCompra
 
 #tupla contiene dos elementos 1. valor que se envia 2. texto se se muestra
 _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
@@ -130,11 +130,21 @@ class DetalleForm(forms.Form):
             max_length=100,
             widget = forms.TextInput(attrs={'id':'in_lote'}),
         )
+ 
+""" ------------------------Formulario para ingresar compras-------------------------"""        
+class DetalleCompraForm(forms.ModelForm):
+    class Meta: 
+        model = DetalleCompra
+        exclude = ['fk_compra']
+        labels = {
+            'nombre_producto':' Nombre del Producto'
+            }
+        
 
 
 
 class ProveedoresForm(forms.Form):
-        nombre_vendedor = forms.CharField(
+        nombre_proveedor = forms.CharField(
         label='Nombre Proveedor',
         max_length=100,
         widget = forms.TextInput(attrs={'id':'in_nombre'}),

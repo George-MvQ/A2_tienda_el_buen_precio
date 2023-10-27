@@ -31,12 +31,15 @@
   </select>
        -->
   
+  <button type="button" data-url="/admon/reporte-pruebas/" class="btn btn-danger  ms-4" id="btn_imprimir">&#128424; Imprimir</button>
+
+
   <div class="container my-3">
     <table id="datosproveedores" class="table table-striped text-white">
       <thead>
         <tr>
-          <th>Id Proveedor</th>
-          <th>Nombre de Vendedor</th>
+          <th>Codigo</th>
+          <th>Nombre de Proveedor</th>
           <th>Telefono</th>
           <th>Dia de Visita</th>
           <th>Dia de Entrega</th>
@@ -49,7 +52,8 @@
         {% for proveedor in datos %}
           <tr data-id="{{ proveedor.id_proveedor}}">
             <td>{{ proveedor.id_proveedor }}</td>
-            <td>{{ proveedor.nombre_vendedor }}</td>
+            
+            <td>{{ proveedor.nombre_proveedor }}</td>
             <td>{{ proveedor.telefono }}</td>
             <td>{{ proveedor.dia_visita }}</td>
             <td>{{ proveedor.dia_entrega }}</td>
@@ -93,14 +97,14 @@
             </div>
 
           </form> -->
-           <form class="row" id="form_agregar_proveedor" method="POST">
+        <form class="row" id="form_agregar_proveedor" method="POST">
           {% csrf_token %}
           
           
           <div class="col-md-6 fw-bold "> 
             <div class="form-group mb-3">
-              {{ form.nombre_vendedor.label_tag }}
-              {{ form.nombre_vendedor }}
+              {{ form.nombre_proveedor.label_tag }}
+              {{ form.nombre_proveedor }}
             </div>
             <div class="form-group mb-3">
               {{ form.dia_entrega.label_tag }}
@@ -158,7 +162,7 @@
           {% comment %} a {% endcomment %}
           <div class="form-group">
             <label class= "text-black" for="exampleInputText1">Nombre proveedor</label>
-            <input type="text" class="form-control" id="frm_proveedor" name="nombre_vendedor" placeholder="Texto">
+            <input type="text" class="form-control" id="frm_proveedor" name="nombre_proveedor" placeholder="Texto">
           </div>
           {% comment %} a {% endcomment %}
           <div class="form-group">
@@ -213,4 +217,5 @@
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/proveedores.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
 {% endblock %}

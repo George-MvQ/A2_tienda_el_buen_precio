@@ -8,6 +8,10 @@ from .mantenimiento import MantenimientoGeneral
 from django.utils import timezone
 import sys
 from .formularios.fomularios_base import *
+from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import F, ExpressionWrapper, FloatField,Sum
+from django.db.models.functions import Round
+
 
 """funcion que me permite obtener datos del formularios de ingreso de datos"""
 
@@ -183,9 +187,6 @@ class ValidarProductos():
         
         except:
             return {'mensaje':'Error fatal datos equivocados', 'condicion':'error' }
-        
-        
-
 
 #------------------------------ CATEGORIAS -----------------------------------
 
@@ -278,15 +279,32 @@ class ValidacionesProductos:
             return {'mensaje':'Error fatal datos equivocados', 'condicion':'error' }
           
     def buscar_producto(self,id):
-        form=NuevoProducto()
+        objeto = get_object_or_404(Productos, pk=id)
+        form = NuevoProducto(instance=objeto)
         filtro = {'id_productos':id}  
         dato = self._mantenimiento.buscar_registros(filtro)
         return {
             'producto':dato,
             'form':form
             }
-            
+    def actualizar_datos(self,datos,id):
+        filtro = {'id_productos': id}
+        respuesta = self._mantenimiento.actualizar_registro(datos,filtro)
+        if respuesta['condicion']=='ok':
+            producto = self._mantenimiento.buscar_registros(filtro)
+            self._asignar_datos_fk(producto,respuesta['datos'])
+        print(respuesta)
+        return respuesta
+    
+    def _asignar_datos_fk(self,producto,datos):
+        datos['fk_presentacion'] = producto.fk_presentacion.nombre_presentacion
+        datos['fk_unidad_medida'] = producto.fk_unidad_medida.prefijo
+        datos['fk_categoria'] = producto.fk_categoria.nombre_categoria
+        datos['fk_marca'] = producto.fk_marca.nombre_marca
+        datos['estado'] = 'Activo' if producto.estado else 'Inactivo'
         
+        
+
 
 """----------------------------------MARCAS---------------------------------"""
 
@@ -315,6 +333,9 @@ class ValidacionesMarcas:
         filtro = {'id_marcas':datosJs.pop('identificador')}
         actualizacion = self._mantenimiento.actualizar_registro(datosJs,filtro)
         if actualizacion['condicion'] == 'ok':
+            print("-------------------------------")
+            print(actualizacion['datos']['estado'])
+            print("-------------------------------")
             actualizacion['datos']['estado'] = 'Activo' if actualizacion['datos']['estado'] else 'Inactivo'
         return actualizacion
 
@@ -333,7 +354,7 @@ class ValidacionesProveedores:
             'datos':datos
         }
     def agregar_proveedores(self, datos):
-        validacion = ['nombre_vendedor']
+        validacion = ['nombre_proveedor']
         respuesta = self._mantenimiento.agregar_registro(datos,'id_proveedor',validacion)
         return respuesta
 
@@ -344,6 +365,12 @@ class ValidacionesProveedores:
             respuesta['mensaje'] = 'El proveedor se ha eliminado correctamente'
         return respuesta
 
+    def actualizar_datos(self,datosJs:dict):
+        filtro = {'id_proveedor':datosJs.pop('identificador')}
+        actualizacion = self._mantenimiento.actualizar_registro(datosJs,filtro)
+        if actualizacion['condicion'] == 'ok':
+            actualizacion['datos']['estado'] = 'Activo' if actualizacion['datos']['estado'] else 'Inactivo'
+        return actualizacion
 
 '''------------------------------ LISTADO PRODUCTOS ------------------------------'''
 
@@ -356,7 +383,6 @@ class ValidacionListadoProductos():
             'form': form,
             'datos':datos
         }
-    
     
     def obtener_listado_producto(self):
         filtro=[
@@ -405,7 +431,7 @@ class   ValidacionesCompra:
         filtro=[
             'id_compra',
             'fecha_compra',
-            'fk_proveedor__nombre_vendedor',
+            'fk_proveedor__nombre_proveedor',
             'fk_empleado__primer_nombre',
             'fk_metodo_pago__nombre',
             'observaciones'
@@ -431,7 +457,7 @@ class   ValidacionesCompra:
         datosJson['fk_metodo_pago'] = MetodosPago.objects.get(id_metodo_pago = datosJson['fk_metodo_pago'])        
         print(datosJson)
         resultado = self._mantenimiento.agregar_registro(datosJson,'id_compra')
-        resultado['datos']['fk_proveedor'] =  datosJson['fk_proveedor'].nombre_vendedor
+        resultado['datos']['fk_proveedor'] =  datosJson['fk_proveedor'].nombre_proveedor
         resultado['datos']['fk_empleado'] = datosJson['fk_empleado'].primer_nombre
         resultado['datos']['fk_metodo_pago'] = datosJson['fk_metodo_pago'].nombre
 
@@ -456,3 +482,101 @@ class   ValidacionesCompra:
             'compra':dato,
             'form':form
             }
+        
+
+class ValidacionDetalles:
+    _mantenimiento = MantenimientoGeneral(DetalleCompra)
+    
+    def obtener_detalle(self, id):
+        form = DetalleForm()
+        campos = [
+            'id_detalle_compra',
+            'fk_producto_id',
+            'fk_compra',
+            'descuentos',
+            'cantidad_compra',
+            'precio_unitario_compra',
+            'precio_sugerido_venta',
+            'no_lote' 
+        ]
+        print ("--------------------------------")
+        print(id)
+        detalles = DetalleCompra.objects.filter(fk_compra=id)
+        #compra = Compras.objects.get(id_compras=id)
+        print ("--------------------------------")
+        #print(detalles[0].fk_compra.fecha_compra)
+        """ 
+        print(detalle[0].no_lote) """
+        return {
+            'form':form,
+            'detalles':detalles,
+            #'compra':compra
+        }
+    #
+    def guardar_compras(self, datos:dict,fk_compra:int):
+        print(datos)
+        self._asingar_objetos(datos,fk_compra)
+        respuesta = self._mantenimiento.agregar_registro(datos,'id_detalle_compra' )
+        if respuesta['ok']:
+            del respuesta['datos']['fk_compra']
+            print("--------------------------------")
+            print(respuesta['datos'])
+            print("--------------------------------")
+            self._obtener_nombre_prod(respuesta['datos'])
+        return respuesta
+    
+    def eliminar_registro(self,datos):
+        id = {'id_detalle_compra':datos['identificador']}
+        respuesta = self._mantenimiento.eliminar_registro(id)
+        if respuesta['ok']:
+            respuesta['mensaje']= "El registro a sido eliminado correctamente"
+        return respuesta
+    
+    def _asingar_objetos(self, datos,fk_compra):
+        datos['fk_producto'] = Productos.objects.get(id_productos = datos['fk_producto'])
+        datos['fk_compra'] = Compras.objects.get(id_compra=fk_compra)
+        
+    
+    @staticmethod
+    def obtener_detalle_completo(id):
+        try:
+            detalles_con_total = DetalleCompra.objects.filter(fk_compra=id).annotate(
+                c_total = Round( (F('cantidad_compra') * F('precio_unitario_compra') - F('descuentos')),2)
+            )
+            total_descunto = DetalleCompra.objects.filter(fk_compra=id).aggregate(total_descuentos=Sum('descuentos'))
+            total_sin_descuento =  DetalleCompra.objects.filter(fk_compra=id).aggregate(total_sin_descuento =Sum(
+               Round( F('cantidad_compra') * F('precio_unitario_compra'),2)
+            ))
+            
+            total_pago = detalles_con_total.aggregate(
+                total_pago = Sum('c_total')
+            )
+            try:
+                compra = Compras.objects.get(id_compra= id)
+            except:
+                compra = {}
+            print(compra)
+            print(total_pago)
+            return {
+                'form': DetalleCompraForm(),
+                'detalles': detalles_con_total,
+                'total_descuento': total_descunto['total_descuentos'],
+                'total_sin_descuneto': total_sin_descuento['total_sin_descuento'],
+                'compra':compra,
+                'total_pago': total_pago['total_pago']
+                
+            }
+        except Exception as e:
+            print (f'se encontro un erro {e}') 
+            return  {
+                'ok': False
+            }
+        
+    def _obtener_nombre_prod(self,datos):
+        datos['fk_producto'] = datos['fk_producto'].nombre_producto
+        
+
+
+    
+    
+    

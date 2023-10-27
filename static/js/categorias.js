@@ -124,7 +124,7 @@ const filaTabla = (elementos) => {
     let datos = `
     <tr data-id="${elementos.id_categoria}">
         <td>${elementos.id_categoria}</td>
-        <td  >${elementos.nombre_categoria}</td>
+        <td>${elementos.nombre_categoria}</td>
         <td>${elementos.descripcion}</td>
         <td>${estado}</td>
         <td>

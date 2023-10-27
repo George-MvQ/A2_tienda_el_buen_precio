@@ -3,34 +3,39 @@ from django.db import IntegrityError
 class  MantenimientoGeneral:
     """docstring for  MantenimientoGeneral."""
     def __init__(self, modelo):
-        self._modelo = modelo
+        self.modelo = modelo
 
     """buscar un registro"""
     #filtro = {'id':23}
+    """ buscas y obtiene un solo registro en espesifico """
     def buscar_registros(self, filtro)-> object:
+        """ Este metodo permite buscar un registro en espesifico -> devuelve un objeto """
         print(filtro)
         try:
-            return self._modelo.objects.get(**filtro)
-        except self._modelo.DoesNotExist:
+            return self.modelo.objects.get(**filtro)
+        except self.modelo.DoesNotExist:
             print("dato no existe")
             return {'condicion': 'error'}
     
+    """-----------------------------------"""
+    
+    
+    
     def dic_buscar_registro(self,filtro)->dict:
+        """ este metodo permite obtener datos espesificos en forma de diccionario"""
         try:
-            resultado = self._modelo.objects.filter(**filtro).first()
+            resultado = self.modelo.objects.filter(**filtro).first()
             if resultado is not None:
                 return resultado.__dict__
         except Exception as e:
             print(f'error al buscar registro {e}')
             return {'reultado': 'error'}
-            
-            
-
 
     """ Listar"""
+    
     def obtener_datos(self):
         try:
-            lista_datos = list(self._modelo.objects.values())
+            lista_datos = list(self.modelo.objects.values())
             return lista_datos
         except Exception as e: 
             print(f"error al obtener datos {e}")
@@ -38,7 +43,7 @@ class  MantenimientoGeneral:
 
     #Este metodo nos permite listar datos especificos
     def obtener_datos_especificos(self, especificos:list):
-        lista_datos = list(self._modelo.objects.values_list(*especificos))
+        lista_datos = list(self.modelo.objects.values_list(*especificos))
         return lista_datos
 
 
@@ -50,10 +55,10 @@ class  MantenimientoGeneral:
         valor: el identificador
         """
         try:
-            registro_eliminar = self._modelo.objects.get(**identificador)
+            registro_eliminar = self.modelo.objects.get(**identificador)
             registro_eliminar.delete()
-            return { 'condicion': 'ok' } 
-        except self._modelo.DoesNotExist:
+            return { 'condicion': 'ok','ok':True} 
+        except self.modelo.DoesNotExist:
             return {
                 'condicion': 'error',
                 'mensaje' : 'Dato no encontrado'                
@@ -70,13 +75,13 @@ class  MantenimientoGeneral:
             return {'condicion': 'error', 'mensaje':'error fatal dato no borrado'}
     
     
-    #dfasdfasdfasdf
+    #$
     def agregar_registro(self, datosJson,nombre_id,lista_val=[]):
         """ 
         Metodo principal para agregar un nuevo registro
         datosJson: diccionario de django (dict)
         lista_val: lista de validaciones (list)
-        id: nombre del id que se quiere dar (int)
+        id: nombre del id que se quiere dar (str)
         """
         respuesta = {}
         
@@ -135,8 +140,7 @@ class  MantenimientoGeneral:
         actualizados, mensaje y condicion 
         """
         try:
-            self._modelo.objects.filter(**filtro).update(**datos)
-            datos.update(filtro)
+            self.modelo.objects.filter(**filtro).update(**datos)
             nuevos_actualizados={
                 'condicion':'ok',
                 'mensaje':'Datos actualizados exitosamente',
@@ -146,7 +150,7 @@ class  MantenimientoGeneral:
         except Exception as e:
             print(f"Error {e}")
             nuevos_actualizados = {
-                'condicion':'ok',
+                'condicion':'error',
                 'mensaje':'Error, no se actualizaron los datos'
             }
             return nuevos_actualizados
@@ -156,7 +160,7 @@ class  MantenimientoGeneral:
     
     #validaciones de campos unicos 
     def _validar_campos_unicos(self,validaciones:dict) -> bool:
-        existencia = self._modelo.objects.filter(**validaciones).exists()
+        existencia = self.modelo.objects.filter(**validaciones).exists()
         return not existencia
     
     def _campos_validacion(self, lista,objetos) -> dict:
@@ -168,13 +172,15 @@ class  MantenimientoGeneral:
    
     def _guardar_registro(self,objetos:dict, nombre_id):
         try: 
-            nuevo_registro= self._modelo(**objetos['datos'])
+            nuevo_registro= self.modelo(**objetos['datos'])
             nuevo_registro.save()
             print(f"este es con pk {nuevo_registro.pk}")
             objetos['datos'][nombre_id]=nuevo_registro.pk
             objetos['mensaje'] = 'Dato guardado con existo'
             objetos['condicion'] = 'ok'
+            objetos['ok'] = True
         except Exception as e:
             print(e)
+            objetos['ok'] = False
             objetos['condicion'] = 'error'
             objetos['mensaje'] = 'error al registrar'

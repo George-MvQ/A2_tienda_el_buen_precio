@@ -34,8 +34,6 @@ class Categorias(models.Model):
         else:
             return "Sin nombre de categoria" 
     
-    
-
 
 class Compras(models.Model):
     id_compra = models.BigAutoField(db_column='ID_compra', primary_key=True)  # Field name made lowercase.
@@ -54,12 +52,12 @@ class DetalleCompra(models.Model):
     id_detalle_compra = models.BigAutoField(db_column='ID_detalle_compra', primary_key=True)  # Field name made lowercase.
     fk_producto = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_producto', blank=True, null=True)
     fk_compra = models.ForeignKey(Compras, models.DO_NOTHING, db_column='fk_compra', blank=True, null=True)
-    descuentos = models.DecimalField(db_column='Descuentos', max_digits=19, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    descuentos = models.DecimalField(db_column='Descuentos', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     cantidad_compra = models.IntegerField(db_column='Cantidad_compra')  # Field name made lowercase.
-    precio_unitario_compra = models.DecimalField(max_digits=19, decimal_places=4)
-    precio_sugerido_venta = models.DecimalField(db_column='Precio_sugerido_venta', max_digits=19, decimal_places=4)  # Field name made lowercase.
-    no_lote = models.IntegerField(db_column='No_lote')  # Field name made lowercase.
-
+    precio_unitario_compra = models.DecimalField(max_digits=18, decimal_places=2)
+    precio_sugerido_venta = models.DecimalField(db_column='Precio_sugerido_venta', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    no_lote = models.IntegerField(db_column='No_lote')  # Field name made lowercase. 
+    
     class Meta:
         managed = False
         db_table = 'Detalle_compra'
@@ -108,7 +106,6 @@ class Empleados(models.Model):
             return "Sin Empleados"  
     
 
-
 class Inventario(models.Model):
     id_inventario = models.AutoField(db_column='ID_inventario', primary_key=True)  # Field name made lowercase.
     fk_producto2 = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_producto2')
@@ -142,9 +139,7 @@ class Marcas(models.Model):
         max_length=80, 
         db_collation='Modern_Spanish_CI_AS'
         )  # Field name made lowercase.
-    estado = models.BooleanField(
-        db_column='Estado'
-        )  # Field name made lowercase.
+  # Field name made lowercase.
     descripcion = models.CharField(
         db_column='Descripcion', 
         max_length=150, 
@@ -152,7 +147,9 @@ class Marcas(models.Model):
         blank=True, 
         null=True
         )  # Field name made lowercase.
- 
+    estado = models.BooleanField(
+        db_column='Estado'
+        ) 
     
     class Meta:
         managed = False
@@ -164,7 +161,6 @@ class Marcas(models.Model):
         else:
             return "Sin nombre de marca" 
     
-
 
 class MetodosPago(models.Model):
     id_metodo_pago = models.AutoField(
@@ -197,8 +193,6 @@ class MetodosPago(models.Model):
             return "Sin empleados" 
     
     
-
-
 class MovimientoCaja(models.Model):
     id_mov_caja = models.AutoField(db_column='ID_mov_caja', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(db_column='Fecha')  # Field name made lowercase.
@@ -255,12 +249,11 @@ class Productos(models.Model):
         db_table = 'Productos'
     def __str__(self):
         return self.nombre_producto
-    
 
 
 class Proveedores(models.Model):
     id_proveedor = models.AutoField(db_column='ID_proveedor', primary_key=True)  # Field name made lowercase.
-    nombre_vendedor = models.CharField(db_column='Nombre_vendedor', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    nombre_proveedor = models.CharField(db_column='Nombre_proveedor', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     telefono = models.CharField(db_column='Telefono', max_length=20, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     estado = models.BooleanField(db_column='Estado', blank=True, null=True)  # Field name made lowercase.
     dia_visita = models.CharField(db_column='Dia_visita', max_length=25, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
@@ -272,8 +265,8 @@ class Proveedores(models.Model):
         db_table = 'Proveedores'
         
     def __str__(self):
-        if self.nombre_vendedor is not None:
-            return self.nombre_vendedor
+        if self.nombre_proveedor is not None:
+            return self.nombre_proveedor
         else:
             return "Sin proveedores" 
 

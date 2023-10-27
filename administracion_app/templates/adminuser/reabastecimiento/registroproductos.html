@@ -16,26 +16,7 @@ Registro de Productos
   {% endblock %}
 
 {% block content %}
-
-
   <h2>REGISTRO COMPRAS</h2>
-<!--   <div class="container botonFormulario" id="meter">
-    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div> -->
-
-
-  <div class="pollito"></div>
-  
-<!--
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
--->
-<p>{{ datos }}</p>
   <div class="container my-3">
     <table id="datoscompra" class="table table-striped">
       <thead>
@@ -45,7 +26,6 @@ Registro de Productos
           <th class="text-white font-weight-bold">Proveedores</th>
           <th class="text-white font-weight-bold">Empleado</th>
           <th class="text-white font-weight-bold">Metodo Pago</th>
-          <th class="text-white font-weight-bold">Obeservaciones</th>
           <th class="text-white font-weight-bold">Opciones</th>
         </tr>
       </thead>
@@ -57,10 +37,10 @@ Registro de Productos
           <td>{{ compra.2 }}</td>
           <td>{{ compra.3 }}</td>
           <td>{{ compra.4 }}</td>
-          <td>{{ compra.5 }}</td>
           <td>
             <button class="btn-espacio btn-eliminar-compra btn btn-outline-danger" data-id="{{ compra.0 }}">Eliminar</button>
-            <a class="btn btn-outline-info" href="{% url 'detalle_compras'%}" data-id="{{ compra.id_compra }}">Detalles</a>
+            <a class="btn btn-outline-info" href="{% url 'detalle_compras' compra.0 %}" data-id="{{ compra.0}}">Detalles</a>
+            <a class="btn btn-outline-warning" href="{% url 'agregar_compras' compra.0 %}" data-id="{{ compra.0 }}">Agregar</a>
             <!-- {% comment %} <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ compra.id_compra }}">Detalles</button> {% endcomment %} -->
           </td>
         </tr>

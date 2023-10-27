@@ -19,14 +19,14 @@ const opcionesTabla = {
         }
     ],
     
-    scrollCollapsey:true,
+    scrollCollapse:true,
     scrollY: '400px',
     pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3, 5, 7, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
-        targets: [0, 1, 2, 3, 4,5,6]//columnas inicia del 0 a n de las que se aplican los cabios
+        targets: [0, 1, 2, 3, 4,5]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen  
         targets: [3, 4]
@@ -132,11 +132,10 @@ btGuardarCompra.addEventListener('click', async (e) => {
         <td>${elementos.fk_proveedor}</td>
         <td>${elementos.fk_empleado}</td>
         <td>${elementos.fk_metodo_pago}</td>
-        <td>${elementos.observaciones}</td>
-        
         <td>
             ${crearBotonEliminar(elementos.id_compra,'btn-eliminar-compra')}
-            <a class="btn btn-outline-info" href="/admon/detalle-compras/${elementos.id_compra}/">Detalles</a>
+            <a class="btn btn-outline-info" href="/admon/detalle-compras/${elementos.id_compra}">Detalles</a>
+            <a class="btn btn-outline-warning" href="/admon/detalle-compras/${elementos.id_compra} >Agregar</a>
         </td> 
     </tr>
     `

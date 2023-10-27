@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from .form_users import LoginForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -48,8 +48,12 @@ def logeo(request):
                 return redirect('/')
         else:
             return redirect('/')
-    
-    
+
+
+
+def cerrar_secion(request):
+    logout(request)
+    return redirect('inicio')
     
 """
     if request.method =='POST':

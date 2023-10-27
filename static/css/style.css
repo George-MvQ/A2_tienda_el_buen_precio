@@ -5,12 +5,15 @@
 body{
     display: grid;
     min-height: 100vh; 
-    grid-template-rows: 10% 85% 5%;
+    grid-template-rows: 100px 1fr 5%;
     background-color: #0F171A;
     color: white;
-    box-sizing: border-box;
-/*     background-image: url('static/images/lago.jpg') */
-    /* style.css */
+/*     box-sizing: border-box;
+        background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Establece la imagen de fondo */
+    /* background-image: url('images/lago.jpg'); */ 
 } 
 
 /* #idnav{
@@ -171,7 +174,7 @@ main{
 .opciones_tabla{
    /*  background-color: #5fef8d; */
     display: grid;
-    grid-template-columns: 15% 30% 55%;
+    grid-template-columns: 15% 30% 1fr;
     /* background-color: rgb(183, 0, 255); */
     justify-content: center; /* Centrar horizontalmente */
     align-items: center; /* Centrar verticalmente */

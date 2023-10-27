@@ -1,9 +1,18 @@
+
+
 class Mantenimiento {
 
     #datosError = {
         mensaje: "Error fatal",
         condicion: 'Error'
     }
+
+    constructor() {
+        this.patronDecimal = /^\d+(\.\d+)?$/;
+        this.patronEntero = /^\d+$/;
+    }
+
+    
     async obtenerDatos(url_obtener) {
         const datos = {
             respuesta: '',
@@ -103,11 +112,20 @@ class Mantenimiento {
     async actualizarRegistroCompleto(url_actualizar, datos) {
         
       try{
+        let crfToken;
+        console.log(datos)
+        if ('csrfmiddlewaretoken' in datos){
+            console.log(datos.csrfmiddlewaretoken);
+            crfToken = datos.csrfmiddlewaretoken
+            delete datos.csrfmiddlewaretoken
+            console.log(datos.csrfmiddlewaretoken);
+            }  else crfToken = this.getCookie('csrftoken')
+            console.log(datos)
             const actualizar = await fetch(url_actualizar,{
                 method: 'PUT',
                 headers:{
                     'Content-Type': 'application/json', //espesifica que se envian datos al servido en formato JSon
-                    'X-CSRFToken': this.getCookie('csrftoken')
+                    'X-CSRFToken': crfToken
                 },
                 body: JSON.stringify(datos)
             })
@@ -159,10 +177,14 @@ class Mantenimiento {
 
     formulariosAObjeto(formulario) {
         const objeto = {}
-        formulario.forEach((value, key) => {objeto[key] = value})
+        formulario.forEach((value, key) => {
+            if (!isNaN(value)){
+                if(this.patronEntero.test(value)) objeto[key] = parseInt(value);
+                else if(this.patronDecimal.test(value)) objeto[key] = parseFloat(value)
+            } else objeto[key] = value
+        })
         return objeto;
     }
-
 }
 
 

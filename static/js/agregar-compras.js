@@ -1,10 +1,27 @@
+///otros pora agregar productos 
 import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
+let totalPago = 0
+let totalDescuento = 0
+let totalSinDescuento = 0
+
 const opcionesTabla = {
-    //"dom":'   <"contenedor_tabla"  <"opciones_tabla" <"filter" f> <"length" l> ><t><"bottom"p> >',
+    "dom":' <"opciones_tabla" <"#meter.container botonFormulario" B><"filter" f > <"length" l > > <t> <p>',
     // Renderizar el lengthMenu personalizado
-   
+    buttons: [
+        {
+            text: 'Agregar',
+            className:'btn btn-primary ',
+            init: function (api,node,conf){
+                // Agregar los atributos data-bs-toggle y data-bs-target
+                $(node).attr('data-bs-toggle', 'modal');
+                $(node).attr('data-bs-target', '#staticBackdrop');
+                  // Agregar un ID al botón
+                 $(node).attr('id', 'btnAgregdarMarca');
+            }
+        }
+    ],
     scrollCollapse:true,
     scrollY: '400px',
     pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
@@ -49,18 +66,20 @@ const opcionesTabla = {
 
 
 window.addEventListener('load', () => {
-    // agregarFuncionBtnEliminar();
+     agregarFuncionBtnEliminar();
     $('#datosdetalle').DataTable(opcionesTabla);
 });
 
 
 const agregarFuncionBtnEliminar = () => {
-    const botonesEliminar = document.querySelectorAll('.btn-eliminar-lista');
+    const botonesEliminar = document.querySelectorAll('.btn-eliminar-producto');
     botonesEliminar.forEach((boton) => {
         boton.addEventListener('click', function () {
+
             const identificador = this.getAttribute('data-id');
             alertas.eliminar(identificador,eliminarProducto)
             console.log(identificador);
+
         });
     });
 };
@@ -68,39 +87,63 @@ const agregarFuncionBtnEliminar = () => {
 
 //! funcion eliminar tipo collback
 const eliminarProducto= async(id)=>{
-    const respuesta = await mantenimiento.eliminarDato('/admon/ingreso-productos/',id)
-    if (respuesta.condicion === 'ok'){
-        mantenimiento.eliminarFilaTabla(id,'datosproductos')
+    const respuesta = await mantenimiento.eliminarDato(`/admon/agregar-compras/${id}/`,id)
+    console.log(respuesta);
+    if (respuesta.ok){
+        mantenimiento.eliminarFilaTabla(id,'datosdetalle')
+        console.log('-------------------------');
+        console.log(respuesta);
+        console.log('-------------------------');
     }
     return respuesta
 }
 
-
+//Buena frank 
+// lo siento george no estamos ayudando :( so😪oooooolo
+//bueena goerge dame una terminal bb WILSON LO SIENTO 😫
+//xd 🤣🤣🤣🤣🤣
+//ahi esta frank
+//perame estoy arreglando 
+//TIENE ERROR VA 
 btGuardarDato.addEventListener('click', async (e) => {
-
+    //
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_marca);
-    
+    const id = btGuardarDato.getAttribute('data-id')
+    console.log(id);
+    let formAgregar = new FormData(form_compra_producto);
     const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
     
-    convertirStrNumeric(jSonObjetos)
+    //convertirStrNumeric(jSonObjetos)
+    operacionesAgregar(jSonObjetos)
     console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos) 
+    console.log('--------------------------------');
+    console.log('total compra sin descuento:', totalSinDescuento);
+    console.log('total descuento:', totalDescuento);
+    console.log('total a pagar:', totalPago);
+    /* const fila = filaTabla(jSonObjetos)
+        console.log(fila);
+        $('#datosdetalle').DataTable().row.add($(fila)).draw(false); */
+    const respuesta = await mantenimiento.agregarNuevoRegistro(`/admon/agregar-compras/${id}/`, jSonObjetos) 
     console.log('---------')
     console.log(respuesta)
     console.log(respuesta.condicion)
     console.log('---------') 
-    if (respuesta.condicion==='ok') {
+    if (respuesta.ok) {
         // mantenimiento.limpiarInputs('input_form') 
         const fila = filaTabla(respuesta.datos)
-        console.log(fila);
-        $('#datosproductos').DataTable().row.add($(fila)).draw(false);
+        $('#datosdetalle').DataTable().row.add($(fila)).draw(false);
         agregarFuncionBtnEliminar() 
         alertas.exelente(respuesta.mensaje)
     }
     else {
         alertas.error(respuesta.mensaje)
-    }
+    } 
+
+
+    
+
+
+
 
  }); 
 
@@ -115,23 +158,37 @@ btGuardarDato.addEventListener('click', async (e) => {
    jSonObjetos.estado=jSonObjetos.estado=='on'?true:false 
  }
 
+ //ingreso dato 20
+const operacionesAgregar=(datos)=>{
+    totalDescuento += datos.descuentos
+    totalSinDescuento += datos.cantidad_compra * datos.precio_unitario_compra
+    totalPago = totalSinDescuento - totalDescuento
+}
 
+//
+const operacionesQuitar=(datos)=>{
+    totalDescuento -= datos.descuentos
+    totalSinDescuento -= datos.cantidad_compra * datos.precio_unitario_compra
+    totalPago = totalSinDescuento - totalDescuento
+}
 
 const filaTabla = (elementos) => {
     const estado = elementos.estado ? 'Activo' : 'Inactivo';   
     let datos = `
-    <tr data-id="${elementos.id_productos}">
-        <td>${elementos.id_productos}</td>
-        <td  >${elementos.nombre_producto}</td>
-        <td>${elementos.descripcion}</td>
-        <td>${elementos.fk_categoria}</td>
-        <td>${estado}</td>
+    <tr data-id="${elementos.id_detalle_compra}">
+        <td>${elementos.no_lote}</td>
+        <td>${elementos.no_lote}</td>
+        <td>${elementos.fk_producto}</td>
+        <td>Q${elementos.descuentos}</td>
+        <td>${elementos.cantidad_compra}</td>
+        <td>Q${elementos.precio_unitario_compra}</td>
+        <td>Q${elementos.precio_sugerido_venta}</td>
+        <td>Q${elementos.cantidad_compra * elementos.precio_unitario_compra - elementos.descuentos}</td>
         <td>
-            ${crearBotonEliminar(elementos.id_productos,'btn-eliminar-producto')}
-            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id_productos}">Detalles</a>
+            ${crearBotonEliminar(elementos.id_detalle_compra,'btn-eliminar-producto')}
+            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id_detalle_compra}">Detalles</a>
         </td> 
     </tr>
     `
     return datos
 }
-

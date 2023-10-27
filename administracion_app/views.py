@@ -1,3 +1,4 @@
+import io
 from django.shortcuts import render,redirect
 #from administracion_app.models import *
 """ from inicio_app.models import AuthUser """
@@ -8,7 +9,31 @@ from .validaciones import *
 import json
 from django.contrib.auth.decorators import login_required
 from .models import AuthUser, Marcas
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
 
+from django.http import HttpResponse
+from django.template.loader import get_template
+import os
+from django.conf import settings
+
+
+from django.shortcuts import render
+from reportlab.lib.utils import ImageReader
+
+from django.template.loader import get_template
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+
+from .models import Marcas, Proveedores
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.template.loader import get_template
+
+from django.urls import reverse
 
 @login_required
 def admon(request):
@@ -173,12 +198,6 @@ def registrocompras(request):
         return JsonResponse(respuesta)
 
 
-
-
-
-
-
-
 def obtenerDatosCompras(request):
     # creaando la lista de todas las marcas
     compras = list(Compras.objects.values())
@@ -193,26 +212,32 @@ def obtenerDatosCompras(request):
     return JsonResponse(dato)
 
 
+def agregar_compras(request,id):
+    validacion = ValidacionDetalles()
+    if request.method == 'GET':
+        datos = ValidacionDetalles.obtener_detalle_completo(id)
+        return render(request, 'adminuser/reabastecimiento/agregar_compras.html',datos)
+    if request.method == 'POST':
+        datosJs = json.loads(request.body)
+        respuesta = validacion.guardar_compras(datosJs,id)
+        return JsonResponse(respuesta)
+    if request.method == 'DELETE':
+        datosJs = json.loads(request.body)
+        respuesta = validacion.eliminar_registro(datosJs)
+        print(respuesta)
+        return JsonResponse(respuesta)
+        
+
+
+
 """--------------------------- DETALLE COMPRA ----------------------------------------------"""
 
-def detallecompras(request):
+def detallecompras(request,id):
     if request.method == 'GET':
-        form = DetalleForm()         
-        detallecompras = list(DetalleCompra.objects.values_list(
-            'id_detalle_compra',
-            'fk_producto_id__nombre_producto',
-            'fk_compra',
-            'descuentos',
-            'cantidad_compra',
-            'precio_unitario_compra',
-            'precio_sugerido_venta',
-            'no_lote'
-            ))
-        return render(request, 'adminuser/reabastecimiento/detallecompras.html', {'form': form,'datos':detallecompras})
-    elif request.method == 'POST':
-        form = DetalleForm(request.POST)
-        respuesta = ingeso_marca(form)
-        return JsonResponse(respuesta)
+        return render(request, 'adminuser/reabastecimiento/detalle_compras.html', ValidacionDetalles.obtener_detalle_completo(id))
+  
+    
+    
 
 def obtenerDatosDetalle(request):
     # creaando la lista de todas las marcas
@@ -264,7 +289,13 @@ def proveedores(request):
         dato_obtenido=json.loads(request.body)
         respuesta = validaciones.eliminar_proveedor(dato_obtenido)
         return JsonResponse(respuesta)
+
+    elif request.method == 'PUT':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.actualizar_datos(datosJson)
+        return JsonResponse(respuesta)
     
+""" -------------------------"""   
 
 def obtenerDatosProveedor(request):
     # creaando la lista de todas las marcas
@@ -299,21 +330,6 @@ def listadopedidos(request):
         respuesta = validaciones.agregar_listado(datosJson)
         return JsonResponse(respuesta)
     
-    
-    # if request.method == 'GET':
-    #     form = listadoForm()
-    #     listadopedido = list(ListadoPedidos.objects.values_list(
-    #         'id_listado',
-    #         'fecha_creacion',
-    #         'fk_empleado_id__primer_nombre',
-    #         'estado',
-    #         ))
-    #     return render(request, 'adminuser/reabastecimiento/listadopedido.html', {'form': form,'datos':listadopedido})
-    # elif request.method == 'POST':
-    #      form = ListadoPedidos(request.POST)
-    #      respuesta = ingeso_marca(form)
-    #      return JsonResponse(respuesta)
-
 
 
 def obtenerDatoslistado(request):
@@ -334,14 +350,14 @@ def obtenerDatoslistado(request):
 
 #-----------------------VISTAS DE CONTROL DE MOVIMIENTO --------------------------------
 
+def inventario_productos(request):
+    return render(request, 'adminuser/controlinventario/inventario.html')
+
 def historialventas(request):
     return render(request, 'adminuser/controlinventario/historialventas.html')
 
 def historialentradas(request):
     return render(request, 'adminuser/controlinventario/historialentradas.html')
-
-def historialsalidas(request):
-    return render(request, 'adminuser/controlinventario/historialsalidas.html')
 
 def cardex(request):
     return render(request, 'adminuser/controlinventario/cardex.html')
@@ -374,3 +390,90 @@ def modalactualizacion(request,id):
         datos = json.loads(request.body)
         respuesta = validaciones.actualizar_datos(datos,id)
         return JsonResponse(respuesta)
+
+#------------------------VENTAS--------------------------------
+def registrarventa(request):
+    return render(request, 'adminuser/controlinventario/registrarventa.html')
+    
+    
+    
+    
+"""----------------- REPORTE DE PRUEBA-----------------------------"""
+
+# def reporte_marcas(request):
+#     validaciones = ValidacionesMarcas()
+
+#     respuesta = validaciones.obetener_datos_marcas()
+
+#     datos_marcas = Marcas.objects.all()
+
+#     # Carga la plantilla HTML (rp.html en este caso)
+#     template = get_template('rp.html')
+#     context = {'datos': datos_marcas}
+
+#     # Renderiza la plantilla HTML con los datos
+#     html = template.render(context)
+
+#     # Crea una respuesta en PDF
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+
+#     # Define la función para cargar los recursos estáticos
+#     def fetch_resources(uri, rel):
+#         static_path = os.path.join(settings.BASE_DIR, 'static')
+#         path = os.path.join(static_path, uri.replace(settings.STATIC_URL, ""))
+#         return path
+
+#     # Crea el PDF a partir del HTML usando la biblioteca xhtml2pdf
+#     result = BytesIO()
+#     pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=fetch_resources)
+
+#     # Comprueba si se generó el PDF correctamente
+#     if not pdf.err:
+#         # Establece el contenido del PDF generado en la respuesta HTTP
+#         response.write(result.getvalue())
+#         return response
+#     else:
+#         return HttpResponse('Error al generar el PDF', content_type='text/plain')
+
+
+def generar_pdf(datos_modelo, template_name):
+    # Carga la plantilla HTML
+    template = get_template(template_name)
+    context = {'datos': datos_modelo}
+
+    # Renderiza la plantilla HTML con los datos
+    html = template.render(context)
+
+    # Crea una respuesta en PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+
+    # Define la función para cargar los recursos estáticos
+    def fetch_resources(uri, rel):
+        static_path = os.path.join(settings.BASE_DIR, 'static')
+        path = os.path.join(static_path, uri.replace(settings.STATIC_URL, ""))
+        return path
+
+    # Crea el PDF a partir del HTML usando la biblioteca xhtml2pdf
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=fetch_resources)
+
+    # Comprueba si se generó el PDF correctamente
+    if not pdf.err:
+        # Establece el contenido del PDF generado en la respuesta HTTP
+        response.write(result.getvalue())
+        return response
+    else:
+        return HttpResponse('Error al generar el PDF', content_type='text/plain')
+
+
+
+def reporte_marcas(request):
+    datos_marcas = Marcas.objects.all()
+    return generar_pdf(datos_marcas, 'plantillas_reportes/rp.html')
+
+
+def reporte_categorias(request):
+    datos_proveedor = Proveedores.objects.all()
+    return generar_pdf(datos_proveedor, 'plantillas_reportes/rp2.html')

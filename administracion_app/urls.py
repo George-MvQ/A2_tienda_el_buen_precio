@@ -27,13 +27,16 @@ urlpatterns = [
       #Compras
       path('compras/',views.registrocompras, name='compras'),
       path('obtener-compras/',views.obtenerDatosCompras,name='obtener_compras'),
+      path('agregar-compras/<int:id>/',views.agregar_compras, name='agregar_compras'),
+      
       #detalle compras
-      path('detalle-compras/',views.detallecompras, name='detalle_compras'),
+      path('detalle-compras/<int:id>',views.detallecompras, name='detalle_compras'),
       path('obtener-detalle-compras/',views.obtenerDatosDetalle,name='obtener_detalle_compras'),
      
       #Listado de Pididos
       path('listado-pedidos/',views.listadopedidos, name='listadopedidos'),
       path('obtener-listado/',views.obtenerDatoslistado,name='obtener_pedidos'),
+      
       #Ingreso-producto_
       path('ingreso-productos/',views.nuevo_producto, name='productos_nuevos'),
       path('modal-actualizacion/<int:id>/',views.modalactualizacion, name='modal_actualizacion'),
@@ -42,9 +45,10 @@ urlpatterns = [
 
 
       # -----------------MODULO DE MOVIMIENTOS------------------------
+        path('inventario-productos/',views.inventario_productos, name='inventario_productos'),
         path('historial-ventas/',views.historialventas, name='historial_ventas'),
         path('historial-entradas/',views.historialentradas, name='historial_entradas'),
-        path('historial-salidas/',views.historialsalidas, name='historial_salidas'),
+        
         path('cardex/',views.cardex, name='historial_cardex'),
         path('analisis-grafica/',views.analisisgrafica, name='analisis_grafica'),
 
@@ -53,6 +57,15 @@ urlpatterns = [
         path('agregar-ingreso/',views.agregaringreso, name='ingresar_ingreso'),
         path('balance-caja/',views.balancecaja, name='balance_caja'),
         path('informe-analisis/',views.informeanalisis, name='informe_analis'),
+        
+        #--------------REPORTERIA------------------
+  
+        path('reporte-prueba/',views.reporte_marcas, name='reporte_prueba'),
+        path('reporte-pruebas/',views.reporte_categorias, name='reporte_categoria'),
+
+        #----------------VENTAS----------------------------
+        path('registrar-venta/',views.registrarventa, name='registrar_venta'),
+              
 ]
 
 

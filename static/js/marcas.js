@@ -1,4 +1,4 @@
-import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+import {Mantenimiento, AlertasBotones, crearBotonEliminar } from "./Crud.js";
 
 
 const mantenimiento = new Mantenimiento()
@@ -11,17 +11,17 @@ const opcionesTabla = {
     buttons: [
         {
             text: 'Agregar',
-            className:'btn btn-primary ',
-            init: function (api,node,conf){
+            className: 'btn btn-primary ',
+            init: function (api, node, conf) {
                 // Agregar los atributos data-bs-toggle y data-bs-target
                 $(node).attr('data-bs-toggle', 'modal');
                 $(node).attr('data-bs-target', '#staticBackdrop');
                   // Agregar un ID al botón
-                 $(node).attr('id', 'btnAgregdarMarca');
+                 $(node).attr('id', 'btnAgregarDatos');
             }
         }
     ],
-    scrollCollapsey:true,
+    scrollCollapse:true,
     scrollY: '400px',
     pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
@@ -42,7 +42,7 @@ const opcionesTabla = {
         "sFilter": "<span class='mi-clase-filtro'>Filtro:</span>", // Nombre de clase personalizado para el filtro
         "sLengthMenu": "<span class='mi-clase-longitud'>Mostrar _MENU_ registros por página</span>" // Nombre de clase personalizado para la longitud
    
-        ,"decimal": "",
+        , "decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
@@ -110,8 +110,9 @@ btGuardarMarca.addEventListener('click', async (e) => {
         const fila = filaTabla(respuesta.datos)
         console.log(fila)
         $('#datosmarca').DataTable().row.add($(fila)).draw(false);
+        agregarFuncionBtnActualizar()
         agregarFuncionBtnEliminar()
-
+        
         alertas.exelente(respuesta.mensaje)
     }
     else {
@@ -121,7 +122,7 @@ btGuardarMarca.addEventListener('click', async (e) => {
 });
 
 const filaTabla = (elementos) => {
-    const estado = elementos.estado ? 'Activo' : 'Inactivo';
+    const estado = elementos.estado ? "Activo" : "Inactivo";
     let datos = `
     <tr data-id="${elementos.id_marcas}">
         <td>${elementos.id_marcas}</td>
@@ -130,7 +131,7 @@ const filaTabla = (elementos) => {
         <td>${estado}</td>
         <td>
             ${crearBotonEliminar(elementos.id_marcas, 'btn-eliminar-marca')}
-            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id}/">Actualizar</a>
+            <button class="btn-formActualizar btn btn-outline-info" data-id="${ elementos.id_marcas }" data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
         </td> 
     </tr>
     `
@@ -143,26 +144,6 @@ const filaTabla = (elementos) => {
 
 // -----------------FUNCIONES PARA ACTUALIZAR
 
-//funcion que agregar el funcionamiento al boton actualizar 
-const agregarFuncionBtnActualizar = () => {
-    const btn_form_actualizar = document.querySelectorAll('.btn-formActualizar');
-    btn_form_actualizar.forEach((boton) => {
-        boton.addEventListener('click', function () {
-            const identificador = this.getAttribute('data-id');
-            agregarDatosForm(identificador)
-            console.log(identificador);
-        });
-    });
-};
-
-//esta funcion se encarga de obtener y agregar los datos de la fila al formulario 
-const agregarDatosForm = (id) => {
-    const filas = obtenerFila(id)
-    frm_nom_categoria.value =  filas[1].textContent
-    frm_desc.value = filas[2].textContent
-    frm_estado.value = filas[3].textContent
-    btn_actualizar.setAttribute('data-id', parseInt(id))
-}
 
 //esta funcion s encarga de obtener una fila en espesifico 
 const obtenerFila = (id) => {
@@ -179,6 +160,35 @@ const obtenerFila = (id) => {
     }
 }
 
+//funcion que agregar el funcionamiento al boton actualizar 
+const agregarFuncionBtnActualizar = () => {
+    const btn_form_actualizar = document.querySelectorAll('.btn-formActualizar');
+    let i=1
+    btn_form_actualizar.forEach((boton) => {
+        console.log(i);
+        boton.addEventListener('click', function () {
+            const identificador = this.getAttribute('data-id');
+            
+            agregarDatosForm(identificador)
+            console.log(identificador);
+        });
+        i++
+    });
+};
+
+
+
+//esta funcion se encarga de obtener y agregar los datos de la fila al formulario 
+const agregarDatosForm = (id) => {
+    const filas = obtenerFila(id)
+    frm_nom_categoria.value =  filas[1].textContent
+    frm_desc.value = filas[2].textContent
+    frm_estado.value = filas[3].textContent.trim()
+    btn_actualizar.setAttribute('data-id', parseInt(id))
+}
+
+
+
 // esta funcion es la que se encarga de actualizar datos 
 btn_actualizar.addEventListener('click',async ()=>{
     const datos = obetenerDatosForm()
@@ -186,11 +196,13 @@ btn_actualizar.addEventListener('click',async ()=>{
 });
 
 const actualizarRegistro = async(datos)=>{
-    const respuesta = await mantenimiento.actualizarRegistroCompleto('/admon/categorias/', datos)
+    console.log(datos);
+    const respuesta = await mantenimiento.actualizarRegistroCompleto('/admon/ingreso-marcas/', datos)
     if (respuesta.condicion === 'ok'){
         console.log('----respuesat del servidor----');
         console.log(respuesta.datos);
         actualizarFila(respuesta.datos);
+        
     }
     return respuesta
 }
@@ -213,197 +225,3 @@ const actualizarFila = (nuevosDatos) => {
     fila[3].textContent = nuevosDatos.estado;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-const iniciarDatosTabla = async () => {
-    if (datosTablaInicializados) [
-        datosTabla.destroy()
-    ]
-    await listarMarcas()
-    datosTabla = $('#datosmarca').DataTable(opcionesTabla)
-    datosTablaInicializados = true
-}
-
-
-//cones esta funcion nosotros agregamos filas a la tabla. 
-const filaTabla = (elementos) => {
-    const estado = elementos.estado ? 'Activo' : 'Inactivo';   
-    let datos = `
-    <tr data-id="${elementos.id_marcas}">
-        <td  >${elementos.id_marcas}</td>
-        <td>${elementos.nombre_marca}</td>
-        <td>${elementos.descripcion}</td>
-        <td>${estado}</td>
-        <td class = '' >${crearBotonEliminar(elementos.id_marcas)}</td> 
-    </tr>
-    `
-    return datos
-}
-
-//con esta funicon nosotro agreagamos la funcionalidad a boton eliminar
-
-
-const agregarBotonEliminar = () => {
-    const botonesEliminar = document.querySelectorAll('.btn-eliminar-marca');
-    botonesEliminar.forEach((boton) => {
-        boton.addEventListener('click', function () {
-            const idMarcaAEliminar = this.getAttribute('data-id');
-            console.log(idMarcaAEliminar);
-            eliminarMarca(idMarcaAEliminar);
-        });
-    });
-};
-
-
-
-//con esta funcion agregamos todo los datos a la tabla 
-const agregarDatosTabla = (datos) => {
-    let contenido = '';
-    datos.respuesta.marcas.forEach((elementos) => {
-        contenido += `
-        ${filaTabla(elementos)}
-        `;
-    });
-    tablaBody.innerHTML = contenido;
-    mensajemarca.innerHTML = datos.respuesta.mensaje;
-}
-
-//listamos las informacion a traves de nuetro backend
-const listarMarcas = async () => {
-    const datos = await mantenimiento.obtenerDatos('/admon/obtener-marcas/')
-    if (datos.estado) {
-        agregarDatosTabla(datos)
-        console.log(datos);
-        // Agrega un evento de clic a los botones de "Eliminar" para llamar a la función de eliminación
-        agregarBotonEliminar()
-    }
-    else {
-        mensajemarca.innerHTML = 'Error al cargar las marcas';
-    }
-};
-
-
-//funciones para guardar datos de coookies
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-
-//evento para guardar los datos
-btGuardarMarca.addEventListener('click', async () => {
-     // Obtenemos una referencia al campo de nombre de marca
-     const inNombre = document.getElementById('in_nombre');
-    
-     // Verificamos si el campo de nombre de marca está vacío
-     if (inNombre.value.trim() === '') {
-         Swal.fire('El campo Nombre de Marca es obligatorio. Por favor, ingresa un nombre de marca.');
-         return; // No enviamos el formulario si hay errores
-     }
-    let formAgregar = new FormData(form_agregar_marca);
-    const datos = await mantenimiento.agregarDatos('/admon/ingreso-marcas/', formAgregar)
-    if (datos.respuesta.condicion==='ok') {
-        in_nombre.value = ""
-        in_descripcion.value = ""
-        const fila = filaTabla(datos.respuesta)
-        $('#datosmarca').DataTable().row.add($(fila)).draw(false);
-        agregarBotonEliminar()
-        Swal.fire(
-            datos.respuesta.mensaje,
-            'Preciona clic en el boton!',
-            'success'       
-        )
-    }
-    else {
-        Swal.fire(
-            datos.respuesta.mensaje,
-            'Datos no guardados, Preciona clic en el boton!',
-            'warning'
-        )
-    }
-
-});
-
-
-
-
-
-//eliminar datos de tabla 
-const crearBotonEliminar = (idMarca) => {
-    return `<button class="btn-eliminar-marca btn btn-outline-danger"  data-id="${idMarca}">Eliminar</button>`;
-};
-
-
-
-const eliminarDatoDeTabla = (idMarca) => {
-    // Utiliza el ID de la marca para encontrar la fila correspondiente y eliminarla
-    const filaAEliminar = $(`#datosmarca tr[data-id='${idMarca}']`);
-    $('#datosmarca').DataTable().row(filaAEliminar).remove().draw(false);
-};
-
-
-//actualizar info 
-const crearBotonActualizar = (idMarca) => {
-    return `<button class="btn-actualizar-marca" data-id="${idMarca}">Editar</button>`;
-};
-
-// Llamada a la función para eliminar una marca cuando se hace clic en el botón "Eliminar"
-const eliminarMarca = async (idMarca) => {
-    try {
-        const dato = { id_marca: idMarca }
-        const eliminar = await fetch('', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json', //espesifica que se envian datos al servido en formato JSon 
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify(dato)//transfomrando nuestro objeto en string json
-
-        });
-
-        if (eliminar.ok) {
-            const mensaje = await eliminar.json();
-            console.log(mensaje);
-            eliminarDatoDeTabla(idMarca);
-        }
-        else {
-            console.error('Error al eliminar datos ')
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-
-*/

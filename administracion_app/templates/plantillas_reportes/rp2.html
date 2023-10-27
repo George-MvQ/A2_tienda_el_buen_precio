@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilosreportes.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <header>
+
+            <div class="division"> 
+                <div> 
+                {% load static %}
+                <img id="icon-store" src="{% static 'images/logo_negro.png' %}" alt="" width="auto" height="70" style="margin-top: 1%;" />
+                </div>
+
+                <div class="segundo">
+                    <h1 class="titulo">Documento Prueba</h1>
+                    <img id="icon-store" src="{% static 'images/logo_negro.png' %}" alt="" width="auto" height="70" style="margin-top: 1%;" />
+                    <h2>HOLA GEORGE DESDE REPORTES XD</h2>
+                </div>   
+            </div>   
+        </header>
+
+        <div class="container my-3">
+            <table id="datosproveedores" class="table table-striped text-white">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Nombre de Proveedor</th>
+                  <th>Telefono</th>
+                  <th>Dia de Visita</th>
+                  <th>Dia de Entrega</th>
+                  <th>Descripcion</th>
+                  <th>Estado</th>
+                  
+                </tr>
+              </thead>
+              <tbody id="tablaBody" class="text-white">
+                {% for proveedor in datos %}
+                  <tr data-id="{{ proveedor.id_proveedor}}">
+                    <td>{{ proveedor.id_proveedor }}</td>
+                    
+                    <td>{{ proveedor.nombre_proveedor }}</td>
+                    <td>{{ proveedor.telefono }}</td>
+                    <td>{{ proveedor.dia_visita }}</td>
+                    <td>{{ proveedor.dia_entrega }}</td>
+                    <td>{{ proveedor.descripcion }}</td>
+                    <td>{{ proveedor.estado |yesno:'Activo,Inactivo' }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+
+
+    
+</body>
+
+</html>

@@ -12,6 +12,11 @@
       <nav class="nav flex-column nav-pills barra">
         <div class="sidebar">
           <ul>
+            <a href="{% url 'inventario_productos' %}" class="nav-link px-1">
+              <!-- Aca metemos los links de los index -->
+              <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
+              <span>Inventario Productos</span>
+            </a>
             <!-- Aqui empieza el Primer bloque -->
             <li>
               <a class="medida" class="nav-link px-3" data-bs-toggle="collapse" href="#layouts">
@@ -32,11 +37,7 @@
                       <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                       <span>Entradas</span>
                     </a>
-                    <a href="{% url 'historial_salidas' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
-                      <span>Salidas</span>
-                    </a>
+                  
                     <a href="{% url 'historial_cardex' %}" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>

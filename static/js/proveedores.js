@@ -122,7 +122,7 @@ const filaTabla = (elementos) => {
     let datos = `
     <tr data-id="${elementos.id_proveedor}">
         <td>${elementos.id_proveedor}</td>
-        <td  >${elementos.nombre_vendedor}</td>
+        <td  >${elementos.nombre_proveedor}</td>
         <td>${elementos.telefono}</td>
         <td>${elementos.dia_visita}</td>
         <td>${elementos.dia_entrega}</td>
@@ -130,7 +130,7 @@ const filaTabla = (elementos) => {
         <td>${estado}</td>
         <td>
             ${crearBotonEliminar(elementos.id_proveedor, 'btn-eliminar-proveedor')}
-            <a class="btn btn-outline-info" href="/admon/detalles-usuario/${elementos.id}/">Actualizar</a>
+            <button class="btn-formActualizar btn btn-outline-info" data-id="${elementos.id_proveedor}" data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
         </td> 
     </tr>
     `
@@ -144,21 +144,6 @@ const filaTabla = (elementos) => {
 
 
 
-
-//esta funcion s encarga de obtener una fila en espesifico 
-const obtenerFila = (id) => {
-    console.log(id);
-    const table = document.getElementById("datosmarca");
-    // Encuentra la fila por su data-id
-    const fila = table.querySelector(`tr[data-id="${id}"]`);
-    if (fila) {
-        const celdas = fila.cells;
-        return celdas
-    } else {
-        console.log("No se encontró una fila con data-id '" + dataId + "'.");
-        return null
-    }
-}
 
 
 
@@ -188,7 +173,21 @@ const agregarDatosForm = (id) => {
     btn_actualizar.setAttribute('data-id', parseInt(id))
 }
 
-
+//esta funcion s encarga de obtener una fila en espesifico 
+const obtenerFila = (id) => {
+    console.log(id);
+    const table = document.getElementById("datosproveedores");
+    // Encuentra la fila por su data-id
+    const fila = table.querySelector(`tr[data-id="${id}"]`);
+    if (fila) {
+        const celdas = fila.cells;
+        console.log('existen datos');
+        return celdas
+    } else {
+        console.log("No se encontró una fila con data-id '" + dataId + "'.");
+        return null
+    }
+}
 
 // esta funcion es la que se encarga de actualizar datos 
 btn_actualizar.addEventListener('click',async ()=>{
@@ -197,7 +196,7 @@ btn_actualizar.addEventListener('click',async ()=>{
 });
 
 const actualizarRegistro = async(datos)=>{
-    const respuesta = await mantenimiento.actualizarRegistroCompleto('/admon/categorias/', datos)
+    const respuesta = await mantenimiento.actualizarRegistroCompleto('/admon/proveedores/', datos)
     if (respuesta.condicion === 'ok'){
         console.log('----respuesat del servidor----');
         console.log(respuesta.datos);
@@ -205,6 +204,8 @@ const actualizarRegistro = async(datos)=>{
     }
     return respuesta
 }
+
+
 
 //esta funcion obtiene todo los datos de la fila a actualizar 
 const obetenerDatosForm = ()=>{
@@ -218,9 +219,12 @@ const obetenerDatosForm = ()=>{
 
 //este apartado actualiza las filas con los nuevos datos 
 const actualizarFila = (nuevosDatos) => {
-    const fila = obtenerFila(nuevosDatos.id_categoria);
-    fila[1].textContent = nuevosDatos.nombre_categoria;
-    fila[2].textContent = nuevosDatos.descripcion;
-    fila[3].textContent = nuevosDatos.estado;
+    const fila = obtenerFila(nuevosDatos.id_proveedor);
+    fila[1].textContent = nuevosDatos.nombre_proveedor;
+    fila[2].textContent = nuevosDatos.telefono;
+    fila[3].textContent = nuevosDatos.dia_visita;
+    fila[4].textContent = nuevosDatos.dia_entrega;
+    fila[5].textContent = nuevosDatos.descripcion;
+    fila[6].textContent = nuevosDatos.estado;
 }
 

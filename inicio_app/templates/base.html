@@ -23,7 +23,8 @@
     {% endblock %}
   </head>
 
-  <body>
+  <body style="background-image: url('{% static 'images/lago.2.jpeg' %}');
+            background-size: cover;">
     
     <header id="id-header">
       {% load static %}
@@ -35,13 +36,26 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'adm' %}">Sobre Nosotros</a>
         </li>
+        {% if user.is_authenticated  %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+          <a class="nav-link text-white" href="{% url 'cerrar' %}">Cerrar Secion</a>
         </li>
+          
+        <li li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'panel_principal' %}">Panel administrativo</a>
+          </li>
+          
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'logeo' %}">Login</a>
+          </li>
+        {% endif %}
+
       </ul>
     </header>
     <main>
       {% block body %}
+
   
       {% endblock %}
     </main>
