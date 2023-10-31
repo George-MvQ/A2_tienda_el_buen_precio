@@ -72,7 +72,6 @@
             <th>Precio Compra</th>
             <th>Precio Venta</th>
             <th>Total</th>
-            <th>Opciones</th>
           </tr>
         </thead>
         <tbody id="tablaBody" class="text-white">
@@ -86,9 +85,7 @@
               <td>Q {{ registro.precio_unitario_compra }}</td>
               <td>Q {{ registro.precio_sugerido_venta }}</td>
               <td>Q {{ registro.c_total }}</td>
-              <td>
-                <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ categoria.id_categoria }}">Detalles</button>
-              </td>
+              
             </tr>
           {% endfor %}
         </tbody>

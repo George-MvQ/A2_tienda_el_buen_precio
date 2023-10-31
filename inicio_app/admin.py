@@ -9,7 +9,7 @@ admin.site.register(Compras)
 admin.site.register(MetodosPago)
 admin.site.register(Productos)
 admin.site.register(Presentacion)
-admin.site.register( UnidadesMedidas)
+admin.site.register(UnidadesMedidas)
 admin.site.register(ListadoPedidos)
 admin.site.register(DetalleCompra)
 

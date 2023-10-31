@@ -7,9 +7,9 @@ const opcionesTabla = {
    
     scrollCollapse:true,
     scrollY: '400px',
-    pageLength: 3, //nombre por defecto (cantidad de filas en cada tabla)
+    pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
-    lengthMenu: [3, 5, 10, 15], //para el menuto de contenido de la tabla 
+    lengthMenu: [3, 5,7, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
         className: 'text-white text-center',
         targets: [0, 1, 2, 3, 4,5,6,7]//columnas inicia del 0 a n de las que se aplican los cabios

@@ -487,31 +487,6 @@ class   ValidacionesCompra:
 class ValidacionDetalles:
     _mantenimiento = MantenimientoGeneral(DetalleCompra)
     
-    def obtener_detalle(self, id):
-        form = DetalleForm()
-        campos = [
-            'id_detalle_compra',
-            'fk_producto_id',
-            'fk_compra',
-            'descuentos',
-            'cantidad_compra',
-            'precio_unitario_compra',
-            'precio_sugerido_venta',
-            'no_lote' 
-        ]
-        print ("--------------------------------")
-        print(id)
-        detalles = DetalleCompra.objects.filter(fk_compra=id)
-        #compra = Compras.objects.get(id_compras=id)
-        print ("--------------------------------")
-        #print(detalles[0].fk_compra.fecha_compra)
-        """ 
-        print(detalle[0].no_lote) """
-        return {
-            'form':form,
-            'detalles':detalles,
-            #'compra':compra
-        }
     #
     def guardar_compras(self, datos:dict,fk_compra:int):
         print(datos)
@@ -527,10 +502,22 @@ class ValidacionDetalles:
     
     def eliminar_registro(self,datos):
         id = {'id_detalle_compra':datos['identificador']}
-        respuesta = self._mantenimiento.eliminar_registro(id)
+        respuesta = {'datos': self._obtener_info_eliminado(id)}
+        respuesta.update(self._mantenimiento.eliminar_registro(id))
         if respuesta['ok']:
             respuesta['mensaje']= "El registro a sido eliminado correctamente"
         return respuesta
+    
+    
+    def _obtener_info_eliminado(self,id):
+        """ esta funcion permite obtener informacion del datos eliminado"""    
+        respuesta = self._mantenimiento.buscar_registros(id)
+        return {
+            'descuentos': float(respuesta.descuentos),
+            'cantidad_compra': float(respuesta.cantidad_compra),
+            'precio_unitario_compra': float(respuesta.precio_unitario_compra)    
+        }
+        
     
     def _asingar_objetos(self, datos,fk_compra):
         datos['fk_producto'] = Productos.objects.get(id_productos = datos['fk_producto'])
@@ -558,13 +545,11 @@ class ValidacionDetalles:
             print(compra)
             print(total_pago)
             return {
-                'form': DetalleCompraForm(),
                 'detalles': detalles_con_total,
                 'total_descuento': total_descunto['total_descuentos'],
                 'total_sin_descuneto': total_sin_descuento['total_sin_descuento'],
                 'compra':compra,
                 'total_pago': total_pago['total_pago']
-                
             }
         except Exception as e:
             print (f'se encontro un erro {e}') 
@@ -574,6 +559,49 @@ class ValidacionDetalles:
         
     def _obtener_nombre_prod(self,datos):
         datos['fk_producto'] = datos['fk_producto'].nombre_producto
+        
+        
+    def agregar_detalle_compras(self,id):
+        try:
+            compra = Compras.objects.get(id_compra= id)
+            return {
+            'form': DetalleCompraForm(),
+            'form_actualizar': self._id_nombres_campos(),
+            'compra':compra
+        }
+        except Exception as e:
+            print(f' se ecnontro un erro {e}')
+            return None
+   
+    
+    def actualizar_datos(self,datosJs:dict):
+        filtro = {'id_detalle_compra':datosJs.pop('identificador')}
+        actualizacion = self._mantenimiento.actualizar_registro(datosJs,filtro)
+        actualizacion['datos'].update(filtro)
+        producto = self._obtener_datos_prod(actualizacion['datos']['fk_producto'])
+        actualizacion['datos']['nombre_producto']=producto.nombre_producto
+        return actualizacion
+        
+    
+    def _obtener_datos_prod(self, identificador):
+        producto = Productos.objects.get(id_productos=identificador)
+        return producto
+    
+        
+    def _id_nombres_campos(self):
+        id_campo = IdFormDetalleCompras()
+        id_campo.fk_producto = 'act_producto'
+        id_campo.descuentos = 'act_descuento'
+        id_campo.cantidad_compra = 'act_cant_compra'
+        id_campo.precio_unitario_compra = 'act_pr_uni_compra'
+        id_campo.precio_sugerido_venta = 'act_pr_sg_venta'
+        id_campo.no_lote = 'act_n_lote'
+        formActualizar =  DetalleCompraForm(ids_detalles= id_campo)
+        return formActualizar 
+        
+        
+        
+        
         
 
 

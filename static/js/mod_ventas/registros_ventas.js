@@ -1,10 +1,8 @@
-import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "../Crud.js";
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
 const opcionesTabla = {
-    "dom":'   <"contenedor_tabla"  <"opciones_tabla" <"#meter.container botonFormulario" B> <"filter" f> <"length" l> ><t><"bottom"p> >',
-    // Renderizar el lengthMenu personalizado
-    buttons: [
+     buttons: [
         {
             text: 'Agregar',
             className:'btn btn-primary ',
@@ -18,14 +16,14 @@ const opcionesTabla = {
         }
     ],
     
-    scrollCollapsey:true,
+    scrollCollapse:true,
     scrollY: '400px',
     pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3,7, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
-        className: 'text-white text-center',
-        targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
+        className: 'text-white text-center ',
+        targets: [0, 1, 2, 3, 4,5]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen  
         targets: [3, 4]
@@ -61,7 +59,41 @@ const opcionesTabla = {
 }
 
 window.addEventListener('load',()=>{
-    agregarFuncionBtnEliminar()
+    console.log('buena george')
+    // agregarFuncionBtnEliminar()
     $('#registroventas').DataTable(opcionesTabla)
     
 })
+
+
+id_fk_id_producto1.addEventListener('change',async()=>{
+    const id = id_fk_id_producto1.value;
+    const datos = await mantenimiento.obtenerDatosUrl(`/usuario-ventas/obtener-datos-inventario/${id}/`)
+    try {
+        input_stock.value = datos.total_stock;
+        input_precio.value = datos.precio_venta
+    }
+    catch (e) {
+        input_stock.value = 0;
+        input_precio.value = 0
+    }
+
+    
+})
+
+
+//! --------------------- fecha --------------------      
+let fechaCompraInput = document.getElementById('fechacompra');
+
+// Crea una nueva instancia de la fecha actual
+let fechaActual = new Date();
+
+// Formatea la fecha actual en el formato requerido para el campo 'date'
+let dia = fechaActual.getDate().toString().padStart(2, '0');
+let mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+let año = fechaActual.getFullYear();
+
+let fechaFormateada = `${año}-${mes}-${dia}`;
+
+// Asigna la fecha formateada al campo de entrada de fecha
+fechaCompraInput.value = fechaFormateada;

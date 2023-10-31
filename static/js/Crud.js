@@ -13,19 +13,18 @@ class Mantenimiento {
     }
 
     
-    async obtenerDatos(url_obtener) {
-        const datos = {
-            respuesta: '',
-            estado:true
-        };
+    async obtenerDatosUrl(url_obtener) {
         try {
-            const respuesta = await fetch(url_obtener)
-            datos.respuesta = await respuesta.json()
+            const respuesta = await fetch(url_obtener);
+            if (respuesta.ok) { 
+                const datos = await respuesta.json()
+                return datos
+            }
+            
         } catch (error) {
             console.error(error)
-            datos.estado = false
+            return this.#datosError
         }
-        return datos
     }
 
     async agregarDatos(url_agregar, formulario) {       

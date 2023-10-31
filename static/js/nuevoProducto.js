@@ -24,7 +24,7 @@ const opcionesTabla = {
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3,7, 5, 10, 15], //para el menuto de contenido de la tabla 
     columnDefs: [{
-        className: 'text-white text-center',
+        className: 'text-white text-center abc',
         targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen  

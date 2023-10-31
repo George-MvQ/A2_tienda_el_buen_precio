@@ -16,6 +16,7 @@
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}" /> -->
     <!-- css especial por cada html -->
     {% block link %}
@@ -23,8 +24,7 @@
     {% endblock %}
   </head>
 
-  <body style="background-image: url('{% static 'images/lago.2.jpeg' %}');
-            background-size: cover;">
+  <body class="fondo-incio" >
     
     <header id="id-header">
       {% load static %}
@@ -38,12 +38,18 @@
         </li>
         {% if user.is_authenticated  %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url 'cerrar' %}">Cerrar Secion</a>
+          <a class="nav-link text-white" href="{% url 'cerrar' %}">Cerrar Sesión</a>
         </li>
-          
+
         <li li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'panel_principal' %}">Panel administrativo</a>
-          </li>
+          <a class="nav-link text-white" href="{% url 'registrar_venta' %}">Ventas</a>
+        </li>
+
+          {% if user.is_superuser %}
+            <li li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'panel_principal' %}">Panel administrativo</a>
+            </li>
+          {% endif %} 
           
         {% else %}
           <li class="nav-item">

@@ -1,0 +1,71 @@
+{% extends 'shared/menu_ventas.html' %}
+
+{% block title %}
+  Registrar venta
+{% endblock %}
+
+{% block link %}
+  {% load static %}
+  <!--   <script src="{% static 'js/jquery.min.js' %}"></script>
+           --> <!-- css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'DataTables/css/dataTables.bootstrap5.min.css' %}" />
+  <link rel="stylesheet" href="  {% static 'css/font-awesome/font-awesome_all.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/agregar_marcas.css' %}" />
+  
+{% endblock %}
+
+{% block content %}
+  <h2>Comprobante generado</h2>
+ 
+<div class="container">
+    <div class="card">
+        <div class="card-header text-black">
+            <h4>Factura de Compra</h4>
+        </div>
+        <div class="card-body text-black">
+            <p><strong>Tienda:</strong> La Surtidora El Buen Precio</p>
+            <p><strong>Fecha:</strong> 27 de octubre de 2023</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Producto 1</td>
+                        <td>2</td>
+                        <td>Q50.00</td>
+                        <td>Q100.00</td>
+                    </tr>
+                    <tr>
+                        <td>Producto 2</td>
+                        <td>1</td>
+                        <td>Q75.00</td>
+                        <td>Q75.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Total:</strong> Q175.00</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+  {% load static %}
+  <script src="{% static 'DataTables/js/jquery.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
+  <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/Crud.js' %}"></script>
+  
+  <script type="module" src="{% static 'js/registroventas.js' %}"></script>
+  
+  
+{% endblock %}

@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inicio_app',
     'administracion_app',
+    'usuario_ventas_app',
     'bootstrap5',
     'sweetify',
 ]

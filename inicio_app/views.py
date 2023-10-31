@@ -38,14 +38,13 @@ def logeo(request):
                 login(request, user)
                 #si es superusiario se va al panel de adiministrador 
                 if user.is_superuser:
-                    print('1')
                     return redirect('/admon/')
                 #panel de vendedro 
                 else:
                    print('2')
-                   return HttpResponse('<h1>Este es un usuario Normal :)</h1>')
+                   return redirect('registrar_venta')
             else:
-                return redirect('/')
+                return redirect('logeo')
         else:
             return redirect('/')
 

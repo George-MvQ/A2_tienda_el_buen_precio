@@ -14,9 +14,10 @@
 </head>
 
 {% block body %}
+
   <div class="inicio_seccion">
     <div class="division1">
-      <div>
+      <div class="transparente">
         <h1 id="pbienvenida" data-text="Bienvenidos a nuestra tienda ">Bienvenidos a nuestra tienda</h1>
         <h1 id="p2bienvenida" data-text="la surtidora el buen precio">la surtidora el buen precio</h1>
       </div>
@@ -25,11 +26,6 @@
         {% load static %}
         <img id="logotienda" src="{% static 'images/logo.png' %}" alt="" />
       </div>
-    </div>
-
-    <!-- <img id="logotienda" src="{% static 'images/logo.png' %}" alt="" /> -->
-    <div class="boton">
-      <button id="sesion">Iniciar Sesión</button>
     </div>
   </div>
 {% endblock %}

@@ -78,10 +78,14 @@ class DetalleVentas(models.Model):
     id_detalle_venta = models.AutoField(db_column='ID_detalle_venta', primary_key=True)  # Field name made lowercase.
     fk_venta = models.ForeignKey('Ventas', models.DO_NOTHING, db_column='fk_venta', blank=True, null=True)
     fk_id_producto1 = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_id_producto1', blank=True, null=True)
+    cantidad_producto = models.IntegerField()
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    descuento = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Detalle_ventas'
+
 
 
 class Empleados(models.Model):
@@ -108,15 +112,18 @@ class Empleados(models.Model):
 
 class Inventario(models.Model):
     id_inventario = models.AutoField(db_column='ID_inventario', primary_key=True)  # Field name made lowercase.
-    fk_producto2 = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_producto2')
-    fecha_ultima_salida = models.DateField(db_column='Fecha_ultima_salida', blank=True, null=True)  # Field name made lowercase.
-    fecha_ultima_entrada = models.DateField(db_column='Fecha_ultima_entrada', blank=True, null=True)  # Field name made lowercase.
-    total_stock = models.IntegerField(db_column='Total_stock', blank=True, null=True)  # Field name made lowercase.
+    fk_producto2 = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_producto2', blank=True, null=True)
+    fecha_ultima_salida = models.DateField(blank=True, null=True)
+    fecha_ultima_entrada = models.DateField(blank=True, null=True)
+    total_stock = models.IntegerField(blank=True, null=True)
+    precio_venta = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'Inventario'
+    
 
+    
 
 class ListadoPedidos(models.Model):
     id_listado = models.BigAutoField(db_column='ID_listado', primary_key=True)  # Field name made lowercase.
@@ -301,9 +308,6 @@ class UnidadesMedidas(models.Model):
 class Ventas(models.Model):
     id_venta = models.BigAutoField(db_column='ID_venta', primary_key=True)  # Field name made lowercase.
     fecha_venta = models.DateField(db_column='fecha_Venta', blank=True, null=True)  # Field name made lowercase.
-    total_monto_venta = models.DecimalField(db_column='Total_monto_venta', max_digits=19, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
-    total_monto_pago = models.DecimalField(db_column='Total_monto_pago', max_digits=19, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
-    descuento = models.DecimalField(db_column='Descuento', max_digits=19, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
     fk_empleado1 = models.ForeignKey(Empleados, models.DO_NOTHING, db_column='fk_empleado1', blank=True, null=True)
 
     class Meta:

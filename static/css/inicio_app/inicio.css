@@ -5,6 +5,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
+
 /* Estilos para hacerlo responsivo */
 .meta-viewport {
     width: device-width;
@@ -30,28 +31,40 @@ body {
     width: auto; /* Deja que el ancho se ajuste automáticamente según la relación de aspecto */
 }
 
+.transparente{
+/*     background-color:rgba(0, 0, 0, 0.041); */
+    padding: 1px;
+    border-radius: 3px;
+    margin-top: 10%;
+}
+.logotipo{
+/*     background-color:rgba(0, 0, 0, 0.041); */
+    padding: 1px;
+    border-radius: 3px;
+    margin-top: 10%;
 
+}
 @media screen and (max-width: 768px) {
     .inicio_seccion {
-        grid-template-rows: auto auto; /* Ajusta las filas automáticamente */
+        grid-template-rows: auto auto;
     }
 
     .division1 {
         grid-template-columns: 100%;
-        text-align: center; /* Centra el contenido cuando la pantalla es pequeña */
+        text-align: center; 
     }
 
     #logotienda {
-        max-width: 55%; /* Reduce el tamaño máximo de la imagen en pantallas pequeñas */
+        max-width: 55%; 
     }
 
     #pbienvenida,
     #p2bienvenida {
-        font-size: 25px; /* Tamaño de fuente más pequeño para pantallas pequeñas */
+        font-size: 25px; 
     }
 
     .division1 > div {
-        margin-bottom: 10px; /* Agrega espacio entre las dos etiquetas <div> */
+        margin-bottom: 10px;
     }
 }
 

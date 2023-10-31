@@ -212,10 +212,12 @@ def obtenerDatosCompras(request):
     return JsonResponse(dato)
 
 
+"""ESTE ED LA VISTA PARA COMPRAS"""
+#$
 def agregar_compras(request,id):
     validacion = ValidacionDetalles()
     if request.method == 'GET':
-        datos = ValidacionDetalles.obtener_detalle_completo(id)
+        datos =  validacion.agregar_detalle_compras(id)
         return render(request, 'adminuser/reabastecimiento/agregar_compras.html',datos)
     if request.method == 'POST':
         datosJs = json.loads(request.body)
@@ -224,8 +226,19 @@ def agregar_compras(request,id):
     if request.method == 'DELETE':
         datosJs = json.loads(request.body)
         respuesta = validacion.eliminar_registro(datosJs)
+        print('--------RESPUESTA ELIMINACION PARA EL CLIENTE--------')
         print(respuesta)
         return JsonResponse(respuesta)
+    if request.method == 'PUT':
+        datosJs = json.loads(request.body)
+        print(datosJs)
+        respuesta = validacion.actualizar_datos(datosJs)
+        print(respuesta)
+        return JsonResponse(respuesta)
+        
+        
+        
+    
         
 
 
@@ -436,6 +449,8 @@ def registrarventa(request):
 #     else:
 #         return HttpResponse('Error al generar el PDF', content_type='text/plain')
 
+
+""" ---------------------------- REPORTES ----------------------------"""
 
 def generar_pdf(datos_modelo, template_name):
     # Carga la plantilla HTML

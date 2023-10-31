@@ -28,18 +28,20 @@
   </head>
 
   <body>
-    <header id="id-header" style="padding: 12px;">
+    
+    <header id="id-header">
       {% load static %}
-      <ul class="nav nav-underline" id="idnav" style="margin-left: 4%;">
-        <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40" style="margin-top: 1%;" />
-        <li class="nav-item" style="margin-left: 5%;">
-          <a class="nav-link text-white" href="{% url 'inicio' %}">Inicio</a>
+      <ul class="nav nav-underline" id="idnav" style="margin-left: 4%">
+        <img id="icon-store" src="{% static 'images/logo.png' %}" alt="" width="auto" height="40"  />
+        <li class="nav-item" style="margin-left: 5%";>
+          <a class="nav-link text-white text-white" aria-current="page" href="{% url 'inicio' %}">Inicio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'panel_principal' %}">Modulos</a>
         </li>
-      </ul> 
+      </ul>
     </header>
+
     <section class="principal">
       {% block body %}
 
@@ -47,14 +49,15 @@
     </section>
 
     <footer>
-      <p>Surtido el Buen Precio</p>
+      <p>Surtidora el Buen Precio</p>
     </footer>
     {% load static %}
     {% load sweetify %}
     {% sweetify %}
     <script src="{% static 'js/sweetAlert2.js' %}"></script>
     {% block script %}
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/menulateral/menulateral.js' %}"></script>
     {% endblock %}
   </body>
 </html>

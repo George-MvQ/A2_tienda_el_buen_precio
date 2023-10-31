@@ -131,15 +131,32 @@ class DetalleForm(forms.Form):
             widget = forms.TextInput(attrs={'id':'in_lote'}),
         )
  
-""" ------------------------Formulario para ingresar compras-------------------------"""        
+""" ------------------------Formulario para ingresar y actualizar compras-------------------------"""        
+
+
+class IdFormDetalleCompras():
+    fk_producto = 'id_fk_producto'
+    descuentos = 'id_descuentos'
+    cantidad_compra = 'id_cantidad_compra'
+    precio_unitario_compra = 'id_precio_unitario_compra' 
+    precio_sugerido_venta = 'id_precio_sugerido_venta'
+    no_lote = 'id_no_lote'
+       
+
 class DetalleCompraForm(forms.ModelForm):
     class Meta: 
         model = DetalleCompra
         exclude = ['fk_compra']
         labels = {
-            'nombre_producto':' Nombre del Producto'
+            'fk_producto':'Producto'
             }
-        
+    def __init__(self, *args, **kwargs):
+        ids = kwargs.pop('ids_detalles',None)
+        super(DetalleCompraForm,self).__init__(*args, **kwargs)
+        if ids:
+            for nombre_campo, campo_id in vars(ids).items():
+                self.fields[nombre_campo].widget.attrs['id'] = campo_id
+                
 
 
 

@@ -6,7 +6,7 @@ class BloquarRutasMiddleware:
         self.get_response = get_response
     
     def __call__(self, request):
-        if not(request.user.is_authenticated) and request.path.startswith('/admon/'):
+        if not(request.user.is_authenticated and request.user.is_superuser) and request.path.startswith('/admon/'):
             print('entro en la no logeado, hola desde  /admon/')
             return HttpResponseRedirect(reverse('logeo'))
         response = self.get_response(request)

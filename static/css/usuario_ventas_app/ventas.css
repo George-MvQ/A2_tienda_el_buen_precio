@@ -1,0 +1,17 @@
+
+
+.columna{
+    width: 10px !important ;
+    background-color: red !important ;
+    font-size: 10px;
+}
+
+h2{
+
+    color: dodgerblue;
+
+
+}
+.dataTables td {
+    width: 50px;
+}

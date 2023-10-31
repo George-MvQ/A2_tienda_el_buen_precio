@@ -2,7 +2,7 @@ import {Mantenimiento, AlertasBotones, crearBotonEliminar } from "./Crud.js";
 
 
 const mantenimiento = new Mantenimiento()
-const alertas = new AlertasBotones() 
+const alertas = new AlertasBotones()
 
 
 const opcionesTabla = {
@@ -25,24 +25,24 @@ const opcionesTabla = {
     scrollY: '400px',
     pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
-    lengthMenu: [3, 5, 7,10, 15], //para el menuto de contenido de la tabla 
+    lengthMenu: [3, 5, 7,10, 15], //para el menuto de contenido de la tabla
     columnDefs: [{
         className: 'text-white text-center',
         targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
-        orderable: false, //definimos que columnas no queremos que se ordenen  
+        orderable: false, //definimos que columnas no queremos que se ordenen
         targets: [3, 4]
     }, {//buscando en columnas en espesifico
         searchable: false,
         targets: [3, 4]
-    },// {width: '50%',targets:[0]} para el ancho entre columnas 
+    },// {width: '50%',targets:[0]} para el ancho entre columnas
 
     ],
     language: {
         "sFilter": "<span class='mi-clase-filtro'>Filtro:</span>", // Nombre de clase personalizado para el filtro
-        "sLengthMenu": "<span class='mi-clase-longitud'>Mostrar _MENU_ registros por página</span>" // Nombre de clase personalizado para la longitud
-   
-        , "decimal": "",
+        "sLengthMenu": "<span class='mi-clase-longitud'>Mostrar _MENU_ registros por página</span>", // Nombre de clase personalizado para la longitud
+
+        "decimal": "",
         "emptyTable": "No hay información",
         "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
         "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
@@ -78,12 +78,12 @@ const agregarFuncionBtnEliminar = () => {
             //print(form_agregar_marca)
             alertas.eliminar(identificador, eliminarMarcas)
             console.log(identificador);
-            
+
         });
     });
 };
 
-//funcion eliminar 
+//funcion eliminar
 const eliminarMarcas = async (id) => {
     const respuesta = await mantenimiento.eliminarDato('/admon/ingreso-marcas/', id)
     if (respuesta.condicion === 'ok') {
@@ -95,7 +95,7 @@ const eliminarMarcas = async (id) => {
 /*  AGREGAR DATOS  */
 btGuardarMarca.addEventListener('click', async (e) => {
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_marca);//pasamos como parametro el id del formulario que queremos 
+    let formAgregar = new FormData(form_agregar_marca);//pasamos como parametro el id del formulario que queremos
 
     const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
     console.log(jSonObjetos);
@@ -112,7 +112,7 @@ btGuardarMarca.addEventListener('click', async (e) => {
         $('#datosmarca').DataTable().row.add($(fila)).draw(false);
         agregarFuncionBtnActualizar()
         agregarFuncionBtnEliminar()
-        
+
         alertas.exelente(respuesta.mensaje)
     }
     else {
@@ -131,8 +131,8 @@ const filaTabla = (elementos) => {
         <td>${estado}</td>
         <td>
             ${crearBotonEliminar(elementos.id_marcas, 'btn-eliminar-marca')}
-            <button class="btn-formActualizar btn btn-outline-info" data-id="${ elementos.id_marcas }" data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
-        </td> 
+            <button class="btn-formActualizar btn btn-outline-info" data-id="${ elementos.id_marcas }"  data-bs-toggle="modal" data-bs-target="#modal_actualizar">Actualizar</button>
+        </td>
     </tr>
     `
     return datos
@@ -145,7 +145,7 @@ const filaTabla = (elementos) => {
 // -----------------FUNCIONES PARA ACTUALIZAR
 
 
-//esta funcion s encarga de obtener una fila en espesifico 
+//esta funcion s encarga de obtener una fila en espesifico
 const obtenerFila = (id) => {
     console.log(id);
     const table = document.getElementById("datosmarca");
@@ -160,7 +160,7 @@ const obtenerFila = (id) => {
     }
 }
 
-//funcion que agregar el funcionamiento al boton actualizar 
+//funcion que agregar el funcionamiento al boton actualizar
 const agregarFuncionBtnActualizar = () => {
     const btn_form_actualizar = document.querySelectorAll('.btn-formActualizar');
     let i=1
@@ -168,7 +168,7 @@ const agregarFuncionBtnActualizar = () => {
         console.log(i);
         boton.addEventListener('click', function () {
             const identificador = this.getAttribute('data-id');
-            
+
             agregarDatosForm(identificador)
             console.log(identificador);
         });
@@ -178,7 +178,7 @@ const agregarFuncionBtnActualizar = () => {
 
 
 
-//esta funcion se encarga de obtener y agregar los datos de la fila al formulario 
+//esta funcion se encarga de obtener y agregar los datos de la fila al formulario
 const agregarDatosForm = (id) => {
     const filas = obtenerFila(id)
     frm_nom_categoria.value =  filas[1].textContent
@@ -189,7 +189,7 @@ const agregarDatosForm = (id) => {
 
 
 
-// esta funcion es la que se encarga de actualizar datos 
+// esta funcion es la que se encarga de actualizar datos
 btn_actualizar.addEventListener('click',async ()=>{
     const datos = obetenerDatosForm()
     alertas.actualizar(datos,actualizarRegistro)
@@ -202,12 +202,12 @@ const actualizarRegistro = async(datos)=>{
         console.log('----respuesat del servidor----');
         console.log(respuesta.datos);
         actualizarFila(respuesta.datos);
-        
+
     }
     return respuesta
 }
 
-//esta funcion obtiene todo los datos de la fila a actualizar 
+//esta funcion obtiene todo los datos de la fila a actualizar
 const obetenerDatosForm = ()=>{
     const id = btn_actualizar.getAttribute('data-id')
     let formActualizar = new FormData(form_actualizar);
@@ -217,11 +217,10 @@ const obetenerDatosForm = ()=>{
     return jSonObjetos
 }
 
-//este apartado actualiza las filas con los nuevos datos 
+//este apartado actualiza las filas con los nuevos datos
 const actualizarFila = (nuevosDatos) => {
     const fila = obtenerFila(nuevosDatos.id_categoria);
     fila[1].textContent = nuevosDatos.nombre_categoria;
     fila[2].textContent = nuevosDatos.descripcion;
     fila[3].textContent = nuevosDatos.estado;
 }
-

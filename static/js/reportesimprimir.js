@@ -14,25 +14,13 @@
       alert("El navegador bloqueó la pestaña flotante.");
     }
 
-    
+  
 
     // Espera a que la ventana previa se cargue antes de imprimir o guardar como PDF
       ventanaPrevia.onload = function() {
-  
     
     };    
-    
-  
-    
-  
+   
   })
 
 
-  // Obtener la fecha actual
-let fechaActual = new Date();
-
-// Obtener el elemento <span> por su ID
-let fechaSpan = document.getElementById("fechaSpan");
-
-// Establecer el contenido del <span> como la fecha actual
-fechaSpan.textContent = fechaActual;

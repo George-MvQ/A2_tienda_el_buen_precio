@@ -35,7 +35,7 @@
             <td>{{ usuario.id }}</td>
             <td>{{ usuario.username }}</td>
             <td>{{ usuario.email }}</td>
-            <td>{{ usuario.is_super_user|yesno:'Sí,No' }}</td>
+            <td>{{ usuario.is_superuser|yesno:'Sí,No' }}</td>
             <td>
               <button class="btn-espacio btn-eliminar-usuario btn btn-outline-danger" data-id="{{ usuario.id }}">Eliminar</button>
               <a class="btn btn-outline-info" href="{% url 'detalles_usuario' usuario.id %}">Detalles</a>
