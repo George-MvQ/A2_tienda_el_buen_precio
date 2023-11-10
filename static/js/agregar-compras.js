@@ -68,6 +68,7 @@ const opcionesTabla = {
 window.addEventListener('load', () => {
      agregarFuncionBtnEliminar();
     $('#datosdetalle').DataTable(opcionesTabla);
+/*     quitarBordesAdvertenciaForm(form_compra_producto) */
 });
 
 
@@ -95,24 +96,27 @@ const eliminarProducto= async(id)=>{
 
 btGuardarDato.addEventListener('click', async (e) => {
     e.preventDefault()
-    const id = btGuardarDato.getAttribute('data-id')
-    const fk_producto = id_fk_producto.value
-    let formAgregar = new FormData(form_compra_producto);
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    const respuesta = await mantenimiento.agregarNuevoRegistro(`/admon/agregar-compras/${id}/`, jSonObjetos)
-    if (respuesta.ok) {
-        // mantenimiento.limpiarInputs('input_form')
-        const fila = filaTabla(respuesta.datos,fk_producto)
-        $('#datosdetalle').DataTable().row.add($(fila)).draw(false);
-        operacionesAgregar(respuesta.datos)
-        agregarFuncionBtnEliminar()
-        agregarFuncionBtnActualizar()
-        limpiarInputs()
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
-    }
+/*     const validacionOk = evaluacionCamposRequeridos(form_compra_producto) */
+/*     if (validacionOk) { */
+        const id = btGuardarDato.getAttribute('data-id')
+        const fk_producto = id_fk_producto.value
+        let formAgregar = new FormData(form_compra_producto);
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        const respuesta = await mantenimiento.agregarNuevoRegistro(`/admon/agregar-compras/${id}/`, jSonObjetos)
+        if (respuesta.ok) {
+            // mantenimiento.limpiarInputs('input_form')
+            const fila = filaTabla(respuesta.datos, fk_producto)
+            $('#datosdetalle').DataTable().row.add($(fila)).draw(false);
+            operacionesAgregar(respuesta.datos)
+            agregarFuncionBtnEliminar()
+            agregarFuncionBtnActualizar()
+            limpiarInputs()
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
+/*     } */
  });
 
  function limpiarInputs(){

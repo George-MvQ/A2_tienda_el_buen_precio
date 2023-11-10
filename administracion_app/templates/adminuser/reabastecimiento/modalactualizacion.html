@@ -79,11 +79,12 @@
             {% csrf_token %}
             {% load bootstrap5 %}
              {% bootstrap_form form %}
-            </form>
+           
             {% buttons %}
             <button id="btn_actualizar" type="submit"   data-id = "{{producto.id_productos}}" class="btn btn-primary">Actualizar</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           {% endbuttons %}
+          </form>
       </div>
     </div>
   </div>

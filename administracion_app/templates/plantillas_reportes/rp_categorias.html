@@ -29,13 +29,14 @@
                       </div> 
                     </th>
                     
-                    <th class="centered-cell"> 
-                      
+                    <th class=""> 
+                      <p>Fecha de Reporte</p>
+                      <p class="fecha">{{datos.fecha}}</p>
 
                     </th>
                   </tr>
                 </table>
-                <h1 class="titulo">REGISTROS DE MARCAS</h1>
+                <h1 class="titulo">REGISTRO DE CATEGORIAS</h1>
             </div>   
   
         </header>
@@ -44,17 +45,17 @@
             <table id="datosmarca" class="table table-striped">
           <thead>
             <tr>
-                <th class="encabezado" >Id Marca</th>
+                <th class="encabezado" >Id Categorias</th>
                 <th class="encabezado" >Nombre Marca</th>
                 <th class="encabezado" >Descripcion</th>
                 <th class="encabezado" >Estado</th>
             </tr>
           </thead>
           <tbody id="tablaBody" class="bg-">
-          {% for marca in datos %}
+          {% for marca in datos.data %}
           <tr data-id="{{ marca.id_marcas}}">
-            <td class="centrar"> {{marca.id_marcas}} </td>
-            <td class="centrar"> {{marca.nombre_marca}} </td>
+            <td class="centrar"> {{marca.id_categoria}} </td>
+            <td class="centrar"> {{marca.nombre_categoria}} </td>
             <td class="centrar"> {{marca.descripcion}} </td>
             <td class="centrar"> {{marca.estado|yesno:'Activo,Inactivo' }} </td>
             
@@ -67,10 +68,7 @@
     
     <footer>
 
-      <div class="content">
-        <p>Contenido de la página</p>
-        <span class="page-count"></span>
-      </div>
+
     </footer>
    
 </body>

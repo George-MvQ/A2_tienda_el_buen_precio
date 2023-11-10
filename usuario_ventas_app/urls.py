@@ -10,5 +10,10 @@ urlpatterns = [
      path('productos-agotados/',views.productosagotados, name='productos_agotados'),
      path('comprobante/',views.comprobante, name='comprobante'),
      path('obtener-datos-inventario/<int:id>/',views.api_ventas, name='api_inventario'),
+     path('historial-ventas/', views.historialventas, name='historial_ventas'),
+
+
+    # ---------  ESTA URL SIRVE PARA GENERAR LOS RECIBOS
+    path('recibo-venta/<int:id>/',views.reporte_comprobante, name='recibo_venta'),
      
 ]

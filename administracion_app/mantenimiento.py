@@ -20,6 +20,9 @@ class  MantenimientoGeneral:
     """-----------------------------------"""
     
     
+        
+        
+    
     
     def dic_buscar_registro(self,filtro)->dict:
         """ este metodo permite obtener datos espesificos en forma de diccionario"""

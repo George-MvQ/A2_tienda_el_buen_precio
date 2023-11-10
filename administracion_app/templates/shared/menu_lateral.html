@@ -47,47 +47,19 @@
                 </ul>
               </div>
             </li>
-            <!-- Aqui empieza el Segundo bloque -->
+
             <li>
-              <a class="medida" class="nav-link px-3" data-bs-toggle="collapse" href="#segundo">
-                <span class="me-2"><i class="bi bi-cart-plus"></i></span>
-                <span>Pedidos</span>
-                <span class="ms-auto"><span class="right-icon"><i class="bi bi-chevron-down custom-icon"></i></span></span>
+              <a href="{% url 'listadopedidos' %}" class="nav-link px-1">
+                <!-- Aca metemos los links de los index -->
+                <span class="me-2"><i class="bi bi-card-checklist"></i></span>
+                <span>Listado de Pedidos</span>
               </a>
-              <div class="collapse" id="segundo">
-                <ul class="navbar-nav ps-3">
-                  <li>
-                    <a href="{% url 'listadopedidos' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-card-checklist"></i></span>
-                      <span>Listado de Pedidos</span>
-                    </a>
-                    <!-- <a href="#" class="nav-link px-1">
-                      Aca metemos los links de los index
-                      <span class="me-2"><i class="bi bi-list-ol"></i></span>
-                      <span>Comprobante Pedido</span>
-                    </a> -->
-                    <a href="#" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-card-list"></i></span>
-                      <span>Inventarios Minimos</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </li>
             <li>
               <a href="{% url 'proveedores' %}" class="nav-link px-1">
                 <!-- Aca metemos los links de los index -->
                 <span class="me-2"><i class="bi bi-person-lines-fill"></i></span>
                 <span>Proveedores</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link px-1">
-                <!-- Aca metemos los links de los index -->
-                <span class="me-2"><i class="bi bi-clipboard-data"></i></span>
-                <span>Reportes</span>
               </a>
             </li>
           </ul>

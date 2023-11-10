@@ -16,21 +16,10 @@
 
 {% block content %}
   <h2>CATALOGO DE PRODUCTOS</h2>
-  <!--    <div class="container botonFormulario" id="meter">
-    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
-  </div>  -->
-
+  <button class="btn btn-danger" id = "btn_imprimir" data-url= "/admon/reporte-nuevo-producto/">
+    &#128424;Imprimir
+  </button>
   <div class="pollito"></div>
-
-  <!-- 
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
- -->
 
   <div class="container my-3">
     <table id="datosproductos" class="table table-striped">
@@ -44,7 +33,7 @@
           <th class="text-white font-weight-bold">Opciones</th>
         </tr>
       </thead>
-      <tbody id="tablaBody">
+      <tbody id="tablaBody" class="text-white">
         {% for producto in datos %}
           <tr data-id="{{ producto.0}}">
             <td>{{ producto.0}}</td>
@@ -56,36 +45,13 @@
                 
               <button class="btn-espacio btn-eliminar-producto btn btn-outline-danger" data-id="{{ producto.0 }}">Eliminar</button>
               <a class="btn btn-outline-info" href="{% url 'modal_actualizacion' producto.0 %}">Detalles</a>
-            <!--   <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ producto.0 }}" data-bs-toggle="modal" data-bs-target="#detalleProductoModal{{ producto.0 }}">Detalles</button> -->
+           
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-  <!-- MODAL PARA INGRESAR DATOS  -->
-<!-- 
-  <div class="modal fade otraClase" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content text-black">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA COMPRA</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form class="form_body" id="form_agregar_marca" method="POST">
-           
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br /> -->
   <div id="tablaPrueba"></div>
 
   <!-- Modal para agregar un nuevo producto -->
@@ -162,7 +128,10 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/nuevoProducto.js' %}"></script>
   <script type="module" src="{% static 'js/el_buen_precio/detallescatalogopro.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
 {% endblock %}

@@ -35,6 +35,7 @@ from django.template.loader import get_template
 
 from django.urls import reverse
 
+
 @login_required
 def admon(request):
     return render(request, 'adminuser/inicio/inicio_admin.html')
@@ -248,6 +249,9 @@ def agregar_compras(request,id):
 def detallecompras(request,id):
     if request.method == 'GET':
         return render(request, 'adminuser/reabastecimiento/detalle_compras.html', ValidacionDetalles.obtener_detalle_completo(id))
+
+
+
   
     
     
@@ -364,13 +368,77 @@ def obtenerDatoslistado(request):
 #-----------------------VISTAS DE CONTROL DE MOVIMIENTO --------------------------------
 
 def inventario_productos(request):
-    return render(request, 'adminuser/controlinventario/inventario.html')
+    validaciones = Validacionesinventario()
+    
+    if request.method == 'GET':
+        respuesta = validaciones.obetener_datos_inventario()
+        return render(request, 'adminuser/controlinventario/inventario.html',respuesta)
+        
+    elif request.method == 'POST':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.agregar_inventario(dato_obtenido)
+    return JsonResponse(respuesta)
+
+def obtenerDatos(request):
+    # creaando la lista de todas las marcas
+    inventario = list(inventario.objects.values())
+    if len(inventario) > 0:
+        dato = {
+            'mensaje': 'Si funciono',
+            'inventario': inventario
+        }
+    else:
+
+        dato = {'mensaje': 'sin datos'}
+    return JsonResponse(dato)
+
+
+
+''' ----------------------------- VISTA EMPLEADO -----------------------------'''
+def nuevo_empleado(request):
+    validaciones = ValidacionEmpleado()
+    if request.method == 'GET':
+        datos=validaciones.obtener_empleado()
+        return render(request,'adminuser/administrativo/empleado.html',datos)
+
+
+    elif request.method =='POST':
+        datosJson = json.loads(request.body)
+        respuesta = validaciones.guardar_nuevo_empleados(datosJson)
+        return JsonResponse(respuesta)
+    
+    elif request.method == 'DELETE':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.eliminar_empleado(dato_obtenido)
+        return JsonResponse(respuesta)
+        
+
+
+
+""" -----------------------------DETALLE EMPLEADO--------- """
+
+def detalle_empleado(request,id):
+    validacion=ValidacionEmpleado()
+    
+    if request.method=='GET':
+        datos=validacion.ver_empleado(id)
+        return render(request, 'adminuser/administrativo/detalle-empleado.html',datos)
+
+    if request.method =='PUT':
+        datos = json.loads(request.body)
+        respuesta = validacion.actualizar_datos_empleado(datos, id)
+        return JsonResponse(respuesta)
+
+    
 
 def historialventas(request):
-    return render(request, 'adminuser/controlinventario/historialventas.html')
+    if request.method=='GET':
+        return render(request, 'adminuser/controlinventario/historialventas.html',ValidacionDetalleVenta.obtener_datos())
 
 def historialentradas(request):
-    return render(request, 'adminuser/controlinventario/historialentradas.html')
+    if request.method == 'GET':
+        return render(request, 'adminuser/controlinventario/historialentradas.html',ValidacionDetalles.obtener_datos())
+
 
 def cardex(request):
     return render(request, 'adminuser/controlinventario/cardex.html')
@@ -386,8 +454,12 @@ def agregaregreso(request):
 def agregaringreso(request):
     return render(request, 'adminuser/controlinventario/agregaringreso.html')
 
+#@
 def balancecaja(request):
-    return render(request, 'adminuser/controlinventario/balancecaja.html')
+    validacion = ValidacionCaja()
+    if request.method == 'GET':
+        datos = validacion.obtner_datos_caja()
+        return render(request, 'adminuser/controlinventario/balancecaja.html',datos)
 
 def informeanalisis(request):
     return render(request, 'adminuser/controlinventario/informeanalisis.html')
@@ -408,46 +480,6 @@ def modalactualizacion(request,id):
 def registrarventa(request):
     return render(request, 'adminuser/controlinventario/registrarventa.html')
     
-    
-    
-    
-"""----------------- REPORTE DE PRUEBA-----------------------------"""
-
-# def reporte_marcas(request):
-#     validaciones = ValidacionesMarcas()
-
-#     respuesta = validaciones.obetener_datos_marcas()
-
-#     datos_marcas = Marcas.objects.all()
-
-#     # Carga la plantilla HTML (rp.html en este caso)
-#     template = get_template('rp.html')
-#     context = {'datos': datos_marcas}
-
-#     # Renderiza la plantilla HTML con los datos
-#     html = template.render(context)
-
-#     # Crea una respuesta en PDF
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
-
-#     # Define la función para cargar los recursos estáticos
-#     def fetch_resources(uri, rel):
-#         static_path = os.path.join(settings.BASE_DIR, 'static')
-#         path = os.path.join(static_path, uri.replace(settings.STATIC_URL, ""))
-#         return path
-
-#     # Crea el PDF a partir del HTML usando la biblioteca xhtml2pdf
-#     result = BytesIO()
-#     pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result, link_callback=fetch_resources)
-
-#     # Comprueba si se generó el PDF correctamente
-#     if not pdf.err:
-#         # Establece el contenido del PDF generado en la respuesta HTTP
-#         response.write(result.getvalue())
-#         return response
-#     else:
-#         return HttpResponse('Error al generar el PDF', content_type='text/plain')
 
 
 """ ---------------------------- REPORTES ----------------------------"""
@@ -485,10 +517,47 @@ def generar_pdf(datos_modelo, template_name):
 
 
 def reporte_marcas(request):
-    datos_marcas = Marcas.objects.all()
-    return generar_pdf(datos_marcas, 'plantillas_reportes/rp.html')
+    rep = ValidacionesMarcas.datos_reporte()
+    # datos_marcas = Marcas.objects.all()
+    return generar_pdf(rep, 'plantillas_reportes/rp_marcas.html')
+    
+def reporte_compras(request):
+    # datos_compras = DetalleCompra.objects.all()
+    rep = ValidacionDetalles.datos_reporte()
+    return generar_pdf(rep, 'plantillas_reportes/rp_compras.html')
+
+def reporte_nuevo_producto(request):
+    rep = ValidacionesProductos.datos_reporte()
+    
+    return generar_pdf(rep,'plantillas_reportes/rp_nuevo_producto.html')
 
 
 def reporte_categorias(request):
-    datos_proveedor = Proveedores.objects.all()
-    return generar_pdf(datos_proveedor, 'plantillas_reportes/rp2.html')
+    rep = MantenimientoCategoria.datos_reporte()
+    # datos_categorias = Categorias.objects.all()
+    return generar_pdf(rep,'plantillas_reportes/rp_categorias.html')
+
+
+def reporte_proveedores(request):
+    # Establece la configuración regional en español
+    rep = ValidacionesProveedores.datos_reporte()
+    return generar_pdf(rep, 'plantillas_reportes/rp_proveedores.html')
+
+
+
+def reporte_entradas_compras(request):
+    # Establece la configuración regional en español
+    rep = ValidacionDetalles.datos_reporte_entrada()
+    return generar_pdf(rep, 'plantillas_reportes/rp_entradas_compras.html')
+
+def reporte_salidas_ventas(request):
+    # Establece la configuración regional en español
+    rep = ValidacionDetalleVenta.datos_reporte_salida()
+    return generar_pdf(rep, 'plantillas_reportes/rp_salida_ventas.html')
+
+def reporte_usuarios(request):
+    # Establece la configuración regional en español
+    rep = ValidarUsuarios.datos_reporte_usuario()
+    return generar_pdf(rep, 'plantillas_reportes/rp_usuarios.html')
+
+

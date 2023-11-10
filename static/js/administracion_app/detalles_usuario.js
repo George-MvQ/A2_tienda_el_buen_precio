@@ -14,8 +14,6 @@ btnGuardarCambios.addEventListener('click', async() => {
            validacionOk = false;
            campo.classList.remove('border-primary');
            campo.classList.add('border-danger');
-           
-
         }
         else{
             console.log('todo bien')
@@ -121,7 +119,7 @@ function mostrarTooltip(campo) {
     });
   
     return tooltip; // Devuelve el objeto tooltip
-  }
+}
 
 const inputUsername = document.getElementById('username');
 inputUsername.addEventListener('click',() => {

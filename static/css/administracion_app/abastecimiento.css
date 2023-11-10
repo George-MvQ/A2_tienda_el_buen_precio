@@ -54,7 +54,7 @@
 
 .form{
     display: flex;
-    gap: 3%;
+    /* gap: 3%; */
     justify-content: center;
 }
 
@@ -71,12 +71,12 @@
 @media screen and (min-width: 768px) {
     .form {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1%; /* Reducir el espacio entre elementos */
+        grid-template-columns: repeat(3, 1fr);
+         /* Reducir el espacio entre elementos */
         justify-content: center;
         margin: 0 auto; /* Centrar el formulario en la pantalla */
-        max-width: 1200px; /* Ancho máximo del formulario */
-        margin-left: 8.5%;
+        max-width: 1200px; 
+        margin-left: 13%;
     }
 
     .form img {
@@ -89,7 +89,7 @@
 @media screen and (max-width: 767px) {
     .form {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 1%; /* Reducir el espacio entre elementos */
         justify-content: center;
         margin: 0 auto; /* Centrar el formulario en la pantalla */

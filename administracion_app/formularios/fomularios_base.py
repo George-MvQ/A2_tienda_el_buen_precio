@@ -1,5 +1,5 @@
 from django import forms
-from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos, ListadoPedidos, Compras, Productos, DetalleCompra
+from administracion_app.models import Proveedores,  Empleados, MetodosPago, Productos, ListadoPedidos, Compras, Productos, DetalleCompra, Inventario, Empleados
 
 #tupla contiene dos elementos 1. valor que se envia 2. texto se se muestra
 _opciones:list = [(True, 'Activo'), (False, 'Inactivo')]
@@ -246,20 +246,18 @@ class listadoForm(forms.ModelForm):
             'fk_empleado':'Empleado',
             'estado':'Estado',
         }
-    #     _empleado:Empleados = Empleados.objects.values_list('id_empleado','primer_nombre')
-    #     fecha_creacion = forms.DateField(
-    #     label='Fecha Creacion',
-    #     widget=forms.DateInput(attrs={'id': 'in_fechavi', 'type': 'date','format': '%d/%m/%Y'}),
-    #     input_formats=['%d/%m/%Y'],
-    #     )
-    #     empleado = forms.ChoiceField(
-    #     label='Empleado',
-    #     choices=_empleado
-    #     )
-    #     estado = forms.ChoiceField(
-    #     label='Estado',
-    #     choices=_opciones
-    #    )
+
+        
+class inventarioForm(forms.ModelForm):
+    # fecha_creacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = Inventario
+        fields = '__all__'
+        labels = {
+            # 'fecha_creacion':'Fecha de Creación',
+            'fk_producto2':'Producto',
+        }
+   
 
         
         
@@ -279,6 +277,23 @@ class NuevoProducto(forms.ModelForm):
             'fk_marca':'Marca',
             'estado': 'Estado',
         }
+class EmpleadoForm(forms.ModelForm):
+    class Meta: 
+        model = Empleados
+        fields = '__all__'
+        labels = {
+            'fk_id_puesto':'Puesto',
+            'fk_usuario':'Usuario'
+        }
+    def __init__(self, *args, **kwargs):
+        super(EmpleadoForm, self).__init__(*args, **kwargs)
+        self.fields['otros_nombres'].widget.attrs.update({'id': 'in_otros_nombres'})
+
+    
+
+
+
+
 
 """ password = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
     is_superuser = models.BooleanField()

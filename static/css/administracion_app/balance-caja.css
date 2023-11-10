@@ -1,0 +1,16 @@
+.div__contenedor--principal{
+
+}
+
+.div__opciones--filtrado{
+    display: grid;
+    grid-template-columns: 40% 20% 40%;
+    margin-top: 3%;
+}
+
+.filtrado__opcion--inpunt{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    text-align: center;
+    align-items: center;
+}

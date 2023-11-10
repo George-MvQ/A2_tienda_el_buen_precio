@@ -15,80 +15,47 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Inventario</h2>
+  <h2>INVENTARIO</h2>
   <!--    <div class="container botonFormulario" id="meter">
     <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
   </div>  -->
 
   <div class="pollito"></div>
-
-  <!-- 
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
- -->
-
+  <br>
+  
   <div class="container my-3">
-    <table id="datosproductos" class="table table-striped">
+    <table id="datosinventario" class="table table-striped">
       <thead>
         <tr>
-          <th class="text-white font-weight-bold">Id</th>
-          <th class="text-white font-weight-bold">Nombre Producto</th>
-          <th class="text-white font-weight-bold">Fecha Entrada</th>
-          <th class="text-white font-weight-bold">Fecha Salida</th>
-          <th class="text-white font-weight-bold">Stock</th>
-          <th class="text-white font-weight-bold">Opciones</th>
+          <th>Id</th>
+          <th>Nombre Producto</th>
+          <th>Fecha Entrada</th>
+          <th>Fecha Salida</th>
+          <th>Precio Venta</th>
+          <th>Stock</th>
+          
         </tr>
       </thead>
-      <tbody id="tablaBody">
-        {% for producto in datos %}
-          <tr data-id="{{ producto.0}}">
-            <td>{{ producto.0}}</td>
-            <td>{{ producto.1}}"</td>
-            <td>{{ producto.2 }}</td>
-            <td>{{ producto.9 }}</td>
-            <td>{{ producto.6 }}</td>
-            <td>
-                
-              <button class="btn-espacio btn-eliminar-producto btn btn-outline-danger" data-id="{{ producto.0 }}">Eliminar</button>
-              <button class="btn-detalles-usuario btn btn-outline-info" data-id="{{ producto.0 }}" data-bs-toggle="modal" data-bs-target="#detalleProductoModal{{ producto.0 }}">Detalles</button>
-            </td>
+      <tbody id="tablaBody"  class="text-white">
+        {% for inven in datos %}
+          <tr data-id="{{ inven.0}}">
+            <td>{{ inven.id_inventario}}</td>
+            <td>{{ inven.fk_producto2}}</td>
+            <td>{{ inven.fecha_ultima_entrada }}</td>
+            <td>{{ inven.fecha_ultima_salida }}</td>
+            <td>Q {{ inven.precio_venta }}</td>
+            <td>{{ inven.total_stock}}</td>
+           
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-  <!-- MODAL PARA INGRESAR DATOS  -->
-<!-- 
-  <div class="modal fade otraClase" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content text-black">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">INGRESAR NUEVA COMPRA</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form class="form_body" id="form_agregar_marca" method="POST">
-           
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button id="btGuardarMarca" type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br /> -->
+
   <div id="tablaPrueba"></div>
 
   <!-- Modal para agregar un nuevo producto -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
+{% comment %} <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content text-black">
       <div class="modal-header">
@@ -121,7 +88,7 @@
     </div>
   </div>
 </div>
-
+ {% endcomment %}
 
   <!-- ! USANDO TABLE -->
 
@@ -131,7 +98,7 @@
 
 {% for producto in datos %}
   <!-- Modal de detalles del producto -->
-  <div class="modal fade text-dark" id="detalleProductoModal{{ producto.0 }}" tabindex="-1" aria-labelledby="detalleProductoModalLabel{{ producto.0 }}" aria-hidden="true">
+{% comment %}   <div class="modal fade text-dark" id="detalleProductoModal{{ producto.0 }}" tabindex="-1" aria-labelledby="detalleProductoModalLabel{{ producto.0 }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -160,7 +127,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 {% endfor %}
 
 
@@ -174,7 +141,8 @@
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
-  <script type="module" src="{% static 'js/nuevoProducto.js' %}"></script>
-  <script type="module" src="{% static 'js/el_buen_precio/detallescatalogopro.js' %}"></script>
+<!--   <script type="module" src="{% static 'js/nuevoProducto.js' %}"></script> -->
+  <script type="module" src="{% static 'js/inventario.js' %}"></script>
+  <!-- <script type="module" src="{% static 'js/el_buen_precio/detallescatalogopro.js' %}"></script> -->
   
 {% endblock %}

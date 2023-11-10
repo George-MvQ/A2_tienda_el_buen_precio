@@ -54,6 +54,7 @@ table {
 
   p {
     margin: 0; /* Establece el margen en 0 para eliminar el espacio alrededor de las etiquetas <p> */
+    font-size:11px;
 }
 
 

@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'administracion_app',
     'usuario_ventas_app',
     'bootstrap5',
+    'django_template_maths',
     'sweetify',
+    
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'administracion_app.middleware.BloquarRutasMiddleware',
+    'usuario_ventas_app.middleware.BloquarRutasMiddleware',
 ]
 
 ROOT_URLCONF = 'el_buen_precio.urls'
@@ -119,15 +122,30 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'es-ES'
+""" LANGUAGE_CODE = 'es-ES'
 
-USE_L10N = False
+USE_L10N = True
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guatemala'
 
 USE_I18N = True
 
 USE_TZ = True
+
+DEFAULT_CHARSET = 'utf-8' """
+
+LANGUAGE_CODE = 'es-ES'
+
+TIME_ZONE = 'America/Guatemala'
+
+USE_L10N = False
+
+#IME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

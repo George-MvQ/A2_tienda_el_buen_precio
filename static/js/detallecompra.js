@@ -1,4 +1,6 @@
 import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+/* import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js"; */
+
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
 const opcionesTabla = {
@@ -10,10 +12,16 @@ const opcionesTabla = {
     pageLength: 7, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3, 5,7, 10, 15], //para el menuto de contenido de la tabla 
-    columnDefs: [{
+    columnDefs: [
+        {
+            type: 'date',
+            targets: [1] // Suponiendo que la columna de fecha está en la posición 5 (ajusta esto según tus datos)
+        },
+        {
         className: 'text-white text-center',
         targets: [0, 1, 2, 3, 4,5,6,7]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
+        
         orderable: false, //definimos que columnas no queremos que se ordenen  
         targets: [3, 4]
     }, {//buscando en columnas en espesifico
@@ -46,11 +54,19 @@ const opcionesTabla = {
         }
     }
 }
+$(document).ready(function () {
+    var tabla = $('#datosdetalle').DataTable(opcionesTabla);
+
+    $('#fechaFiltro').on('input', function () {
+        tabla.columns().search(this.value).draw(); // Ajusta el índice de columna según sea necesario
+    });
+});
 
 
 window.addEventListener('load', () => {
     // agregarFuncionBtnEliminar();
     $('#datosdetalle').DataTable(opcionesTabla);
+/*     quitarBordesAdvertenciaForm(form_agregar_marca) */
 });
 
 
@@ -79,28 +95,30 @@ const eliminarProducto= async(id)=>{
 btGuardarDato.addEventListener('click', async (e) => {
 
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_marca);
-    
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    
-    convertirStrNumeric(jSonObjetos)
-    console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos) 
-    console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------') 
-    if (respuesta.condicion==='ok') {
-        // mantenimiento.limpiarInputs('input_form') 
-        const fila = filaTabla(respuesta.datos)
-        console.log(fila);
-        $('#datosproductos').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnEliminar() 
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
-    }
+/*     const validacionOk = evaluacionCamposRequeridos(form_agregar_marca) */
+/*     if (validacionOk){ */
+        let formAgregar = new FormData(form_agregar_marca);
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+
+        convertirStrNumeric(jSonObjetos)
+        console.log(jSonObjetos);
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos) 
+        console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------') 
+        if (respuesta.condicion==='ok') {
+            // mantenimiento.limpiarInputs('input_form') 
+            const fila = filaTabla(respuesta.datos)
+            console.log(fila);
+            $('#datosproductos').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnEliminar() 
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
+/*     } */
 
  }); 
 
@@ -134,4 +152,11 @@ const filaTabla = (elementos) => {
     `
     return datos
 }
+
+
+
+
+// ---------------------------  FUNCION PARA LA FECHA
+
+
 

@@ -7,6 +7,8 @@ class Mantenimiento {
         condicion: 'Error'
     }
 
+    
+
     constructor() {
         this.patronDecimal = /^\d+(\.\d+)?$/;
         this.patronEntero = /^\d+$/;
@@ -339,65 +341,18 @@ class AlertasBotones {
 /* sweet alert de gestion de usuario */
 
 
-class Utilidades{
-    
-}
-
-
-
-
-
-/* function pollo (callback){
-    callback()
-}
-
-function a(b){
-    console.log(b);
-}
-
-
-pollo (a) */
-
-//ejemplo
-/* 
-function pollo(callback) {
-    callback("Gallo", "Pato");
-}
-
-pollo(function(a, b) {
-    console.log("Argumentos recibidos:", a, b);
-});
-
-function pollo(callback) {
-    console.log("Antes de llamar al callback");
-    callback();
-    console.log("Después de llamar al callback");
-}
-
-pollo(function() {
-    console.log("Dentro del callback");
-});
-
-function pollo(callback) {
-    try {
-        callback();
-    } catch (error) {
-        console.error("Se produjo un error:", error);
-    }
-}
-
-pollo(function() {
-    // Algo que podría generar una excepción
-    throw new Error("Este es un error de ejemplo");
-});
- */
-
-//exportar clase
-
-//eliminar datos de tabla 
 const crearBotonEliminar = (identicador,clase) => {
     return `<button class="${clase} btn btn-outline-danger"  data-id="${identicador}">Eliminar</button>`;
 };
+
+
+
+
+/* import tippy from 'tippy.js'; */
+
+
+
+//export {Mantenimiento,AlertasBotones,crearBotonEliminar} 
 
 
 

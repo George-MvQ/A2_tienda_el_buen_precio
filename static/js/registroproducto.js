@@ -1,4 +1,7 @@
 import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+
+import { evaluacionCamposRequeridos, quitarBordesAdvertenciaForm } from "./libreria/funcionalidades.js";
+
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
 
@@ -64,7 +67,7 @@ const opcionesTabla = {
 window.addEventListener('load',()=>{
     agregarFuncionBtnEliminar()
     $('#datoscompra').DataTable(opcionesTabla)
-    
+    quitarBordesAdvertenciaForm(form_agregar_compra)
 })
 
 const agregarFuncionBtnEliminar = () => {
@@ -88,29 +91,30 @@ const eliminarCompra= async(id)=>{
 }
 
 btGuardarCompra.addEventListener('click', async (e) => {
-
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_compra);
-    
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    
-    convertirStrNumeric(jSonObjetos)
-    console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/compras/', jSonObjetos) 
-    console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------') 
-    if (respuesta.condicion==='ok') {
-        // mantenimiento.limpiarInputs('input_form') 
-        const fila = filaTabla(respuesta.datos)
-        console.log(fila);
-        $('#datoscompra').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnEliminar() 
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
+    const validacionOk = evaluacionCamposRequeridos(form_agregar_compra)
+    if (validacionOk) {
+        
+        let formAgregar = new FormData(form_agregar_compra);
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        convertirStrNumeric(jSonObjetos)
+        console.log(jSonObjetos);
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/compras/', jSonObjetos)
+        console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------')
+        if (respuesta.condicion === 'ok') {
+            // mantenimiento.limpiarInputs('input_form') 
+            const fila = filaTabla(respuesta.datos)
+            console.log(fila);
+            $('#datoscompra').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnEliminar()
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
     }
 
  }); 

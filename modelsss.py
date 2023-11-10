@@ -1,4 +1,4 @@
-
+# C:\Analisis2\sistema_tienda
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -229,11 +229,11 @@ class UnidadesMedidas(models.Model):
         db_table = 'Unidades_medidas'
 
 
-
 class Ventas(models.Model):
     id_venta = models.BigAutoField(db_column='ID_venta', primary_key=True)  # Field name made lowercase.
     fecha_venta = models.DateField(db_column='fecha_Venta', blank=True, null=True)  # Field name made lowercase.
     fk_empleado1 = models.ForeignKey(Empleados, models.DO_NOTHING, db_column='fk_empleado1', blank=True, null=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False

@@ -31,7 +31,7 @@
   </select>
        -->
   
-  <button type="button" data-url="/admon/reporte-pruebas/" class="btn btn-danger  ms-4" id="btn_imprimir">&#128424; Imprimir</button>
+  <button type="button" data-url="/admon/reporte-proveedores/" class="btn btn-danger  ms-4" id="btn_imprimir">&#128424; Imprimir</button>
 
 
   <div class="container my-3">
@@ -39,7 +39,7 @@
       <thead>
         <tr>
           <th>Codigo</th>
-          <th>Nombre de Proveedor</th>
+          <th>Proveedor</th>
           <th>Telefono</th>
           <th>Dia de Visita</th>
           <th>Dia de Entrega</th>
@@ -52,7 +52,6 @@
         {% for proveedor in datos %}
           <tr data-id="{{ proveedor.id_proveedor}}">
             <td>{{ proveedor.id_proveedor }}</td>
-            
             <td>{{ proveedor.nombre_proveedor }}</td>
             <td>{{ proveedor.telefono }}</td>
             <td>{{ proveedor.dia_visita }}</td>
@@ -77,26 +76,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-   <!--        <form class="row" id="form_agregar_marca" method="POST">
-            {% csrf_token %}
-            <div class="col-md-6">
-              {{ form.nombrevendedor.label_tag }}
-              {{ form.telefono.label_tag }}
-              {{ form.diavisita.label_tag }}
-              {{ form.nombrevendedor }}
-              {{ form.telefono }}
-              {{ form.diavisita }}
-            </div>
-            <div class="col-md-6">
-              {{ form.diaentrega.label_tag }}
-              {{ form.descripcion.label_tag }}
-              {{ form.estado.label_tag }}
-              {{ form.diaentrega }}
-              {{ form.descripcion }}
-              {{ form.estado }}
-            </div>
 
-          </form> -->
         <form class="row" id="form_agregar_proveedor" method="POST">
           {% csrf_token %}
           
@@ -215,6 +195,8 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/proveedores.js' %}"></script>
   <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>

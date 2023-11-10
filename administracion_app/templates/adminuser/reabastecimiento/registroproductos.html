@@ -17,6 +17,11 @@ Registro de Productos
 
 {% block content %}
   <h2>REGISTRO COMPRAS</h2>
+
+  <button class="btn btn-danger" id = "btn_imprimir" data-url= "/admon/reporte-compras/">
+    &#128424;Imprimir
+</button>
+
   <div class="container my-3">
     <table id="datoscompra" class="table table-striped">
       <thead>
@@ -96,7 +101,10 @@ Registro de Productos
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/registroproducto.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
  
 {% endblock %}

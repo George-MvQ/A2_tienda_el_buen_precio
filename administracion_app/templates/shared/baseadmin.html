@@ -15,6 +15,7 @@
 
     <!-- css generales -->
     {% load static %}
+    <link rel="shortcut icon" href="#">
     <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/administracion_app/dashboard.css' %}" />
@@ -39,6 +40,8 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="{% url 'panel_principal' %}">Modulos</a>
         </li>
+        {% block lista_ruta %}
+        {% endblock  %}
       </ul>
     </header>
 

@@ -41,12 +41,14 @@ urlpatterns = [
       path('ingreso-productos/',views.nuevo_producto, name='productos_nuevos'),
       path('modal-actualizacion/<int:id>/',views.modalactualizacion, name='modal_actualizacion'),
 
+    
 
+      
 
 
       # -----------------MODULO DE MOVIMIENTOS------------------------
         path('inventario-productos/',views.inventario_productos, name='inventario_productos'),
-        path('historial-ventas/',views.historialventas, name='historial_ventas'),
+        path('historial-ventas/',views.historialventas, name='historial_ventas_admin'),
         path('historial-entradas/',views.historialentradas, name='historial_entradas'),
         
         path('cardex/',views.cardex, name='historial_cardex'),
@@ -58,13 +60,30 @@ urlpatterns = [
         path('balance-caja/',views.balancecaja, name='balance_caja'),
         path('informe-analisis/',views.informeanalisis, name='informe_analis'),
         
-        #--------------REPORTERIA------------------
-  
-        path('reporte-prueba/',views.reporte_marcas, name='reporte_prueba'),
-        path('reporte-pruebas/',views.reporte_categorias, name='reporte_categoria'),
+      
 
         #----------------VENTAS----------------------------
         path('registrar-venta/',views.registrarventa, name='registrar_venta'),
+        
+
+          #---------------------------------- EMPLEADO
+        path('ingreso-empleado/',views.nuevo_empleado, name='empleado_nuevo'),
+        
+        #----------------------------DETALLE EMPLEADO-----------------
+        path('detalle-empleado/<int:id>/',views.detalle_empleado, name='detalle_empleado'),
+
+
+        
+        # ------------------------- REPORTES GENERALES  ---------------------------
+        path('reporte-marcas/',views.reporte_marcas, name='reporte_marcas'),
+        path('reporte-proveedores/',views.reporte_proveedores, name='reporte_proveedores'),
+        path('reporte-compras/',views.reporte_compras, name='reporte_compras'),
+        path('reporte-nuevo-producto/',views.reporte_nuevo_producto, name='reporte_productos'),
+        path('reporte-categoria/',views.reporte_categorias, name='reporte_categoria'),
+        path('reporte-entradas-producto/',views.reporte_entradas_compras, name='reporte_entradas_compras'),
+        path('reporte-salidas-ventas/',views.reporte_salidas_ventas, name='reporte_salidas_ventas'),
+        path('reporte-usuarios/',views.reporte_usuarios, name='reporte_usuarios'),
+
               
 ]
 

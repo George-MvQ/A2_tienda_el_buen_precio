@@ -11,6 +11,20 @@ from .formularios.fomularios_base import *
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import F, ExpressionWrapper, FloatField,Sum
 from django.db.models.functions import Round
+import locale
+import pytz
+from datetime import datetime
+
+#FUNCION PARA OBTENER LA FECHA ACTUAL 
+def obtener_hora_fecha(formato = '%d de %B de %Y %H:%M'):
+    """Esta funcion nos permite obtener la fecha actual"""
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+    fecha_actual = timezone.now()
+    zona_horaria_local = pytz.timezone('America/Guatemala')
+    fecha_actual_local = fecha_actual.astimezone(zona_horaria_local)
+    fecha_formateada = fecha_actual_local.strftime(formato)
+    return  fecha_formateada
+
 
 
 """funcion que me permite obtener datos del formularios de ingreso de datos"""
@@ -172,7 +186,10 @@ class ValidarUsuarios:
         except:
             return {'mensaje':'Error fatal datos equivocados', 'condicion':'error' }
         
-
+    @staticmethod
+    def datos_reporte_usuario():
+        return Validacionfecha.datos_reporte_modelo(AuthUser)
+        
 
 class ValidarProductos():
     _mantenimiento = MantenimientoGeneral(Productos)
@@ -220,6 +237,11 @@ class MantenimientoCategoria():
             actualizacion['datos']['estado'] = 'Activo' if actualizacion['datos']['estado'] else 'Inactivo'
         return actualizacion
 
+    @staticmethod
+    def datos_reporte():
+        return Validacionfecha.datos_reporte_modelo(Categorias)
+
+    
 
 #----------------------------------CATALOGO DE PRODUCTOS---------------------------------
    
@@ -248,11 +270,7 @@ class ValidacionesProductos:
             'datos':respuesta,
             
         }
-    def guardar_producto(self,req_post):
-        formulario = NuevoProducto(req_post)
-        datos = self._mantenimiento.agregar_registro_baseForm(formulario)
-        print(datos)
-        return datos
+
     #GUARDAR NUEVO PRODUCTO
     def guardar_nuevo_producto(self,datosJson):
         datosJson['fk_presentacion'] = Presentacion.objects.get(id_presentacion = datosJson['fk_presentacion'])
@@ -261,6 +279,7 @@ class ValidacionesProductos:
         datosJson['fk_marca'] = Marcas.objects.get(id_marcas = datosJson['fk_marca'])
         print(datosJson)
         resultado = self._mantenimiento.agregar_registro(datosJson,'id_productos',['nombre_producto'])
+        print(type(resultado))
         resultado['datos']['fk_presentacion'] =  datosJson['fk_presentacion'].pk
         resultado['datos']['fk_unidad_medida'] = datosJson['fk_unidad_medida'].pk 
         resultado['datos']['fk_categoria'] = datosJson['fk_categoria'].nombre_categoria 
@@ -303,7 +322,10 @@ class ValidacionesProductos:
         datos['fk_marca'] = producto.fk_marca.nombre_marca
         datos['estado'] = 'Activo' if producto.estado else 'Inactivo'
         
-        
+    
+    @staticmethod
+    def datos_reporte():
+        return Validacionfecha.datos_reporte_modelo(Productos)
 
 
 """----------------------------------MARCAS---------------------------------"""
@@ -338,9 +360,21 @@ class ValidacionesMarcas:
             print("-------------------------------")
             actualizacion['datos']['estado'] = 'Activo' if actualizacion['datos']['estado'] else 'Inactivo'
         return actualizacion
+    
+    @staticmethod
+    def datos_reporte():
+        return Validacionfecha.datos_reporte_modelo(Marcas)
 
-
-
+""" -------------------------------- INVENTARIO--------------------------------------------- """
+class Validacionesinventario:
+    def obetener_datos_inventario(self) -> dict:
+        form =inventarioForm() 
+        datos = Inventario.objects.all()
+        return {
+            'form': form,
+            'datos':datos
+        }
+ 
 
 """------------------------------ PROVEEDORES -----------------------------------"""
 
@@ -371,6 +405,24 @@ class ValidacionesProveedores:
         if actualizacion['condicion'] == 'ok':
             actualizacion['datos']['estado'] = 'Activo' if actualizacion['datos']['estado'] else 'Inactivo'
         return actualizacion
+    
+    @staticmethod
+    def datos_reporte():
+        return Validacionfecha.datos_reporte_modelo(Proveedores)
+        
+
+
+
+# ------------- ESTO LO ESTABA AREGLANDO 
+class Validacionfecha():
+    @staticmethod
+    def datos_reporte_modelo(model:object):
+        data = model.objects.all()
+        fecha_formateada = obtener_hora_fecha()
+        return {
+            "data": data,
+            "fecha": fecha_formateada
+        }   
 
 '''------------------------------ LISTADO PRODUCTOS ------------------------------'''
 
@@ -482,7 +534,8 @@ class   ValidacionesCompra:
             'compra':dato,
             'form':form
             }
-        
+    
+ 
 
 class ValidacionDetalles:
     _mantenimiento = MantenimientoGeneral(DetalleCompra)
@@ -598,13 +651,121 @@ class ValidacionDetalles:
         id_campo.no_lote = 'act_n_lote'
         formActualizar =  DetalleCompraForm(ids_detalles= id_campo)
         return formActualizar 
-        
-        
-        
-        
-        
 
+    @staticmethod
+    def datos_reporte():
+        return Validacionfecha.datos_reporte_modelo(DetalleCompra)
+        
+    @staticmethod
+    def datos_reporte_entrada():
+        return Validacionfecha.datos_reporte_modelo(DetalleCompra)
+
+    @staticmethod
+    def obtener_datos():
+        detalle_compra = DetalleCompra.objects.all()
+        for registro in detalle_compra: 
+            registro.sub_total = registro.cantidad_compra * registro.precio_unitario_compra - registro.descuentos
+        return {'compra_detalle': detalle_compra}
+
+'''  ---------------------------- VALIDACIN EMPLEADO ------------------------'''
+class ValidacionEmpleado:
+    _mantenimiento = MantenimientoGeneral(Empleados)
+    def obtener_empleado(self):
+        datos = self._mantenimiento.modelo.objects.all()
+        form = EmpleadoForm()
+        return {
+            'form': form,
+             'datos': datos
+        }
+
+    def ver_empleado(self,id):
+        objeto = get_object_or_404(Empleados, pk=id)
+        form = EmpleadoForm(instance=objeto)
+        registro = self._mantenimiento.buscar_registros({'id_empleado':id})
+        return{
+            'form':form,
+            'registro':registro
+        }
+
+
+    # ---FRANK ESTOY ESTO MODIFICANDO  COMPARANDO CON PRODUCTOS  
 
     
+    def guardar_nuevo_empleados(self,datosJson):
+        datosJson['fk_id_puesto'] = Puestos.objects.get(id_puestos =datosJson['fk_id_puesto'])
+        datosJson['fk_usuario'] = AuthUser.objects.get(id =datosJson['fk_usuario'])
+
+        resultado = self._mantenimiento.agregar_registro(datosJson,'id_empleado',['primer_nombre'])
+        print(type(resultado))
+        
+        resultado['datos']['fk_id_puesto'] = datosJson['fk_id_puesto'].nombre_puesto      
+        resultado['datos']['fk_usuario'] = datosJson['fk_usuario'].username         
+        print (resultado)
+        return resultado        
+
+    def eliminar_empleado(self,datosJson):
+        try:
+            respuesta = self._mantenimiento.eliminar_registro({'id_empleado':int(datosJson['identificador'])})
+            print(respuesta)
+            if respuesta['condicion'] == 'ok':
+                respuesta['mensaje'] = 'El empleado se ha eliminado correctamente'
+            return respuesta
+        except:
+            return {'mensaje':'Error fatal datos equivocados', 'condicion':'error' }
+
+    def actualizar_datos_empleado(self,datos,id):
+        filtro = {'id_empleado': id}
+        respuesta = self._mantenimiento.actualizar_registro(datos,filtro)
+        if respuesta['condicion']=='ok':
+            empleado = self._mantenimiento.buscar_registros(filtro)
+            self._asignar_datos_empleado(empleado,respuesta['datos'])
+        print(respuesta)
+        return respuesta
+
+    def _asignar_datos_empleado(self,empleado,datos):
+        datos['fk_id_puesto'] = empleado.fk_id_puesto.nombre_puesto
+        datos['fk_usuario'] = empleado.fk_usuario.username
+
+    
+
+
+class ValidacionDetalleVenta:
+    @staticmethod
+    def obtener_datos():
+        detalle_venta = DetalleVentas.objects.all()
+        for registro in detalle_venta: 
+            registro.sub_total = registro.cantidad_producto * registro.precio_unitario - registro.descuento 
+        return {'venta_detalle': detalle_venta}
+
+    @staticmethod
+    def datos_reporte_salida():
+        return Validacionfecha.datos_reporte_modelo(DetalleVentas)
+
+
+class ValidacionCaja:
+    def obtner_datos_caja(self):
+        hoy = datetime.now()
+        year = hoy.year
+        month = hoy.month 
+        print(year, month)
+        gastos = DetalleCompra.objects.filter(fk_compra__fecha_compra__year = year, fk_compra__fecha_compra__month = month )
+        ingresos = DetalleVentas.objects.filter(fk_venta__fecha_venta__year=year, fk_venta__fecha_venta__month = month)
+        total_gastos = 0
+        total_ingresos = 0
+        
+        for registro in gastos:
+            registro.subtotal_gastos =  registro.cantidad_compra * registro.precio_unitario_compra - registro.descuentos
+            total_gastos += registro.subtotal_gastos
+        for registro in ingresos:
+            registro.subtotal_ingreso = registro.cantidad_producto * registro.precio_unitario - registro.descuento
+            total_ingresos += registro.subtotal_ingreso
+        
+        return {
+            'gastos': gastos,
+            'ingresos': ingresos,
+            'total_gastos': total_gastos,
+            'total_ingresos': total_ingresos,
+            'total_mes': total_ingresos - total_gastos
+            }
     
     

@@ -3,16 +3,9 @@
 .sidebar {
     height: 107%;
     width: 235px;
-    /* position: fixed; */
-  
-    /* background-color:#55d344; */
-    /* background-color:#1F2C34;  */
     background-color:#1D2B34; 
     padding-top: 20px;
     margin-top: -40px;
-    /* padding: 20px; */
-    /* padding-bottom: 100%; */
-   /* Ventas */
   }
   
 .barra{
@@ -30,25 +23,31 @@
 
     list-style-type: none;
     padding: 0;
+    
   }
   
   .sidebar li {
     padding: 10px;
-    line-height: 1.2; 
+    line-height: 1.7; 
   }
   
   .sidebar a {
+    padding: 9px;
     text-decoration: none;
-    width: 110%;
+    width: auto;
     color: white;
     display: block;
     /* font-weight: bold !important;  */
   }
   
-  /* .sidebar a:hover {
-    height: 20px;
+  .sidebar a:hover {
+/*     height: 35px; */
+    padding: 9px;
     background-color:#2f424d;
-  }  */
+    color:white;
+    width: auto;
+    border-radius: 2px;
+  } 
   
   .content {
     margin-left: 250px;

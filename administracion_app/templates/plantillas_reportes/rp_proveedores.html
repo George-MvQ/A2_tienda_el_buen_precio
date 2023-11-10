@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,13 +28,15 @@
                   </div> 
                 </th>
                 
-                <th class="centered-cell"> 
-                  
+                <th class=""> 
+                  <p>Fecha de Reporte</p>
+                  <p class="fecha">{{datos.fecha}}</p>
 
                 </th>
               </tr>
             </table>
             <h1 class="titulo">REGISTROS DE PROVEEDORES</h1>
+            
         </div>   
         </header>
 
@@ -53,16 +55,15 @@
                 </tr>
               </thead>
               <tbody id="tablaBody" class="text-white">
-                {% for proveedor in datos %}
+                {% for proveedor in datos.data %}
                   <tr data-id="{{ proveedor.id_proveedor}}">
                     <td>{{ proveedor.id_proveedor }}</td>
-                    
                     <td>{{ proveedor.nombre_proveedor }}</td>
                     <td>{{ proveedor.telefono }}</td>
                     <td>{{ proveedor.dia_visita }}</td>
                     <td>{{ proveedor.dia_entrega }}</td>
                     <td>{{ proveedor.descripcion }}</td>
-                    <td>{{ proveedor.estado |yesno:'Activo,Inactivo' }}</td>
+                    <td>{{ proveedor.estado | yesno:'Activo,Inactivo' }}</td>
                   </tr>
                 {% endfor %}
               </tbody>

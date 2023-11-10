@@ -2,7 +2,7 @@
 
 .titulo{
     text-align: center;
-    color: aqua;
+    color:white;
     margin-top: 40px;
 }
 
@@ -92,3 +92,9 @@
 
 
 
+#in_otros_nombres{
+    height: 10px;
+}
+.resizable {
+    resize: both;
+}

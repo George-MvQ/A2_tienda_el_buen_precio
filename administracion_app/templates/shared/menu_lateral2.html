@@ -27,7 +27,7 @@
               <div class="collapse" id="layouts">
                 <ul class="navbar-nav ps-3">
                   <li>
-                    <a href="{% url 'historial_ventas' %}" class="nav-link px-1">
+                    <a href="{% url 'historial_ventas_admin' %}" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                       <span>Ventas</span>
@@ -37,51 +37,16 @@
                       <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                       <span>Entradas</span>
                     </a>
-                  
-                    <a href="{% url 'historial_cardex' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
-                      <span>Cardex</span>
-                    </a>
-                   
                   </li>
                 </ul>
               </div>
             </li>
             <!-- Aqui empieza el Segundo bloque -->
             <li>
-              <a class="medida" class="nav-link px-3" data-bs-toggle="collapse" href="#segundo">
+              <a href="{% url 'balance_caja' %}" class="nav-link px-1">
+                <!-- Aca metemos los links de los index -->
                 <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                 <span>Balance de Caja</span>
-                <span class="ms-auto"><span class="right-icon"><i class="bi bi-chevron-down custom-icon1"></i></span></span>
-              </a>
-              <div class="collapse" id="segundo">
-                <ul class="navbar-nav ps-3">
-                  <li>
-                    <a href="{% url 'ingresar_egreso' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-card-checklist"></i></span>
-                      <span>Agregar Egreso</span>
-                    </a>
-                    <a href="{% url 'ingresar_ingreso' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-list-ol"></i></span>
-                      <span>Agregar Ingresos</span>
-                    </a>
-                    <a href="{% url 'balance_caja' %}" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-card-list"></i></span>
-                      <span>Balance de Caja</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <a href="{% url 'informe_analis' %}" class="nav-link px-1">
-                <!-- Aca metemos los links de los index -->
-                <span class="me-2"><i class="bi bi-person-lines-fill"></i></span>
-                <span>Informes y Analisis</span>
               </a>
             </li>
             <li>
@@ -89,13 +54,6 @@
                 <!-- Aca metemos los links de los index -->
                 <span class="me-2"><i class="bi bi-clipboard-data"></i></span>
                 <span>Analisis Grafica</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link px-1">
-                <!-- Aca metemos los links de los index -->
-                <span class="me-2"><i class="bi bi-clipboard-data"></i></span>
-                <span>Reporte</span>
               </a>
             </li>
           </ul>

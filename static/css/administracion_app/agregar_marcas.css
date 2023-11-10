@@ -72,7 +72,12 @@ h2{
     margin-top: 3rem;
 }
 
+.cajabotones{
+    width:50px;
+    background-color: red !important;
+}
 .moverboton{
     margin-left: 92%;
     margin-top: -7.5%;
 }
+

@@ -1,5 +1,5 @@
 import {Mantenimiento, AlertasBotones, crearBotonEliminar } from "./Crud.js";
-
+import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "./libreria/funcionalidades.js";
 
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
@@ -27,7 +27,7 @@ const opcionesTabla = {
     destroy: true, //indicando que sea una tabla destruible
     lengthMenu: [3, 5, 7,10, 15], //para el menuto de contenido de la tabla
     columnDefs: [{
-        className: 'text-white text-center',
+        className: 'text-white text-center ',
         targets: [0, 1, 2, 3, 4]//columnas inicia del 0 a n de las que se aplican los cabios
     }, {
         orderable: false, //definimos que columnas no queremos que se ordenen
@@ -68,6 +68,7 @@ window.addEventListener('load', () => {
     agregarFuncionBtnEliminar()
     agregarFuncionBtnActualizar()
     $('#datosmarca').DataTable(opcionesTabla);
+    quitarBordesAdvertenciaForm(form_agregar_marca)
 });
 
 const agregarFuncionBtnEliminar = () => {
@@ -95,28 +96,30 @@ const eliminarMarcas = async (id) => {
 /*  AGREGAR DATOS  */
 btGuardarMarca.addEventListener('click', async (e) => {
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_marca);//pasamos como parametro el id del formulario que queremos
+    const validacionOk = evaluacionCamposRequeridos(form_agregar_marca)
+    if (validacionOk) {
+        let formAgregar = new FormData(form_agregar_marca);//pasamos como parametro el id del formulario que queremos
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        console.log(jSonObjetos);
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-marcas/', jSonObjetos)
+        console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------')
+        if (respuesta.condicion === 'ok') {
+            // mantenimiento.limpiarInputs('input_form')
 
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-marcas/', jSonObjetos)
-    console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------')
-    if (respuesta.condicion === 'ok') {
-        // mantenimiento.limpiarInputs('input_form')
+            const fila = filaTabla(respuesta.datos)
+            console.log(fila)
+            $('#datosmarca').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnActualizar()
+            agregarFuncionBtnEliminar()
 
-        const fila = filaTabla(respuesta.datos)
-        console.log(fila)
-        $('#datosmarca').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnActualizar()
-        agregarFuncionBtnEliminar()
-
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
     }
 
 });

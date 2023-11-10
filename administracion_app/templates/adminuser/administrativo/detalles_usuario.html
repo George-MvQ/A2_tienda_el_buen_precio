@@ -123,9 +123,11 @@
 {% endblock %}
 {% block script %}
   {% load static %}
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-
+  {% comment %} <script src="https://unpkg.com/@popperjs/core@2"></script>
+   {% endcomment %}
+  {% comment %} <script src="https://unpkg.com/tippy.js@6"></script> {% endcomment %}
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/administracion_app/detalles_usuario.js' %}"></script>
 {% endblock %}

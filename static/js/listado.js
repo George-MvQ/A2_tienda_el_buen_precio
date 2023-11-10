@@ -1,5 +1,5 @@
 import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
-
+import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "./libreria/funcionalidades.js";
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones() 
 const opcionesTabla = {
@@ -64,6 +64,7 @@ const opcionesTabla = {
 window.addEventListener('load', () => {
     agregarFuncionBtnEliminar();
     $('#datoslistado').DataTable(opcionesTabla);
+    quitarBordesAdvertenciaForm(form_agregar_listado)
 });
 
 const agregarFuncionBtnEliminar = () => {
@@ -87,28 +88,30 @@ const eliminarListado = async (id) => {
 
 btGuardarListado.addEventListener('click', async (e) => {
     e.preventDefault()
-    let formAgregar = new FormData(form_agregar_listado);//pasamos como parametro el id del formulario que queremos 
+    const validacionOk = evaluacionCamposRequeridos(form_agregar_listado)
+    if (validacionOk) {
+        let formAgregar = new FormData(form_agregar_listado);//pasamos como parametro el id del formulario que queremos 
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        convertirStrNumeric(jSonObjetos)
+        console.log(jSonObjetos);
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/listado-pedidos/', jSonObjetos)
+        console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------')
+        if (respuesta.condicion === 'ok') {
+            // mantenimiento.limpiarInputs('input_form')
 
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    convertirStrNumeric(jSonObjetos)
-    console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/listado-pedidos/', jSonObjetos)
-    console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------')
-    if (respuesta.condicion === 'ok') {
-        // mantenimiento.limpiarInputs('input_form')
+            const fila = filaTabla(respuesta.datos)
+            console.log(fila)
+            $('#datoslistado').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnEliminar()
 
-        const fila = filaTabla(respuesta.datos)
-        console.log(fila)
-        $('#datoslistado').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnEliminar()
-
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
     }
 
 });

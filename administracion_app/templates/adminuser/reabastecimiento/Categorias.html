@@ -16,6 +16,9 @@
 
 {% block content %}
   <h2>INGRESO CATEGORIAS</h2>
+  <button class="btn btn-danger" id = "btn_imprimir" data-url= "/admon/reporte-categoria/">
+    &#128424;Imprimir
+  </button>
   <!--    
   <div class="container botonFormulario" id="meter">
     <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
@@ -23,15 +26,6 @@
   -->
   <div class="pollito"></div>
 
-  <!-- 
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
- -->
   <!-- <p>{{ datos }}</p> -->
   <div class="container my-3">
     <table id="datoscategoria" class="table table-striped">
@@ -142,8 +136,11 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/categorias.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
   
 {% endblock %}
 

@@ -1,3 +1,4 @@
+
 import {Mantenimiento, AlertasBotones} from "./Crud.js";
 
 const mantenimiento = new Mantenimiento()
@@ -6,7 +7,8 @@ const alertas = new AlertasBotones()
 //esta funcion se encarga de obtener y agregar los datos de la fila al formulario 
 
 // esta funcion es la que se encarga de actualizar datos 
-btn_actualizar.addEventListener('click',async ()=>{
+btn_actualizar.addEventListener('click',async (e)=>{
+    e.preventDefault();
     const datos = obetenerDatosForm()
     console.log(datos);
     alertas.actualizar(datos,actualizarRegistro)

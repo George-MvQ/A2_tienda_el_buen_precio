@@ -39,7 +39,7 @@
         {% for listado in datos %}
           <tr data-id="{{ listado.0 }}">
             <td>{{ listado.0 }}</td>
-            <td>{{ listado.1}}"</td>
+            <td>{{ listado.1}}</td>
             <td>{{ listado.2}}</td>
             <td>{{ listado.estado |yesno:'Activo,Inactivo'}}</td>
             <td>
@@ -95,6 +95,8 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/listado.js' %}"></script>
   

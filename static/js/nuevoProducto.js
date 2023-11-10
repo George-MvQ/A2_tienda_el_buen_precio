@@ -1,4 +1,7 @@
+
+import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../js/libreria/funcionalidades.js"; 
 import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "./Crud.js";
+
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
 const opcionesTabla = {
@@ -60,12 +63,41 @@ const opcionesTabla = {
     }
 }
 
-window.addEventListener('load',()=>{
+window.addEventListener('load', () => {
     agregarFuncionBtnEliminar()
     $('#datosproductos').DataTable(opcionesTabla)
+    quitarBordesAdvertenciaForm(form_agregar_marca) 
     
-})
+});
 
+btGuardarDato.addEventListener('click', async (e) => {
+    e.preventDefault()
+    const validacionOk = evaluacionCamposRequeridos(form_agregar_marca) 
+
+    if (validacionOk){ 
+        let formAgregar = new FormData(form_agregar_marca);
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        convertirStrNumeric(jSonObjetos)
+        console.log(jSonObjetos);
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos)
+        console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------')
+        if (respuesta.condicion === 'ok') {
+            // mantenimiento.limpiarInputs('input_form') 
+            const fila = filaTabla(respuesta.datos)
+            console.log(fila);
+            $('#datosproductos').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnEliminar()
+            alertas.exelente(respuesta.mensaje)
+        }
+        else {
+            alertas.error(respuesta.mensaje)
+        }
+    } 
+
+ }); 
 
 
 const agregarFuncionBtnEliminar = () => {
@@ -88,33 +120,6 @@ const eliminarProducto= async(id)=>{
     return respuesta
 }
 
-btGuardarDato.addEventListener('click', async (e) => {
-
-    e.preventDefault()
-    let formAgregar = new FormData(form_agregar_marca);
-    
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    
-    convertirStrNumeric(jSonObjetos)
-    console.log(jSonObjetos);
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/ingreso-productos/', jSonObjetos) 
-    console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------') 
-    if (respuesta.condicion==='ok') {
-        // mantenimiento.limpiarInputs('input_form') 
-        const fila = filaTabla(respuesta.datos)
-        console.log(fila);
-        $('#datosproductos').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnEliminar() 
-        alertas.exelente(respuesta.mensaje)
-    }
-    else {
-        alertas.error(respuesta.mensaje)
-    }
-
- }); 
 
 
 

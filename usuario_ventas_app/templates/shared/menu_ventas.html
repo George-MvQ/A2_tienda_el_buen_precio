@@ -20,41 +20,20 @@
                   <span>Registros</span>
                 </a>
             </li>
-
-            <li>
-              <a class="medida" class="nav-link px-3" data-bs-toggle="collapse" href="#layouts">
-                <span class="me-2"><i class="bi bi-cart4"></i></span>
-                <span>Registro Venta</span>
-                <span class="ms-auto"><span class="right-icon"><i class="bi bi-chevron-down custom-icon2"></i></span></span>
-              </a>
-              <div class="collapse" id="layouts">
-                <ul class="navbar-nav ps-3">
                   <li>
-                    
                     <a href="" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-cart-plus"></i></span>
                       <span>Inventarios Minimos</span>
                     </a>
-                    <a href="" class="nav-link px-1">
-                      <!-- Aca metemos los links de los index -->
-                      <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
-                      <span>Comprobante</span>
-                    </a>
-                    <a href="" class="nav-link px-1">
+                  </li>
+                  <li>
+                    <a href="{% url 'historial_ventas' %}" class="nav-link px-1">
                       <!-- Aca metemos los links de los index -->
                       <span class="me-2"><i class="bi bi-file-earmark-plus"></i></span>
                       <span>Historial de Ventas</span>
                     </a>
-                   
                   </li>
-                </ul>
-              </div>
-            </li>
-            <!-- Aqui empieza el Segundo bloque -->
-            
-       
-           
           </ul>
         </div>
       </nav>

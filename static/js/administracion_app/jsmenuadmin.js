@@ -1,4 +1,5 @@
-import {Mantenimiento, AlertasBotones,crearBotonEliminar } from "../Crud.js";
+import { Mantenimiento, AlertasBotones, crearBotonEliminar } from "../Crud.js";
+import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js";
 
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
@@ -18,7 +19,7 @@ const opcionesTabla = {
             }
         }
     ],
-    scrollCollapsey:true,
+    scrollCollapse:true,
     scrollY: '400px',
     pageLength: 5, //nombre por defecto (cantidad de filas en cada tabla)
     destroy: true, //indicando que sea una tabla destruible
@@ -63,6 +64,7 @@ const opcionesTabla = {
 window.addEventListener('load', () => {
     agregarFuncionBtnEliminar();
     $('#tbDatosUsuarios').DataTable(opcionesTabla);
+    quitarBordesAdvertenciaForm(form_empleado)
 });
 
 //funcion que agregar accion al boton eliminar 
@@ -89,34 +91,37 @@ const eliminarUsuario= async(id)=>{
 /*  AGREGAR DATOS  */
 btGuardarDato.addEventListener('click', async (e) => {
     e.preventDefault()
-    let formAgregar = new FormData(form_usuario);//pasamos como parametro el id del formulario que queremos 
-    
-    const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
-    validarBol(jSonObjetos)
-    const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/gestion-usuarios/', jSonObjetos)
-    /* console.log('---------')
-    console.log(respuesta)
-    console.log(respuesta.condicion)
-    console.log('---------') */
-    if (respuesta.condicion==='ok') {
-        mantenimiento.limpiarInputs('input_form')
-        const fila = filaTabla(respuesta.datos)
-        $('#tbDatosUsuarios').DataTable().row.add($(fila)).draw(false);
-        agregarFuncionBtnEliminar()
-        Swal.fire(
-            respuesta.mensaje,
-            'Preciona clic en el boton!',
-            'success'       
-        )
-    }
-    else {
-        Swal.fire(
-            respuesta.mensaje,
-            'Datos no guardados, Preciona clic en el boton!',
-            'warning'
-        )
-    }
 
+    const validacionOk = evaluacionCamposRequeridos(form_usuario)
+    if (validacionOk) {
+        let formAgregar = new FormData(form_usuario);
+        const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
+        validarBol(jSonObjetos)
+        const respuesta = await mantenimiento.agregarNuevoRegistro('/admon/gestion-usuarios/', jSonObjetos)
+        /* console.log('---------')
+        console.log(respuesta)
+        console.log(respuesta.condicion)
+        console.log('---------') */
+        if (respuesta.condicion === 'ok') {
+            mantenimiento.limpiarInputs('input_form')
+            const fila = filaTabla(respuesta.datos)
+            $('#tbDatosUsuarios').DataTable().row.add($(fila)).draw(false);
+            agregarFuncionBtnEliminar()
+            Swal.fire(
+                respuesta.mensaje,
+                'Preciona clic en el boton!',
+                'success'
+            )
+        }
+        else {
+            Swal.fire(
+                respuesta.mensaje,
+                'Datos no guardados, Preciona clic en el boton!',
+                'warning'
+            )
+   
+        }
+    }
 });
 
 const validarBol = (datos) => {
