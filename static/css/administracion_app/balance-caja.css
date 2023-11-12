@@ -14,3 +14,20 @@
     text-align: center;
     align-items: center;
 }
+.container{
+    background-color: rgba(255, 255, 255, 0.39);
+}
+.datosingreso{
+    background-color: rgb(43, 206, 65);
+
+}
+.fondodatosgastos{
+    background-color: rgb(240, 144, 35);
+}
+.fondoresumen{
+    background-color: rgb(35, 175, 240);
+}
+th{
+    color: black;
+
+}

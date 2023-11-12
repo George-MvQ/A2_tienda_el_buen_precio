@@ -21,11 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')  #'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG =   'RENDER' not in os.environ #True
+ 
 ALLOWED_HOSTS = ['*']
 
 
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'el_buen_precio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'la_surtidora_buen_precio_A2',
+        'NAME': 'la_surtidora_buen_precio_A2222',
         'USER': 'sa',
         'PASSWORD': '123456789',
         'HOST': 'localhost\SQLEXPRESS',

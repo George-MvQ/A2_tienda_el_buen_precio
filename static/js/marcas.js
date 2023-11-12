@@ -227,3 +227,6 @@ const actualizarFila = (nuevosDatos) => {
     fila[2].textContent = nuevosDatos.descripcion;
     fila[3].textContent = nuevosDatos.estado;
 }
+
+
+input_mes.addEventListener('change',)

@@ -143,7 +143,15 @@ class ValidacionDetalleVenta:
     @staticmethod
     def datos_reporte_salida():
         return Validacionfecha.datos_reporte_modelo(DetalleVentas)
- 
 
+ 
+class Validacionesinventario:
+    def obetener_datos_inventarioMinimo(self) -> dict:
+        form =inventarioForm() 
+        datos = Inventario.objects.all()
+        return {
+            'form': form,
+            'datos':datos
+        }
         
 

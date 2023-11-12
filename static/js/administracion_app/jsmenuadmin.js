@@ -1,5 +1,5 @@
 import { Mantenimiento, AlertasBotones, crearBotonEliminar } from "../Crud.js";
-import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js";
+/* import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js"; */
 
 const mantenimiento = new Mantenimiento()
 const alertas = new AlertasBotones()
@@ -64,7 +64,7 @@ const opcionesTabla = {
 window.addEventListener('load', () => {
     agregarFuncionBtnEliminar();
     $('#tbDatosUsuarios').DataTable(opcionesTabla);
-    quitarBordesAdvertenciaForm(form_empleado)
+/*     quitarBordesAdvertenciaForm(form_empleado) */
 });
 
 //funcion que agregar accion al boton eliminar 
@@ -92,8 +92,8 @@ const eliminarUsuario= async(id)=>{
 btGuardarDato.addEventListener('click', async (e) => {
     e.preventDefault()
 
-    const validacionOk = evaluacionCamposRequeridos(form_usuario)
-    if (validacionOk) {
+/*     const validacionOk = evaluacionCamposRequeridos(form_usuario)
+    if (validacionOk) { */
         let formAgregar = new FormData(form_usuario);
         const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
         validarBol(jSonObjetos)
@@ -121,7 +121,7 @@ btGuardarDato.addEventListener('click', async (e) => {
             )
    
         }
-    }
+    /* } */
 });
 
 const validarBol = (datos) => {

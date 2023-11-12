@@ -1,7 +1,7 @@
-{% extends 'shared/menu_lateral2.html' %}
-{% load django_template_maths %}
+{% extends 'shared/menu_ventas.html' %}
+
 {% block title %}
-  Ventas
+  Entradas
 {% endblock %}
 
 {% block link %}
@@ -15,70 +15,47 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Historial de Ventas </h2>
-  <br>
-  <div class="row g-3 ms-3" style="width: 96%;" >
-    
-    <div class="col-sm-2" >
-    <input id="fechaFiltro" type="date" class="form-control" aria-label="City"/>
-    </div>
-    <div class="col-sm-3">
-    <button type="button" class="btn btn-info">Limpiar</button>
-   </div>
-   <div class="col-sm-4">
-    <button class="btn btn-danger" id = "btn_imprimir" data-url= "/admon/reporte-salidas-ventas/">
-      &#128424;Imprimir
-    </button>
-   </div>
-  </div>
-
+  <h2>INVENTARIO</h2>
+  <!--    <div class="container botonFormulario" id="meter">
+    <button id="btnAgregdarMarca" type="button" class="btn btn-primary adelante" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>  -->
 
   <div class="pollito"></div>
-
-  <!-- 
-  <label for="recordsPerPage">Registros por página:</label>
-  <select id="selectElementos">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-  </select>
- -->
-
+  <br>
+  
   <div class="container my-3">
-    <table id="datosVentas" class="table table-striped ">
+    <table id="datosinventario" class="table table-striped">
       <thead>
         <tr>
-          <th class="text-white font-weight-bold">Codigo</th>
-          <th class="text-white font-weight-bold">Producto</th>
-          <th class="text-white font-weight-bold">Fecha</th>
-          <th class="text-white font-weight-bold">Cantidad Vendida</th>
-         <!--  <--campo agregado precio unitario--> 
-          <th class="text-white font-weight-bold">Precio Unitario</th>
-          <th class="text-white font-weight-bold">Descuento</th>
-          <th class="text-white font-weight-bold">Subtotal</th>
+          <th>Id</th>
+          <th>Nombre Producto</th>
+          <th>Fecha Entrada</th>
+          <th>Fecha Salida</th>
+          <th>Precio Venta</th>
+          <th>Stock</th>
+          
         </tr>
       </thead>
-      <tbody id="tablaBody">
-        {% for detalle in venta_detalle %}
-          <tr data-id="{{ venta.id_detalle_venta}}">
-            <td>{{ detalle.id_detalle_venta }}</td>
-            <td>{{ detalle.fk_id_producto1 }}</td>
-            <td>{{ detalle.fk_venta.fecha_venta|date:"Y-m-d" }}</td>
-            <td>{{ detalle.cantidad_producto  }}</td>
-            <td>Q {{ detalle.precio_unitario }}</td>
-            <td>Q {{ detalle.descuento}}</td>
-            <td>Q {{ detalle.sub_total }}</td> 
-             
+      <tbody id="tablaBody"  class="text-white">
+        {% for inven in datos %}
+          <tr data-id="{{ inven.0}}">
+            <td>{{ inven.id_inventario}}</td>
+            <td>{{ inven.fk_producto2}}</td>
+            <td>{{ inven.fecha_ultima_entrada }}</td>
+            <td>{{ inven.fecha_ultima_salida }}</td>
+            <td>Q {{ inven.precio_venta }}</td>
+            <td>{{ inven.total_stock}}</td>
+           
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
+
   <div id="tablaPrueba"></div>
 
   <!-- Modal para agregar un nuevo producto -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
+{% comment %} <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content text-black">
       <div class="modal-header">
@@ -111,7 +88,7 @@
     </div>
   </div>
 </div>
-
+ {% endcomment %}
 
   <!-- ! USANDO TABLE -->
 
@@ -121,7 +98,7 @@
 
 {% for producto in datos %}
   <!-- Modal de detalles del producto -->
-  <div class="modal fade text-dark" id="detalleProductoModal{{ producto.0 }}" tabindex="-1" aria-labelledby="detalleProductoModalLabel{{ producto.0 }}" aria-hidden="true">
+{% comment %}   <div class="modal fade text-dark" id="detalleProductoModal{{ producto.0 }}" tabindex="-1" aria-labelledby="detalleProductoModalLabel{{ producto.0 }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -150,7 +127,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 {% endfor %}
 
 
@@ -163,7 +140,9 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static '/js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
-  <script type="module" src="{% static 'js/control-salida-venta.js' %}"></script>
-  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
+  <script type="module" src="{% static 'js/Crud.js' %}"></script>
+<!--   <script type="module" src="{% static 'js/nuevoProducto.js' %}"></script> -->
+  <script type="module" src="{% static 'js/inventario.js' %}"></script>
+  <!-- <script type="module" src="{% static 'js/el_buen_precio/detallescatalogopro.js' %}"></script> -->
   
 {% endblock %}

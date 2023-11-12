@@ -83,6 +83,7 @@ urlpatterns = [
         path('reporte-entradas-producto/',views.reporte_entradas_compras, name='reporte_entradas_compras'),
         path('reporte-salidas-ventas/',views.reporte_salidas_ventas, name='reporte_salidas_ventas'),
         path('reporte-usuarios/',views.reporte_usuarios, name='reporte_usuarios'),
+        path('reporte-empleado/',views.reporte_empleado, name='reporte_empleado'),
 
               
 ]

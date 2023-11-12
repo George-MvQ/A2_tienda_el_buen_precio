@@ -1,9 +1,14 @@
+""" C:\Analisis2\sistema_tienda """
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db import models
 
-# Create your models here.
 class Caja(models.Model):
     id_caja = models.AutoField(db_column='ID_caja', primary_key=True)  # Field name made lowercase.
     anio = models.CharField(db_column='Anio', max_length=4, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
@@ -23,16 +28,9 @@ class Categorias(models.Model):
     descripcion = models.CharField(db_column='Descripcion', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
 
-
     class Meta:
         managed = False
         db_table = 'Categorias'
-
-    def __str__(self):
-        if self.nombre_categoria is not None:
-            return self.nombre_categoria
-        else:
-            return "Sin nombre de categoria"
 
 
 class Compras(models.Model):
@@ -43,6 +41,7 @@ class Compras(models.Model):
     fk_metodo_pago = models.ForeignKey('MetodosPago', models.DO_NOTHING, db_column='fk_metodo_pago', blank=True, null=True)
     observaciones = models.CharField(db_column='Observaciones', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     total = models.DecimalField(max_digits=18, decimal_places=2, blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'Compras'
@@ -87,7 +86,6 @@ class DetalleVentas(models.Model):
         db_table = 'Detalle_ventas'
 
 
-
 class Empleados(models.Model):
     id_empleado = models.AutoField(db_column='ID_empleado', primary_key=True)  # Field name made lowercase.
     primer_nombre = models.CharField(db_column='Primer_nombre', max_length=50, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
@@ -103,25 +101,10 @@ class Empleados(models.Model):
         managed = False
         db_table = 'Empleados'
 
-    def __str__(self):
-        if self.primer_nombre is not None:
-            return self.primer_nombre
-        else:
-            return "Sin Empleados"
-
 
 class Inventario(models.Model):
-    id_inventario = models.AutoField(
-        db_column='ID_inventario',
-        primary_key=True
-        )  # Field name made lowercase.
-    fk_producto2 = models.ForeignKey(
-        'Productos',
-        models.DO_NOTHING,
-        db_column='fk_producto2',
-        blank=True,
-        null=True
-        )
+    id_inventario = models.AutoField(db_column='ID_inventario', primary_key=True)  # Field name made lowercase.
+    fk_producto2 = models.ForeignKey('Productos', models.DO_NOTHING, db_column='fk_producto2', blank=True, null=True)
     fecha_ultima_salida = models.DateField(blank=True, null=True)
     fecha_ultima_entrada = models.DateField(blank=True, null=True)
     total_stock = models.IntegerField(blank=True, null=True)
@@ -130,11 +113,6 @@ class Inventario(models.Model):
     class Meta:
         managed = False
         db_table = 'Inventario'
-    def __str__(self):
-        return self.fk_producto2.nombre_producto
-    
-
-
 
 
 class ListadoPedidos(models.Model):
@@ -149,67 +127,24 @@ class ListadoPedidos(models.Model):
 
 
 class Marcas(models.Model):
-    id_marcas = models.AutoField(
-        db_column='ID_marcas',
-        primary_key=True)  # Field name made lowercase.
-    nombre_marca = models.CharField(
-        unique=True,
-        db_column='Nombre_marca',
-        max_length=80,
-        db_collation='Modern_Spanish_CI_AS'
-        )  # Field name made lowercase.
-  # Field name made lowercase.
-    descripcion = models.CharField(
-        db_column='Descripcion',
-        max_length=150,
-        db_collation='Modern_Spanish_CI_AS',
-        blank=True,
-        null=True
-        )  # Field name made lowercase.
-    estado = models.BooleanField(
-        db_column='Estado'
-        )
+    id_marcas = models.AutoField(db_column='ID_marcas', primary_key=True)  # Field name made lowercase.
+    nombre_marca = models.CharField(db_column='Nombre_marca', max_length=80, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
+    estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
+    descripcion = models.CharField(db_column='Descripcion', max_length=150, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Marcas'
 
-    def __str__(self):
-        if self.nombre_marca is not None:
-            return self.nombre_marca
-        else:
-            return "Sin nombre de marca"
-
 
 class MetodosPago(models.Model):
-    id_metodo_pago = models.AutoField(
-        db_column='ID_metodo_pago',
-        primary_key=True
-        )  # Field name made lowercase.
-    nombre = models.CharField(
-        db_column='Nombre',
-        max_length=50,
-        db_collation='Modern_Spanish_CI_AS',
-        blank=True,
-        null=True
-        )  # Field name made lowercase.
-    descripcion = models.CharField(
-        db_column='Descripcion',
-        max_length=100,
-        db_collation='Modern_Spanish_CI_AS',
-        blank=True,
-        null=True
-        )  # Field name made lowercase.
+    id_metodo_pago = models.AutoField(db_column='ID_metodo_pago', primary_key=True)  # Field name made lowercase.
+    nombre = models.CharField(db_column='Nombre', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    descripcion = models.CharField(db_column='Descripcion', max_length=100, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Metodos_pago'
-
-    def __str__(self):
-        if self.nombre is not None:
-            return self.nombre
-        else:
-            return "Sin empleados"
 
 
 class MovimientoCaja(models.Model):
@@ -236,17 +171,11 @@ class Movimientos(models.Model):
 
 class Presentacion(models.Model):
     id_presentacion = models.AutoField(db_column='ID_presentacion', primary_key=True)  # Field name made lowercase.
-    nombre_presentacion = models.CharField(db_column='Nombre_presentacion', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)  # Field name made lowercase.
+    nombre_presentacion = models.CharField(db_column='Nombre_presentacion', max_length=50, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'Presentacion'
-
-    def __str__(self):
-        if self.nombre_presentacion is not None:
-            return self.nombre_presentacion
-        else:
-            return "Sin nombre de presentación"
 
 
 class Productos(models.Model):
@@ -256,18 +185,15 @@ class Productos(models.Model):
     codigo_barras = models.CharField(db_column='Codigo_barras', max_length=20, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)  # Field name made lowercase.
     tamanio = models.DecimalField(db_column='Tamanio', max_digits=4, decimal_places=2)  # Field name made lowercase.
     imagen = models.BinaryField(db_column='Imagen')  # Field name made lowercase.
-      # Field name made lowercase.
+    estado = models.BooleanField(db_column='Estado')  # Field name made lowercase.
     fk_presentacion = models.ForeignKey(Presentacion, models.DO_NOTHING, db_column='fk_presentacion')
     fk_unidad_medida = models.ForeignKey('UnidadesMedidas', models.DO_NOTHING, db_column='fk_unidad_medida')
     fk_categoria = models.ForeignKey(Categorias, models.DO_NOTHING, db_column='fk_categoria')
     fk_marca = models.ForeignKey(Marcas, models.DO_NOTHING, db_column='fk_marca')
-    estado = models.BooleanField(db_column='Estado')
 
     class Meta:
         managed = False
         db_table = 'Productos'
-    def __str__(self):
-        return self.nombre_producto
 
 
 class Proveedores(models.Model):
@@ -283,12 +209,6 @@ class Proveedores(models.Model):
         managed = False
         db_table = 'Proveedores'
 
-    def __str__(self):
-        if self.nombre_proveedor is not None:
-            return self.nombre_proveedor
-        else:
-            return "Sin proveedores"
-
 
 class Puestos(models.Model):
     id_puestos = models.AutoField(db_column='ID_puestos', primary_key=True)  # Field name made lowercase.
@@ -298,26 +218,16 @@ class Puestos(models.Model):
     class Meta:
         managed = False
         db_table = 'Puestos'
-    def __str__(self):
-        return self.nombre_puesto
-    
 
 
 class UnidadesMedidas(models.Model):
     id_medicion = models.AutoField(db_column='ID_medicion', primary_key=True)  # Field name made lowercase.
-    descripcion = models.CharField(db_column='Descripcion', max_length=20, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)  # Field name made lowercase.
-    prefijo = models.CharField(max_length=6, db_collation='Modern_Spanish_CI_AS', blank=False, null=False)
-
+    descripcion = models.CharField(db_column='Descripcion', max_length=20, db_collation='Modern_Spanish_CI_AS')  # Field name made lowercase.
+    prefijo = models.CharField(max_length=6, db_collation='Modern_Spanish_CI_AS')
 
     class Meta:
         managed = False
         db_table = 'Unidades_medidas'
-
-    def __str__(self):
-        if self.descripcion is not None:
-            return self.descripcion
-        else:
-            return "Sin descripcion"
 
 
 class Ventas(models.Model):
@@ -331,23 +241,128 @@ class Ventas(models.Model):
         db_table = 'Ventas'
 
 
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=150, db_collation='Modern_Spanish_CI_AS')
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
 
 class AuthUser(models.Model):
     password = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField()
     username = models.CharField(unique=True, max_length=150, db_collation='Modern_Spanish_CI_AS')
-    first_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
-    last_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS')
     email = models.CharField(max_length=254, db_collation='Modern_Spanish_CI_AS')
     is_staff = models.BooleanField()
     is_active = models.BooleanField()
     date_joined = models.DateTimeField()
+    first_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    last_name = models.CharField(max_length=150, db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'auth_user'
 
-    def __str__(self):
-        return self.username
-    
+
+class AuthUserGroups(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_groups'
+        unique_together = (('user', 'group'),)
+
+
+class AuthUserUserPermissions(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_user_permissions'
+        unique_together = (('user', 'permission'),)
+
+
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(db_collation='Modern_Spanish_CI_AS', blank=True, null=True)
+    object_repr = models.CharField(max_length=200, db_collation='Modern_Spanish_CI_AS')
+    action_flag = models.SmallIntegerField()
+    change_message = models.TextField(db_collation='Modern_Spanish_CI_AS')
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
+    model = models.CharField(max_length=100, db_collation='Modern_Spanish_CI_AS')
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    app = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
+    name = models.CharField(max_length=255, db_collation='Modern_Spanish_CI_AS')
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40, db_collation='Modern_Spanish_CI_AS')
+    session_data = models.TextField(db_collation='Modern_Spanish_CI_AS')
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+
+class Sysdiagrams(models.Model):
+    name = models.CharField(max_length=128, db_collation='Modern_Spanish_CI_AS')
+    principal_id = models.IntegerField()
+    diagram_id = models.AutoField(primary_key=True)
+    version = models.IntegerField(blank=True, null=True)
+    definition = models.BinaryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sysdiagrams'
+        unique_together = (('principal_id', 'name'),)

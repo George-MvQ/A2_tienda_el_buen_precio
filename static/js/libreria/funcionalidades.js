@@ -1,9 +1,3 @@
-import '../libreria/tippy.js'
-
-/* import tippy from 'tippy.js'; */
-
-/* import tippy from 'tippy.js/dist/tippy.esm.min.js'; */
-
 
 function mostrarTooltip(campo) {
     const tooltip = tippy(campo, {

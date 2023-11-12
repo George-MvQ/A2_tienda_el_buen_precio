@@ -294,15 +294,26 @@ const limpiarInputs = () => {
     cantidad_producto.value = "";
     precio_unitario.value = "";
     descuento.value = 0;
-
-
-    // sp_total_monto_venta.value=0;
+    sp_efectivo.value = "";
+    sp_total_monto_pago.value = "";
+    sp_total_monto_venta.value = "";
 }
 
 
 document.getElementById('limpiarinputs').addEventListener('click', (e) => {
     limpiarInputs();
+    coleccionDatos.detalles= []
+    coleccionDatos.venta={}
+    totalCompra = 0;
     console.log('Esta funcionando');
+    // $('#registroVentas').DataTable().clear().draw();
+
+    const table = $('#registroVentas').DataTable();
+    if (table.data().any()) {
+    table.clear().draw();
+    } else {
+    console.log('La tabla no tiene datos para limpiar.');
+    }
 })
 
 /* LIMPIAR INPUTS */
@@ -359,11 +370,11 @@ btn_imprimir.addEventListener("click", async () => {
 
         // Espera a que la ventana previa se cargue antes de imprimir o guardar como PDF
         ventanaPrevia.onload = function () {
-
+            
         };
 
     }
-    console.log("Camaving");
+
 })
 
 

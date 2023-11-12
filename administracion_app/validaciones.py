@@ -9,8 +9,8 @@ from django.utils import timezone
 import sys
 from .formularios.fomularios_base import *
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import F, ExpressionWrapper, FloatField,Sum
-from django.db.models.functions import Round
+from django.db.models import F, ExpressionWrapper, FloatField,Sum, Case, When, Value, CharField
+from django.db.models.functions import Round, Extract
 import locale
 import pytz
 from datetime import datetime
@@ -155,12 +155,16 @@ class ValidarUsuarios:
                 usuario = User.objects.get(id=respuesta['datos']['id'])
                 print("------antes del final-------")
                 print(datosJson)
-                usuario.set_password(respuesta['datos'].pop('password'))
+                print('-------------PRUEBA DE ERROR-----------------')
+                #aqui genera el error.
+                """ if type(respuesta['datos']['password'])==int: respuesta['datos']['password']=str(respuesta['datos']['password']) """
+                usuario.set_password(str(respuesta['datos'].pop('password')))
                 usuario.save()
                 print("------final-------")
                 print(respuesta)
             return respuesta
-        except Exception as error:
+        except Exception as error:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+            print(error)
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(f"Tipo de excepción: {exc_type}")
             print(f"Mensaje de excepción: {exc_value}")
@@ -509,13 +513,14 @@ class   ValidacionesCompra:
         datosJson['fk_metodo_pago'] = MetodosPago.objects.get(id_metodo_pago = datosJson['fk_metodo_pago'])        
         print(datosJson)
         resultado = self._mantenimiento.agregar_registro(datosJson,'id_compra')
+        total_compra = DetalleCompra.objects.filter(fk_compra=datosJson['fk_empleado'].pk)
         resultado['datos']['fk_proveedor'] =  datosJson['fk_proveedor'].nombre_proveedor
         resultado['datos']['fk_empleado'] = datosJson['fk_empleado'].primer_nombre
         resultado['datos']['fk_metodo_pago'] = datosJson['fk_metodo_pago'].nombre
 
         print(resultado)
         return resultado
-
+        
     def eliminar_compra(self,datosJson):
         try:
             respuesta = self._mantenimiento.eliminar_registro({'id_compra':int(datosJson['identificador'])})
@@ -540,12 +545,13 @@ class   ValidacionesCompra:
 class ValidacionDetalles:
     _mantenimiento = MantenimientoGeneral(DetalleCompra)
     
-    #
+    #esto es para guardar un nuevo detalle de compra 
     def guardar_compras(self, datos:dict,fk_compra:int):
         print(datos)
         self._asingar_objetos(datos,fk_compra)
         respuesta = self._mantenimiento.agregar_registro(datos,'id_detalle_compra' )
         if respuesta['ok']:
+            self._guardar_total_compra(fk_compra)
             del respuesta['datos']['fk_compra']
             print("--------------------------------")
             print(respuesta['datos'])
@@ -553,11 +559,25 @@ class ValidacionDetalles:
             self._obtener_nombre_prod(respuesta['datos'])
         return respuesta
     
+    def _guardar_total_compra(self,pk_compra):
+        total_compra = 0
+        compras = DetalleCompra.objects.filter(fk_compra=pk_compra)
+        for registro in compras:
+            total_compra+=registro.cantidad_compra * registro.precio_unitario_compra -registro.descuentos
+        if total_compra == None:
+            total_compra = 0
+        Compras.objects.filter(id_compra=pk_compra).update(total=total_compra)
+    
+    
     def eliminar_registro(self,datos):
         id = {'id_detalle_compra':datos['identificador']}
+        registo_detalle_eliminar = self._mantenimiento.buscar_registros(id) 
+        pk_compra = registo_detalle_eliminar.fk_compra.pk
+        print(pk_compra)
         respuesta = {'datos': self._obtener_info_eliminado(id)}
         respuesta.update(self._mantenimiento.eliminar_registro(id))
         if respuesta['ok']:
+            self._guardar_total_compra(pk_compra)
             respuesta['mensaje']= "El registro a sido eliminado correctamente"
         return respuesta
     
@@ -570,8 +590,7 @@ class ValidacionDetalles:
             'cantidad_compra': float(respuesta.cantidad_compra),
             'precio_unitario_compra': float(respuesta.precio_unitario_compra)    
         }
-        
-    
+            
     def _asingar_objetos(self, datos,fk_compra):
         datos['fk_producto'] = Productos.objects.get(id_productos = datos['fk_producto'])
         datos['fk_compra'] = Compras.objects.get(id_compra=fk_compra)
@@ -687,6 +706,9 @@ class ValidacionEmpleado:
             'registro':registro
         }
 
+    @staticmethod
+    def datos_reporte_empleado():
+        return Validacionfecha.datos_reporte_modelo(Empleados)
 
     # ---FRANK ESTOY ESTO MODIFICANDO  COMPARANDO CON PRODUCTOS  
 
@@ -741,31 +763,94 @@ class ValidacionDetalleVenta:
     def datos_reporte_salida():
         return Validacionfecha.datos_reporte_modelo(DetalleVentas)
 
-
+#$
 class ValidacionCaja:
     def obtner_datos_caja(self):
         hoy = datetime.now()
         year = hoy.year
         month = hoy.month 
-        print(year, month)
-        gastos = DetalleCompra.objects.filter(fk_compra__fecha_compra__year = year, fk_compra__fecha_compra__month = month )
-        ingresos = DetalleVentas.objects.filter(fk_venta__fecha_venta__year=year, fk_venta__fecha_venta__month = month)
-        total_gastos = 0
-        total_ingresos = 0
-        
-        for registro in gastos:
-            registro.subtotal_gastos =  registro.cantidad_compra * registro.precio_unitario_compra - registro.descuentos
-            total_gastos += registro.subtotal_gastos
-        for registro in ingresos:
-            registro.subtotal_ingreso = registro.cantidad_producto * registro.precio_unitario - registro.descuento
-            total_ingresos += registro.subtotal_ingreso
-        
+        ingresos = self._formateo_datos_ingreso(year, month)
+        gastos = self._formateo_datos_gastos(year, month)
         return {
+            ** ingresos,
+            **gastos,
+            "total_mes": ingresos["total_ingresos"]-gastos["total_gastos"]
+        }
+        
+            
+        """ return {
             'gastos': gastos,
             'ingresos': ingresos,
             'total_gastos': total_gastos,
             'total_ingresos': total_ingresos,
             'total_mes': total_ingresos - total_gastos
-            }
+            } """
+        
+    def _formateo_datos_ingreso(self, year, month):
+        total_ingresos = 0
+        ingresos = (
+            Ventas.objects
+            .filter(fecha_venta__month=month, fecha_venta__year=year)
+            .annotate(nombre_dia=Extract('fecha_venta', 'weekday'))
+            .annotate(descripcion=Case(
+                When(nombre_dia=0, then=Value('Domingo')),
+                When(nombre_dia=1, then=Value('Lunes')),
+                When(nombre_dia=2, then=Value('Martes')),
+                When(nombre_dia=3, then=Value('Miércoles')),
+                When(nombre_dia=4, then=Value('Jueves')),
+                When(nombre_dia=5, then=Value('Viernes')),
+                When(nombre_dia=6, then=Value('Sábado')),
+                output_field=CharField(),
+            ))
+            .values('fecha_venta', 'descripcion')
+            .annotate(total=Sum('total'))
+            .order_by('fecha_venta')
+        )
+        for registro in ingresos: 
+            registro['descripcion'] = f"Venta del dia '{registro['descripcion']}'"
+            if registro['total'] is None:
+                registro['total']= 0
+            total_ingresos += registro['total']    
+        
+        return {
+            "ingresos":ingresos,
+            "total_ingresos":total_ingresos
+        }
+    
+    
+    def _formateo_datos_gastos(self, year,month):
+        total_gastos = 0
+        gastos = (
+            Compras.objects
+            .filter(fecha_compra__month=month, fecha_compra__year=year)
+            .annotate(nombre_dia=Extract('fecha_compra', 'weekday'))
+            .annotate(descripcion=Case(
+                When(nombre_dia=0, then=Value('Domingo')),
+                When(nombre_dia=1, then=Value('Lunes')),
+                When(nombre_dia=2, then=Value('Martes')),
+                When(nombre_dia=3, then=Value('Miércoles')),
+                When(nombre_dia=4, then=Value('Jueves')),
+                When(nombre_dia=5, then=Value('Viernes')),
+                When(nombre_dia=6, then=Value('Sábado')),
+                output_field=CharField(),
+            ))
+            .values('fecha_compra', 'descripcion')
+            .annotate(total=Sum('total'))
+            .order_by('fecha_compra')
+        )
+        
+       
+        
+        for gasto in gastos: 
+            gasto['descripcion'] = f"Venta del dia '{gasto['descripcion']}'"
+            if gasto['total'] is None:
+                gasto['total']= 0
+            total_gastos += gasto['total']   
+        
+        return {
+            "gastos":gastos,
+            "total_gastos":total_gastos,
+        }
+            
     
     

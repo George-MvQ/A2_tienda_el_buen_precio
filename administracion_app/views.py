@@ -102,6 +102,7 @@ def marcas(request):
         dato_obtenido = json.loads(request.body)
         respuesta = validaciones.eliminar_marca(dato_obtenido)
         return JsonResponse(respuesta)
+    
     elif request.method == 'PUT':
         datosJson = json.loads(request.body)
         respuesta = validaciones.actualizar_datos(datosJson)
@@ -454,7 +455,7 @@ def agregaregreso(request):
 def agregaringreso(request):
     return render(request, 'adminuser/controlinventario/agregaringreso.html')
 
-#@
+#$
 def balancecaja(request):
     validacion = ValidacionCaja()
     if request.method == 'GET':
@@ -559,5 +560,12 @@ def reporte_usuarios(request):
     # Establece la configuración regional en español
     rep = ValidarUsuarios.datos_reporte_usuario()
     return generar_pdf(rep, 'plantillas_reportes/rp_usuarios.html')
+
+def reporte_empleado(request):
+    # Establece la configuración regional en español
+    rep = ValidacionEmpleado.datos_reporte_empleado()
+    return generar_pdf(rep, 'plantillas_reportes/rp_empleado.html')
+
+
 
 

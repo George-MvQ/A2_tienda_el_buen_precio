@@ -1,5 +1,5 @@
 //import lenguajeDataTable from './libreria/variables.js'
-/* import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js"; */
+import {evaluacionCamposRequeridos,quitarBordesAdvertenciaForm} from "../libreria/funcionalidades.js";
 import { Mantenimiento, AlertasBotones, crearBotonEliminar} from "../Crud.js";
 
 const mantenimiento = new Mantenimiento()
@@ -65,16 +65,16 @@ const opcionesTabla = {
 window.addEventListener('load', () => {
     agregarFuncionBtnEliminar();
     $('#tbDatosEmpleados').DataTable(opcionesTabla);
-/*     quitarBordesAdvertenciaForm(form_empleado) */
+    quitarBordesAdvertenciaForm(form_empleado)
 });
 
 
 
 btGuardarDato.addEventListener('click', async (e) => {
     e.preventDefault()
-/*     const validacionOk = evaluacionCamposRequeridos(form_empleado) */
+    const validacionOk = evaluacionCamposRequeridos(form_empleado)
 
-/*     if (validacionOk){ */
+    if (validacionOk){
         let formAgregar = new FormData(form_empleado);
         const jSonObjetos = mantenimiento.formulariosAObjeto(formAgregar)
         convertirStrNumeric(jSonObjetos)
@@ -95,8 +95,8 @@ btGuardarDato.addEventListener('click', async (e) => {
         else {
             alertas.error(respuesta.mensaje)
         }
-/* 
-    } */
+
+    }
 });
 
 const agregarFuncionBtnEliminar = () => {

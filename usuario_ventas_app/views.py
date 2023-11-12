@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from .validaciones import *
 # Create your views here.
 
+import json
+
 from django.http import HttpResponse
 from django.template.loader import get_template
 import os
@@ -98,6 +100,30 @@ def historialventas(request):
 
 
 
+def inventario_minimo(request):
+    validaciones = Validacionesinventario()
+
+    if request.method == 'GET':
+        respuesta = validaciones.obetener_datos_inventarioMinimo()
+        return render(request, 'inventarioMinimo.html', respuesta)
+
+    elif request.method == 'POST':
+        dato_obtenido = json.loads(request.body)
+        respuesta = validaciones.agregar_inventario(dato_obtenido)
+    return JsonResponse(respuesta)
+
+def obtenerDatos(request):
+    # creaando la lista de todas las marcas
+    inventario = list(inventario.objects.values())
+    if len(inventario) > 0:
+        dato = {
+            'mensaje': 'Si funciono',
+            'inventario': inventario
+        }
+    else:
+
+        dato = {'mensaje': 'sin datos'}
+    return JsonResponse(dato)
 # def obtener_datos():
 #     detalles_ventas = DetalleVentas.objects.all()
 #     ventas = Ventas.objects.all()

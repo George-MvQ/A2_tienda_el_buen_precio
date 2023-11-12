@@ -139,7 +139,7 @@ btGuardarCompra.addEventListener('click', async (e) => {
         <td>
             ${crearBotonEliminar(elementos.id_compra,'btn-eliminar-compra')}
             <a class="btn btn-outline-info" href="/admon/detalle-compras/${elementos.id_compra}">Detalles</a>
-            <a class="btn btn-outline-warning" href="/admon/detalle-compras/${elementos.id_compra} >Agregar</a>
+            <a class="btn btn-outline-warning" href="/admon/detalle-compras/${elementos.id_compra}" >Agregar</a>
         </td> 
     </tr>
     `

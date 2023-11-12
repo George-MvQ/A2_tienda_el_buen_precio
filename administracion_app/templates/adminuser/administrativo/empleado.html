@@ -17,7 +17,11 @@
 {% block body %}
   <h1 class="titulo">EMPLEADOS</h1>
 
-  <>{{ datos }}</>
+  <button class="btn btn-danger ms-3" id = "btn_imprimir" data-url= "/admon/reporte-empleado/">
+    &#128424;Imprimir
+  </button>
+  <br>
+  <br>
   {% comment %}TABLA DE DATOS{% endcomment %}
   <div class="table-responsive">
     <table id="tbDatosEmpleados" class="table table-hover table-responsive">
@@ -85,10 +89,11 @@
   <script src="{% static 'DataTables/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'js/dataTablesButtons.min.js' %}"></script>
   <script src="{% static 'DataTables/js/dataTables.bootstrap5.min.js' %}"></script>
-{% comment %}   <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
-  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script> {% endcomment %}
+  <script type="module" src="{% static 'js/libreria/popper.js' %}"></script>
+  <script type="module" src="{% static 'js/libreria/tippy.js' %}"></script>
   <script type="module" src="{% static 'js/Crud.js' %}"></script>
   <script type="module" src="{% static 'js/administracion_app/empleado.js' %}"></script>
+  <script type="module" src="{% static 'js/reportesimprimir.js' %}"></script>
 {% endblock %}
 
 
