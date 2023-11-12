@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')  #'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
+SECRET_KEY = 'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =   'RENDER' not in os.environ #True
+DEBUG =   False #True
  
 ALLOWED_HOSTS = ['*']
 
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'administracion_app.middleware.BloquarRutasMiddleware',
     'usuario_ventas_app.middleware.BloquarRutasMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'el_buen_precio.urls'
@@ -96,7 +97,6 @@ DATABASES = {
         },
     },
 }
-
 
 # Password validation
 
@@ -151,14 +151,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
+""" STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-]
-print(BASE_DIR)
+] """
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_TMP = os.path.join(BASE_DIR, 'static')
+
+os.makedirs(STATIC_TMP, exist_ok=True)
+os.makedirs(STATIC_ROOT, exist_ok=True)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
