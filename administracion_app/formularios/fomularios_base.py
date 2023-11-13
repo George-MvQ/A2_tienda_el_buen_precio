@@ -94,6 +94,7 @@ class Comprasform(forms.ModelForm):
 
 
 """ DETALLE COMPRA"""
+
 class DetalleForm(forms.Form):
         _producto:Productos = Productos.objects.values_list('id_productos','nombre_producto')
         producto = forms.ChoiceField(
@@ -130,7 +131,7 @@ class DetalleForm(forms.Form):
             max_length=100,
             widget = forms.TextInput(attrs={'id':'in_lote'}),
         )
- 
+
 """ ------------------------Formulario para ingresar y actualizar compras-------------------------"""        
 
 

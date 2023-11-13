@@ -10,8 +10,10 @@ click==8.1.7
 colorama==0.4.6
 cryptography==41.0.4
 cssselect2==0.7.0
-Django==4.2.5
+dj-database-url==0.5.0
+Django==4.2.7
 django-bootstrap-v5==1.0.11
+django-mssql-backend==2.8.1
 django-template-maths==0.2.0
 fonttools==4.43.1
 gunicorn==21.2.0
@@ -49,6 +51,5 @@ uritools==4.0.2
 urllib3==2.0.7
 weasyprint==60.1
 webencodings==0.5.1
-whitenoise==6.6.0
-xhtml2pdf==0.2.11
+whitenoise==6xhtml2pdf==0.2.11
 zopfli==0.2.3

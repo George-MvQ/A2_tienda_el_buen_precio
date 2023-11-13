@@ -30,8 +30,7 @@ urlpatterns = [
     path('',include('inicio_app.urls')),
     path('admon/', include('administracion_app.urls')),
     path('usuario-ventas/', include('usuario_ventas_app.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  

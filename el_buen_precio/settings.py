@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,14 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!3n4=oq8m&ezd3^h-qe8xbnypz_4hy)^+_56#nu+%8qd*j6jlv'
+
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =   False #True
- 
+DEBUG = 'RENDER' not in os.environ
+
 ALLOWED_HOSTS = ['*']
 
-
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,10 +90,39 @@ WSGI_APPLICATION = 'el_buen_precio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+"""
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace the connection string with the one provided by Azure
+        default='mssql://root-analisis:F12345abc.@proyecto-analisis2.database.windows.net:1433/el_buen_preciodb?driver=ODBC+Driver+17+for+SQL+Server',
+        conn_max_age=600,
+        engine='mssql',
+    )
+}
+"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'la_surtidora_buen_precio_A2222',
+        'NAME': 'el_buen_preciodb',
+        'USER': 'root-analisis',
+        'PASSWORD': 'F12345abc.',
+        'HOST': 'proyecto-analisis2.database.windows.net',
+        'PORT': '',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            
+        },
+    },
+}
+
+"""
+#Local Config
+DATABASES = {
+    'default': {
+        'ENGINE': 'mssql',
+        'NAME': 'la_surtidora_buen_precio_A2',
         'USER': 'sa',
         'PASSWORD': '123456789',
         'HOST': 'localhost\SQLEXPRESS',
@@ -97,8 +132,10 @@ DATABASES = {
         },
     },
 }
+"""
 
 # Password validation
+
 
 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -151,25 +188,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-""" STATIC_URL = '/static/'
 
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-] """
+if not DEBUG:
+    # Tell Django to copy statics to the `staticfiles` directory
+    # in your application directory on Render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Turn on WhiteNoise storage backend that takes care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+print(BASE_DIR)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_TMP = os.path.join(BASE_DIR, 'static')
-
-os.makedirs(STATIC_TMP, exist_ok=True)
-os.makedirs(STATIC_ROOT, exist_ok=True)
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
