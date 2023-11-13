@@ -52,4 +52,6 @@ urllib3
 weasyprint
 webencodings
 whitenoise
+xhtml2pdf
 zopfli
+

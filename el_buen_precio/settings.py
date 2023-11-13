@@ -90,7 +90,6 @@ WSGI_APPLICATION = 'el_buen_precio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""
 DATABASES = {
     'default': dj_database_url.config(
         # Replace the connection string with the one provided by Azure
@@ -99,8 +98,8 @@ DATABASES = {
         engine='mssql',
     )
 }
-"""
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
@@ -116,6 +115,7 @@ DATABASES = {
         },
     },
 }
+"""
 
 """
 #Local Config
@@ -205,3 +205,4 @@ print(BASE_DIR)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
