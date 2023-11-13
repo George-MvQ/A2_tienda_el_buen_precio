@@ -15,7 +15,7 @@ Django==3.2.23
 django-bootstrap-v5==1.0.11
 django-mssql-backend==2.8.1
 django-template-maths==0.2.0
-fonttools==4.43.1
+fonttools==4.38.0
 gunicorn==21.2.0
 html5lib==1.1
 idna==3.4
