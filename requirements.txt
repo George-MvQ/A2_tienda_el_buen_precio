@@ -26,8 +26,8 @@ packaging==23.2
 Pillow
 pycparser
 pydyf
-pyHanko
-pyhanko-certvalidator
+pyHanko==0.20.1
+pyhanko-certvalidator==0.24.1
 pyodbc
 pypdf
 pyphen
