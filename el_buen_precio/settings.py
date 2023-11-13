@@ -206,3 +206,18 @@ print(BASE_DIR)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+"""
+Traceback (most recent call last):
+Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+Nov 12 08:05:44 PM      self.connect()
+Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/utils/asyncio.py", line 33, in inner
+Nov 12 08:05:44 PM      return func(*args, **kwargs)
+Nov 12 08:05:44 PM             ^^^^^^^^^^^^^^^^^^^^^
+Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/db/backends/base/base.py", line 200, in connect
+Nov 12 08:05:44 PM      self.connection = self.get_new_connection(conn_params)
+Nov 12 08:05:44 PM                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/mssql/base.py", line 366, in get_new_connection
+Nov 12 08:05:44 PM      conn = Database.connect(connstr, **args)
+Nov 12 08:05:44 PM             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Nov 12 08:05:44 PM  pyodbc.Error: ('01000', "[01000] [unixODBC][Driver Manager]Can't open lib 'ODBC Driver 17 for SQL Server' : file not found (0) (SQLDriverConnect)")
+"""
