@@ -54,4 +54,3 @@ webencodings
 whitenoise
 xhtml2pdf
 zopfli
-

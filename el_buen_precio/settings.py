@@ -207,17 +207,24 @@ print(BASE_DIR)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 """
-Traceback (most recent call last):
-Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/db/backends/base/base.py", line 219, in ensure_connection
-Nov 12 08:05:44 PM      self.connect()
-Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/utils/asyncio.py", line 33, in inner
-Nov 12 08:05:44 PM      return func(*args, **kwargs)
-Nov 12 08:05:44 PM             ^^^^^^^^^^^^^^^^^^^^^
-Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/django/db/backends/base/base.py", line 200, in connect
-Nov 12 08:05:44 PM      self.connection = self.get_new_connection(conn_params)
-Nov 12 08:05:44 PM                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Nov 12 08:05:44 PM    File "/opt/render/project/src/.venv/lib/python3.11/site-packages/mssql/base.py", line 366, in get_new_connection
-Nov 12 08:05:44 PM      conn = Database.connect(connstr, **args)
-Nov 12 08:05:44 PM             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Nov 12 08:05:44 PM  pyodbc.Error: ('01000', "[01000] [unixODBC][Driver Manager]Can't open lib 'ODBC Driver 17 for SQL Server' : file not found (0) (SQLDriverConnect)")
+Nov 12 08:15:31 PM  ==> Cloning from https://github.com/George-MvQ/A2_tienda_el_buen_precio...
+Nov 12 08:15:32 PM  ==> Checking out commit 7933fea2157164f91d7ea0a14a345c1163a06aec in branch main
+Nov 12 08:15:35 PM  ==> Using Node version 14.17.0 (default)
+Nov 12 08:15:35 PM  ==> Docs on specifying a Node version: https://render.com/docs/node-version
+Nov 12 08:15:46 PM  ==> Using Python version 3.11.4 via environment variable PYTHON_VERSION
+Nov 12 08:15:46 PM  ==> Docs on specifying a Python version: https://render.com/docs/python-version
+Nov 12 08:15:49 PM  ==> Using Poetry version 1.1.14 (default)
+Nov 12 08:15:49 PM  ==> Docs on specifying a Poetry version: https://render.com/docs/poetry-version
+Nov 12 08:15:49 PM  ==> Running build command './build.sh'...
+Nov 12 08:15:49 PM  ./build.sh: line 2: sudo: command not found
+Nov 12 08:15:49 PM    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+Nov 12 08:15:49 PM                                   Dload  Upload   Total   Spent    Left  Speed
+Nov 12 08:15:50 PM  
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100   983  100   983    0     0   8936      0 --:--:-- --:--:-- --:--:--  8936
+Nov 12 08:15:51 PM  Warning: apt-key output should not be parsed (stdout is not a terminal)
+Nov 12 08:15:51 PM  E: This command can only be used by root.
+Nov 12 08:15:51 PM  ./build.sh: line 4: /etc/apt/sources.list.d/mssql-release.list: Read-only file system
+Nov 12 08:15:51 PM  ==> Build failed 😞
 """
+
